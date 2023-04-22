@@ -33,7 +33,10 @@
 				// drag from one list and drop into another
 
 				// Prevet duplicated id's in list
-				if (duplicatedId(e.item.id)) return;
+				if (duplicatedId(e.item.id)) {
+					dispatch('id-conflict');
+					return;
+				}
 
 				// Accept items only from list "zone"
 				// @ts-ignore
@@ -91,6 +94,7 @@
 					children={child.children}
 					route={child.route}
 					on:main-tree-update
+					on:id-conflict
 					on:move-item
 				/>
 			{:else if child.type == 'act'}

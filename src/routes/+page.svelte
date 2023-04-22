@@ -99,14 +99,26 @@
 		return currentZone;
 	}
 
-	function makeRoutes(root: App.Zone, map: App.Zone['route'] = '0') {
-		if (root.type !== 'zone') return;
+	function makeRoutes(root: App.Zone, map: App.Zone['route'] = '0', reId: boolean = false) {
+		if (root.type !== 'zone') {
+			if (root.type == 'act') {
+				if (reId) {
+					root.id = `a-${Math.random()}`;
+				}
+				return;
+			} else {
+				return;
+			}
+		}
 
+		if (reId) {
+			root.id = `z-${Math.random()}`;
+		}
 		root.route = map;
 
 		root.children?.forEach((el, ix) => {
 			// @ts-ignore // I guess I need conditional types... El will be a Zone bc is after checking if .children exist en root...
-			makeRoutes(el, `${map}/${ix}`);
+			makeRoutes(el, `${map}/${ix}`, reId);
 		});
 		// root.children = root.children;
 		/*
@@ -119,8 +131,8 @@
 		*/
 	}
 
-	function rebuildTree() {
-		makeRoutes(mainTreeData);
+	function rebuildTree(reId: boolean = false) {
+		makeRoutes(mainTreeData, undefined, reId);
 		mainTreeData = mainTreeData;
 	}
 
@@ -134,7 +146,12 @@
 		children={mainTreeData.children}
 		route={mainTreeData.route}
 		mainTree={true}
-		on:main-tree-update={rebuildTree}
+		on:main-tree-update={(e) => {
+			rebuildTree(false);
+		}}
+		on:id-conflict={(e) => {
+			rebuildTree(true);
+		}}
 		on:move-item={(ev) => moveItem(ev.detail)}
 	/>
 
