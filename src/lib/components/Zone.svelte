@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher, onMount } from 'svelte';
 	import Sortable from 'sortablejs';
-	import Activity from './Activity.svelte';
+	import Activity from '$lib/components/Activity.svelte';
 
 	onMount(() => {
 		setupSortable();
@@ -11,7 +11,7 @@
 
 	export let id: string;
 	export let name: string;
-	export let children: any[];
+	export let children: (App.Zone | App.Activity)[];
 	export let mainTree = false;
 	export let route: string;
 
@@ -38,8 +38,7 @@
 				// Accept items only from list "zone"
 				// @ts-ignore
 				if (e.fromSortable.options.group.name == 'zone') {
-					console.log('moving:', e.item);
-					console.log(e);
+					// console.log('moving:', e.item);
 
 					let moveMap = {
 						// @ts-ignore
@@ -56,7 +55,6 @@
 
 			onSort: (e) => {
 				// drag & drop within the same list
-				console.log('sort', e);
 
 				// @ts-ignore
 				const oldLi = children[e.oldIndex];
@@ -87,9 +85,16 @@
 	<div class="z-content" bind:this={zoneSortEl} map={route}>
 		{#each children as child (child.id)}
 			{#if child.type == 'zone'}
-				<svelte:self {...child} on:main-tree-update on:move-item />
+				<svelte:self
+					id={child.id}
+					name={child.name}
+					children={child.children}
+					route={child.route}
+					on:main-tree-update
+					on:move-item
+				/>
 			{:else if child.type == 'act'}
-				<Activity {...child} />
+				<Activity id={child.id} name={child.name} />
 			{/if}
 		{/each}
 	</div>
@@ -100,7 +105,7 @@
 		padding: 0.5em;
 		background-color: rgba(0, 0, 0, 0.1);
 		border-radius: 2px;
-		box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.25);
+		box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.25);
 		margin: 0.5em;
 	}
 
