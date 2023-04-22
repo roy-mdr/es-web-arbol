@@ -1,8 +1,10 @@
 <script lang="ts">
+	export let route: string;
+	export let id: string;
 	export let name: string;
 </script>
 
-<div class="handle activ">{name}</div>
+<div {id} class="handle activ" map={route}>{name}</div>
 
 <style>
 	.handle {
