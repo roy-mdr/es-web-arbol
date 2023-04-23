@@ -180,7 +180,7 @@ function initMainTree() {
 				}
 
 				if (copyItem.type == 'act') copyItem.id = newMtId('act');
-				if (copyItem.type == 'zone') makeRoutes(copyItem, true);
+				if (copyItem.type == 'zone') deepRecurse(copyItem, { remakeRoutes: false, remakeIds: true });
 
 				// Prevet duplicated id's in list
 				if (duplicatedId(toList, copyItem.id)) {
@@ -211,7 +211,7 @@ export const mainTree = initMainTree();
 
 function updateRoutesAndSyncIds(mainTree: App.Zone) {
 	mtIds.set([]);
-	makeRoutes(mainTree);
+	deepRecurse(mainTree);
 }
 
 function newMtId(itemType: App.Zone['type'] | App.Activity['type']): string {
@@ -257,40 +257,58 @@ function getZoneList(zoneRoute: App.Zone['route']) {
 	return currentZone;
 }
 
-function makeRoutes(root: App.Zone, reId: boolean = false, map: App.Zone['route'] = '0') {
-	if (root.type !== 'zone') {
+interface deepRecurseOptionsNoRoutes {
+	remakeRoutes: false;
+	remakeIds: boolean;
+}
 
-		if (root.type == 'act') {
-			if (reId) root.id = newMtId('act');
+interface deepRecurseOptionsRoutes {
+	remakeRoutes: true;
+	initRoute: App.Zone['route'];
+	remakeIds: boolean;
+}
 
-			mtIds.update(ids => {
-				ids.push(root.id);
-				return ids;
-			});
+const deepRecurseDefaultOptions: deepRecurseOptionsRoutes = {
+	remakeRoutes: true,
+	initRoute: '0',
+	remakeIds: false
+}
 
-			return;
+function deepRecurse(root: App.Zone | App.Activity, options: deepRecurseOptionsNoRoutes | deepRecurseOptionsRoutes = deepRecurseDefaultOptions) {
 
+	if (root.type == 'zone') {
+		if (options.remakeIds) {
+			root.id = newMtId('zone');
+		}
+
+		// Push id to store
+		mtIds.update(ids => { ids.push(root.id); return ids; });
+
+		if (options.remakeRoutes) {
+
+			root.route = options.initRoute;
+
+			// Recurse and pass new route to child
+			for (let ix = 0; ix < root.children.length; ix++) {
+				const newOptions = structuredClone(options);
+				newOptions.initRoute = `${options.initRoute}/${ix}`;
+				deepRecurse(<App.Zone>root.children[ix], newOptions);
+			}
 		} else {
-			return;
+			// Recurse as is
+			for (let ix = 0; ix < root.children.length; ix++) {
+				deepRecurse(<App.Zone>root.children[ix], options);
+			}
 		}
 	}
 
-	if (reId) {
-		root.id = newMtId('zone');
-	}
-
-	root.route = map;
-
-	mtIds.update(ids => {
-		ids.push(root.id);
-		return ids;
-	});
-
-	if (root.children) {
-		for (let ix = 0; ix < root.children.length; ix++) {
-			makeRoutes(<App.Zone>root.children[ix], reId, `${map}/${ix}`);
+	if (root.type == 'act') {
+		if (options.remakeIds) {
+			root.id = newMtId('act');
 		}
-		root.children = root.children;
+
+		// Push id to store
+		mtIds.update(ids => { ids.push(root.id); return ids; });
 	}
 }
 
