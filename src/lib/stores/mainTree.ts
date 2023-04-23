@@ -1,14 +1,18 @@
 import { get, writable } from 'svelte/store';
 
+export const mtIds = writable(['z.0']);
+
+
+
 const defaultMainZone: App.Zone = {
-	id: makeId('z.', 5),
+	id: 'z.0',
 	type: 'zone',
 	route: '0',
 	name: 'Main',
 	children: []
 }
 
-let mainTreeStore = writable(defaultMainZone);
+const mainTreeStore = writable(defaultMainZone);
 
 function initMainTree() {
 
@@ -17,20 +21,26 @@ function initMainTree() {
 	return {
 		subscribe,
 
-		newMainTree: (name: string) => set({
-			id: makeId('z.', 5),
-			type: 'zone',
-			route: '0',
-			name: name,
-			children: []
-		}),
+		newMainTree: (name: string) => {
+			set({
+				id: newMtId('zone'),
+				type: 'zone',
+				route: '0',
+				name: name,
+				children: []
+			})
+			update(mt => {
+				updateRoutesAndSyncIds(mt);
+				return mt;
+			})
+		},
 
 		loadMainTree: (mainTree: App.Zone) => {
 			/* EVALUAR INPUT DE CLIENTE */
 			/* ======================== */
 			set(mainTree);
 			update(mt => {
-				makeRoutes(mt);
+				updateRoutesAndSyncIds(mt);
 				return mt;
 			})
 		},
@@ -38,7 +48,7 @@ function initMainTree() {
 		addZone: (map: App.Zone['route'], targetIndex: number | undefined = undefined, newZone: App.NewZone) => {
 			update(mt => {
 				let setItem: App.Zone = {
-					id: makeId('z.', 5),
+					id: newMtId('zone'),
 					type: 'zone',
 					name: newZone.name,
 					route: '',
@@ -62,7 +72,7 @@ function initMainTree() {
 					toList.push(setItem);
 				}
 
-				makeRoutes(mt);
+				updateRoutesAndSyncIds(mt);
 				return mt;
 			})
 		},
@@ -70,7 +80,7 @@ function initMainTree() {
 		addActivity: (map: App.Zone['route'], targetIndex: number | undefined = undefined, newAct: App.NewActivity) => {
 			update(mt => {
 				let setItem: App.Activity = {
-					id: makeId('a.', 5),
+					id: newMtId('act'),
 					type: 'act',
 					name: newAct.name
 				}
@@ -92,7 +102,7 @@ function initMainTree() {
 					toList.push(setItem);
 				}
 
-				makeRoutes(mt);
+				updateRoutesAndSyncIds(mt);
 				return mt;
 			})
 		},
@@ -114,9 +124,9 @@ function initMainTree() {
 					return mt;
 				}
 
-				const copyItem = fromList[map.from_index]
+				let movingItem = fromList[map.from_index]
 
-				if (!copyItem) {
+				if (!movingItem) {
 					console.error('Origin item not found')
 					return mt;
 				}
@@ -126,18 +136,20 @@ function initMainTree() {
 				}
 
 				// Prevet duplicated id's in list
-				if (duplicatedId(toList, copyItem.id)) {
-					alert('Item already in list!');
-					return mt;
+				if (duplicatedId(toList, movingItem.id)) {
+					console.error('Item id already in list? Creating a new one!');
+					movingItem = structuredClone(movingItem);
+					if (movingItem.type == 'act') movingItem.id = newMtId('act');
+					if (movingItem.type == 'zone') movingItem.id = newMtId('zone');
 				}
 
 				// Copy item to 'to' list
-				toList.splice(map.to_index, 0, copyItem);
+				toList.splice(map.to_index, 0, movingItem);
 
 				// Remove item from 'from' list
 				fromList.splice(map.from_index, 1);
 
-				makeRoutes(mt);
+				updateRoutesAndSyncIds(mt);
 				return mt;
 			})
 		},
@@ -167,26 +179,26 @@ function initMainTree() {
 					console.info('Target list smaller than target index. Appending to end.')
 				}
 
-				if (copyItem.type == 'act') copyItem.id = makeId('a.', 5);
+				if (copyItem.type == 'act') copyItem.id = newMtId('act');
 				if (copyItem.type == 'zone') makeRoutes(copyItem, true);
 
 				// Prevet duplicated id's in list
 				if (duplicatedId(toList, copyItem.id)) {
-					alert('Item already in list!');
+					alert('Item already in list... That\'s weird... Contact support or something 🤣');
 					return mt;
 				}
 
 				// Place item to 'to' list
 				toList.splice(map.to_index, 0, copyItem);
 
-				makeRoutes(mt);
+				updateRoutesAndSyncIds(mt);
 				return mt;
 			})
 		},
 
 		rebuild: () => update(mt => {
-			makeRoutes(mt);
-			return mt = mt
+			updateRoutesAndSyncIds(mt);
+			return mt;
 		})
 	}
 }
@@ -197,7 +209,28 @@ export const mainTree = initMainTree();
 
 /* HELPERS */
 
-function makeId(prefix = '', length = 0) {
+function updateRoutesAndSyncIds(mainTree: App.Zone) {
+	mtIds.set([]);
+	makeRoutes(mainTree);
+}
+
+function newMtId(itemType: App.Zone['type'] | App.Activity['type']): string {
+
+	let tmpId: string = '';
+
+	if (itemType == 'zone') tmpId = makeId('z.', 5);
+	if (itemType == 'act') tmpId = makeId('a.', 5);
+
+	if (tmpId == '') throw new Error(`Invalid type '${itemType}'`);
+
+	if (get(mtIds).includes(tmpId)) {
+		return newMtId(itemType);
+	} else {
+		return tmpId;
+	}
+}
+
+function makeId(prefix = '', length = 5): string {
 	let result = prefix;
 	let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
 	let charactersLength = characters.length;
@@ -210,7 +243,7 @@ function makeId(prefix = '', length = 0) {
 function getZoneList(zoneRoute: App.Zone['route']) {
 	const route: string[] = zoneRoute.split('/');
 
-	let currentZone: (App.Zone | App.Activity)[] = get(mainTreeStore).children;
+	let currentZone = get(mainTreeStore).children;
 
 	route.shift(); // Ignore first item (home route)
 
@@ -226,20 +259,33 @@ function getZoneList(zoneRoute: App.Zone['route']) {
 
 function makeRoutes(root: App.Zone, reId: boolean = false, map: App.Zone['route'] = '0') {
 	if (root.type !== 'zone') {
+
 		if (root.type == 'act') {
-			if (reId) {
-				root.id = makeId('a.', 5);
-			}
+			if (reId) root.id = newMtId('act');
+
+			mtIds.update(ids => {
+				ids.push(root.id);
+				return ids;
+			});
+
 			return;
+
 		} else {
 			return;
 		}
 	}
 
 	if (reId) {
-		root.id = makeId('z.', 5);
+		root.id = newMtId('zone');
 	}
+
 	root.route = map;
+
+	mtIds.update(ids => {
+		ids.push(root.id);
+		return ids;
+	});
+
 	if (root.children) {
 		for (let ix = 0; ix < root.children.length; ix++) {
 			makeRoutes(<App.Zone>root.children[ix], reId, `${map}/${ix}`);

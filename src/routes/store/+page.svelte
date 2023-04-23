@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { mainTree } from '$lib/stores/mainTree';
+	import { mainTree, mtIds } from '$lib/stores/mainTree';
 
 	function newMainTree() {
 		mainTree.newMainTree('Sistema solar bb 8)');
@@ -103,6 +103,12 @@
 	<button type="button" on:click={copyItem}>Copy item</button>
 </div>
 
-<pre>
+<div style="display: flex;">
+	<pre>
 {test}
-</pre>
+	</pre>
+
+	<pre>
+{$mtIds}
+	</pre>
+</div>
