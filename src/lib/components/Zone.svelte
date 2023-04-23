@@ -1,18 +1,18 @@
 <script lang="ts">
-	import { createEventDispatcher, onMount } from 'svelte';
+	import { onMount } from 'svelte';
 	import Sortable from 'sortablejs';
 	import Activity from '$lib/components/Activity.svelte';
+
+	import { mainTree } from '$lib/stores/mainTree';
 
 	onMount(() => {
 		setupSortable();
 	});
 
-	let dispatch = createEventDispatcher();
-
 	export let id: string;
 	export let name: string;
 	export let children: (App.Zone | App.Activity)[];
-	export let mainTree = false;
+	export let isMainTree = false;
 	export let route: string;
 
 	let zoneSortEl: HTMLElement;
@@ -32,12 +32,6 @@
 			onAdd: (e) => {
 				// drag from one list and drop into another
 
-				// Prevet duplicated id's in list
-				if (duplicatedId(e.item.id)) {
-					dispatch('id-conflict');
-					return;
-				}
-
 				// Accept items only from list "zone"
 				// @ts-ignore
 				if (e.fromSortable.options.group.name == 'zone') {
@@ -46,13 +40,13 @@
 					let moveMap = {
 						// @ts-ignore
 						from_list: e.fromSortable.el.getAttribute('map'),
-						from_index: e.oldIndex,
+						from_index: e.oldIndex || 0,
 						// @ts-ignore
 						to_list: e.toSortable.el.getAttribute('map'),
-						to_index: e.newIndex
+						to_index: e.newIndex || 0
 					};
 
-					dispatch('move-item', moveMap);
+					mainTree.moveItem(moveMap);
 				}
 			},
 
@@ -67,24 +61,14 @@
 				children.splice(e.newIndex, 0, oldLi);
 
 				// Update all the tree to keep data in sync with DOM
-				dispatch('main-tree-update');
+				mainTree.rebuild();
 			}
 		});
-
-		function duplicatedId(id: string) {
-			for (let i = 0; i < children.length; i++) {
-				if (children[i].id == id) {
-					alert('Item already in list!');
-					return true;
-				}
-			}
-			return false;
-		}
 	}
 </script>
 
 <div {id} class="zone">
-	<div class="title" class:handle={!mainTree}>{name}</div>
+	<div class="title" class:handle={!isMainTree}>{name}</div>
 	<div class="z-content" bind:this={zoneSortEl} map={route}>
 		{#each children as child (child.id)}
 			{#if child.type == 'zone'}
@@ -93,9 +77,6 @@
 					name={child.name}
 					children={child.children}
 					route={child.route}
-					on:main-tree-update
-					on:id-conflict
-					on:move-item
 				/>
 			{:else if child.type == 'act'}
 				<Activity id={child.id} name={child.name} />

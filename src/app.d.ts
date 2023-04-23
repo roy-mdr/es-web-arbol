@@ -15,16 +15,24 @@ declare global {
 			children: (Zone | Activity)[];
 		}
 
+		interface NewZone {
+			name: string;
+		}
+
 		interface Activity {
 			id: string;
 			type: 'act';
 			name: string;
 		}
 
-		interface MoveMap {
-			from_list: string;
+		interface NewActivity {
+			name: string;
+		}
+
+		interface MoveSingleMap {
+			from_list: Zone['route'];
 			from_index: number;
-			to_list: string;
+			to_list: Zone['route'];
 			to_index: number;
 		}
 	}
