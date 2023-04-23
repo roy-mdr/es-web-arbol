@@ -191,6 +191,18 @@ function initMainTree() {
 				toList.splice(map.to_index, 0, copyItem);
 
 				updateRoutesAndSyncIds(mt);
+
+				//  ========== XDDD ========== //
+				if (fromList === toList) {
+					setTimeout(() => {
+						mainTreeStore.set(defaultMainZone);
+					}, 0);
+
+					setTimeout(() => {
+						mainTreeStore.set(mt);
+					}, 0);
+				}
+
 				return mt;
 			})
 		},
