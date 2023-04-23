@@ -5,7 +5,7 @@
 		mainTree.newMainTree('Sistema solar bb 8)');
 	}
 
-	function loadMainTree() {
+	function loadMainTree_1() {
 		mainTree.loadMainTree({
 			id: 'z.HCFEO',
 			type: 'zone',
@@ -61,6 +61,73 @@
 		});
 	}
 
+	function loadMainTree_2() {
+		mainTree.loadMainTree({
+			id: 'z-0',
+			type: 'zone',
+			route: '',
+			name: 'sistema',
+			children: [
+				{
+					id: 'a-7',
+					type: 'act',
+					name: 'takata'
+				},
+				{
+					id: 'z-1',
+					type: 'zone',
+					route: '',
+					name: 'social',
+					children: [
+						{
+							id: 'a-1',
+							type: 'act',
+							name: 'convivir'
+						},
+						{
+							id: 'z-2',
+							type: 'zone',
+							route: '',
+							name: 'social intima',
+							children: [
+								{
+									id: 'a-2',
+									type: 'act',
+									name: 'convivir 2'
+								},
+								{
+									id: 'a-6',
+									type: 'act',
+									name: 'convivir 3'
+								},
+								{
+									id: 'a-1',
+									type: 'act',
+									name: 'convivir 4'
+								}
+							]
+						}
+					]
+				},
+				{
+					id: 'a-3',
+					type: 'act',
+					name: 'a'
+				},
+				{
+					id: 'a-4',
+					type: 'act',
+					name: 'b'
+				},
+				{
+					id: 'a-5',
+					type: 'act',
+					name: 'c'
+				}
+			]
+		});
+	}
+
 	function addZone() {
 		mainTree.addZone('0', 1, {
 			name: 'nop'
@@ -94,9 +161,12 @@
 	$: test = JSON.stringify($mainTree, undefined, 2);
 </script>
 
+<a href="/">Go to Interactive Tree</a>
+
 <div>
 	<button type="button" on:click={newMainTree}>New Main Tree</button>
-	<button type="button" on:click={loadMainTree}>Load Main Tree</button>
+	<button type="button" on:click={loadMainTree_1}>Load Tree #1</button>
+	<button type="button" on:click={loadMainTree_2}>Load Tree #2</button>
 	<button type="button" on:click={addZone}>Add Zone</button>
 	<button type="button" on:click={addActivity}>Add activity</button>
 	<button type="button" on:click={moveItem}>Move item</button>
