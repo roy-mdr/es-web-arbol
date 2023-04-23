@@ -196,10 +196,9 @@ function initMainTree() {
 				if (fromList === toList) {
 					setTimeout(() => {
 						mainTreeStore.set(defaultMainZone);
-					}, 0);
-
-					setTimeout(() => {
-						mainTreeStore.set(mt);
+						setTimeout(() => {
+							mainTreeStore.set(mt);
+						}, 0);
 					}, 0);
 				}
 
