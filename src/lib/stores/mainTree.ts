@@ -124,30 +124,29 @@ function initMainTree() {
 					return mt;
 				}
 
-				let movingItem = fromList[map.from_index]
+				const movingItem = structuredClone(fromList[map.from_index]);
 
 				if (!movingItem) {
-					console.error('Origin item not found')
+					console.error('Origin item not found');
 					return mt;
 				}
 
 				if (toList.length < map.to_index) {
-					console.info('Target list smaller than target index. Appending to end.')
+					console.info('Target list smaller than target index. Appending to end.');
 				}
 
-				// Prevet duplicated id's in list
-				if (duplicatedId(toList, movingItem.id)) {
+				// Prevet duplicated id's in destiny list
+				if ((fromList !== toList) && duplicatedId(toList, movingItem.id)) {
 					console.error('Item id already in list? Creating a new one!');
-					movingItem = structuredClone(movingItem);
 					if (movingItem.type == 'act') movingItem.id = newMtId('act');
 					if (movingItem.type == 'zone') movingItem.id = newMtId('zone');
 				}
 
-				// Copy item to 'to' list
-				toList.splice(map.to_index, 0, movingItem);
-
 				// Remove item from 'from' list
 				fromList.splice(map.from_index, 1);
+
+				// Copy item to 'to' list
+				toList.splice(map.to_index, 0, movingItem);
 
 				updateRoutesAndSyncIds(mt);
 				return mt;
@@ -176,7 +175,7 @@ function initMainTree() {
 				}
 
 				if (toList.length < map.to_index) {
-					console.info('Target list smaller than target index. Appending to end.')
+					console.info('Target list smaller than target index. Appending to end.');
 				}
 
 				if (copyItem.type == 'act') copyItem.id = newMtId('act');

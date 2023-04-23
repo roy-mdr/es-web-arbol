@@ -38,11 +38,9 @@
 					// console.log('moving:', e.item);
 
 					let moveMap = {
-						// @ts-ignore
-						from_list: e.fromSortable.el.getAttribute('map'),
+						from_list: e.from.getAttribute('map') || '0',
 						from_index: e.oldIndex || 0,
-						// @ts-ignore
-						to_list: e.toSortable.el.getAttribute('map'),
+						to_list: e.to.getAttribute('map') || '0',
 						to_index: e.newIndex || 0
 					};
 
@@ -52,13 +50,42 @@
 
 			onSort: (e) => {
 				// drag & drop within the same list
+				let moveMap = {
+					from_list: e.from.getAttribute('map') || '0',
+					from_index: e.oldIndex || 0,
+					to_list: e.to.getAttribute('map') || '0',
+					to_index: e.newIndex || 0
+				};
+
+				// /*
+				{
+					// only for copy
+					if (moveMap.to_index > moveMap.from_index) {
+						moveMap.to_index++;
+					}
+
+					mainTree.copyItem(moveMap);
+				}
+				// */
+
+				/*
+				{
+					mainTree.moveItem(moveMap);
+				}
+				*/
+
+				return;
 
 				// @ts-ignore
-				const oldLi = children[e.oldIndex];
+				const movingItem = children[e.oldIndex];
+
+				// Remove item from 'from' list
 				// @ts-ignore
 				children.splice(e.oldIndex, 1);
+
+				// Copy item to 'to' list
 				// @ts-ignore
-				children.splice(e.newIndex, 0, oldLi);
+				children.splice(e.newIndex, 0, movingItem);
 
 				// Update all the tree to keep data in sync with DOM
 				mainTree.rebuild();

@@ -143,9 +143,9 @@
 	function moveItem() {
 		mainTree.moveItem({
 			from_list: '0/0',
-			from_index: 0,
-			to_list: '0/1',
-			to_index: 3
+			from_index: 1,
+			to_list: '0/0',
+			to_index: 0
 		});
 	}
 
@@ -153,8 +153,8 @@
 		mainTree.copyItem({
 			from_list: '0/0',
 			from_index: 0,
-			to_list: '0/1',
-			to_index: 3
+			to_list: '0/0',
+			to_index: 1
 		});
 	}
 
