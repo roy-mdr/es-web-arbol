@@ -190,18 +190,11 @@ function initMainTree() {
 				// Place item to 'to' list
 				toList.splice(map.to_index, 0, copyItem);
 
-				updateRoutesAndSyncIds(mt);
-
-				//  ========== XDDD ========== //
 				if (fromList === toList) {
-					setTimeout(() => {
-						mainTreeStore.set(defaultMainZone);
-						setTimeout(() => {
-							mainTreeStore.set(mt);
-						}, 0);
-					}, 0);
+					mt.id = newMtId('zone');
 				}
 
+				updateRoutesAndSyncIds(mt);
 				return mt;
 			})
 		},

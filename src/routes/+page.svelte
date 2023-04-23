@@ -9,14 +9,15 @@
 <a href="/store">Check Store State</a>
 
 <div style="display: flex;">
-	<Zone
-		id={$mainTree.id}
-		name={$mainTree.name}
-		children={$mainTree.children}
-		route={$mainTree.route}
-		isMainTree={true}
-	/>
-
+	{#key $mainTree.id}
+		<Zone
+			id={$mainTree.id}
+			name={$mainTree.name}
+			children={$mainTree.children}
+			route={$mainTree.route}
+			isMainTree={true}
+		/>
+	{/key}
 	<pre>
 {dataAsJSON}
 	</pre>
