@@ -22,7 +22,7 @@
 		Sortable.create(zoneSortEl, {
 			group: {
 				name: 'zone',
-				put: ['zone', 'panel-act']
+				put: ['zone', 'panel-act', 'panel-zone']
 			},
 			// @ts-ignore
 			revertDOM: true,
@@ -67,6 +67,15 @@
 					const to_index = e.newIndex || 0;
 
 					mainTree.addActivity(to_list, to_index, { name: newActData.name });
+				}
+
+				// If origin list is "panel-zone"
+				// @ts-ignore
+				if (e.fromSortable.options.group.name == 'panel-zone') {
+					const to_list = e.to.getAttribute('map') || '0';
+					const to_index = e.newIndex || 0;
+
+					mainTree.addZone(to_list, to_index, { name: 'New Zone' });
 				}
 			},
 
