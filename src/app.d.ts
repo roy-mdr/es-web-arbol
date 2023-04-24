@@ -17,6 +17,7 @@ declare global {
 			type: 'zone';
 			name: string;
 			route: string;
+			open: boolean;
 			children: (Zone | Activity)[];
 		}
 

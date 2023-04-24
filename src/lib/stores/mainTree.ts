@@ -9,6 +9,7 @@ const defaultMainZone: App.Zone = {
 	type: 'zone',
 	route: '0',
 	name: 'Main',
+	open: true,
 	children: []
 }
 
@@ -27,6 +28,7 @@ function initMainTree() {
 				type: 'zone',
 				route: '0',
 				name: name,
+				open: true,
 				children: []
 			})
 			update(mt => {
@@ -52,6 +54,7 @@ function initMainTree() {
 					type: 'zone',
 					name: newZone.name,
 					route: '',
+					open: true,
 					children: []
 				}
 
@@ -202,7 +205,15 @@ function initMainTree() {
 		rebuild: () => update(mt => {
 			updateRoutesAndSyncIds(mt);
 			return mt;
-		})
+		}),
+
+		toggleOpenZone: (map: App.Zone['route']) => {
+			update(mt => {
+				const zone = getZone(map);
+				zone.open = !zone.open;
+				return mt;
+			});
+		}
 	}
 }
 
@@ -241,6 +252,25 @@ function makeId(prefix = '', length = 5): string {
 		result += characters.charAt(Math.floor(Math.random() * charactersLength));
 	}
 	return result;
+}
+
+function getZone(zoneRoute: App.Zone['route']) {
+	const route: string[] = zoneRoute.split('/');
+
+	let currentZone = get(mainTreeStore);
+	let currentZoneList = currentZone.children;
+
+	route.shift(); // Ignore first item (home route)
+
+	for (let ix = 0; ix < route.length; ix++) {
+		// @ts-ignore // I guess I need conditional types... currentZoneList is a Zone bc the function that called getList read the value from a Zone
+		currentZone = currentZoneList[parseInt(route[ix])];
+		currentZoneList = currentZone?.children || undefined;
+	}
+
+	if (!currentZoneList) throw new Error(`Children of '${zoneRoute}' not found`);
+
+	return currentZone;
 }
 
 function getZoneList(zoneRoute: App.Zone['route']) {

@@ -7,11 +7,11 @@
 	import { ctrlKeyIsDown, dragNewActivity } from '$lib/stores/appState';
 
 	onMount(() => {
-		setupSortable();
+		// setupSortable(zoneSortEl);
 	});
 
 	onDestroy(() => {
-		if (zoneSortable) zoneSortable.destroy();
+		// if (zoneSortable) zoneSortable.destroy();
 	});
 
 	export let id: string;
@@ -19,9 +19,10 @@
 	export let children: (App.Zone | App.Activity)[];
 	export let isMainTree = false;
 	export let route: string;
+	export let isOpen: boolean;
 
 	let zoneSortEl: HTMLElement;
-	let zoneSortable: Sortable;
+	let zoneSortable: Sortable | undefined;
 
 	$: toggleSortableClone($ctrlKeyIsDown);
 
@@ -42,8 +43,24 @@
 		}
 	}
 
-	function setupSortable() {
-		zoneSortable = Sortable.create(zoneSortEl, {
+	$: setupSortable(zoneSortEl);
+
+	function setupSortable(sortableEl: HTMLElement) {
+		if (!sortableEl) return;
+		/* if (zoneSortable) {
+			if (zoneSortable.el !== sortableEl) {
+				zoneSortable.destroy();
+			}
+			zoneSortable == undefined;
+			console.log('undefaini');
+		} */
+
+		if (zoneSortable) {
+			zoneSortable.destroy();
+			zoneSortable = undefined;
+		}
+
+		zoneSortable = Sortable.create(sortableEl, {
 			group: {
 				name: 'zone',
 				put: ['zone', 'panel-act', 'panel-zone']
@@ -145,26 +162,43 @@
 			}
 		});
 	}
+
+	function toggleOpen() {
+		mainTree.toggleOpenZone(route);
+	}
 </script>
 
 <div {id} class="zone">
 	<div class="title" class:handle={!isMainTree} class:handle-copy={!isMainTree && $ctrlKeyIsDown}>
+		<button on:click={toggleOpen}>
+			{#if isOpen}
+				-
+			{:else}
+				+
+			{/if}
+		</button>
 		{name}
 	</div>
-	<div class="z-content" bind:this={zoneSortEl} map={route}>
-		{#each children as child (child.id)}
-			{#if child.type == 'zone'}
-				<svelte:self
-					id={child.id}
-					name={child.name}
-					children={child.children}
-					route={child.route}
-				/>
-			{:else if child.type == 'act'}
-				<Activity id={child.id} name={child.name} ctrlDown={$ctrlKeyIsDown} />
-			{/if}
-		{/each}
-	</div>
+	<!-- Set transition in this div -->
+	{#if isOpen}
+		<div>
+			<div class="z-content" bind:this={zoneSortEl} map={route}>
+				{#each children as child (child.id)}
+					{#if child.type == 'zone'}
+						<svelte:self
+							id={child.id}
+							name={child.name}
+							children={child.children}
+							route={child.route}
+							isOpen={child.open}
+						/>
+					{:else if child.type == 'act'}
+						<Activity id={child.id} name={child.name} ctrlDown={$ctrlKeyIsDown} />
+					{/if}
+				{/each}
+			</div>
+		</div>
+	{/if}
 </div>
 
 <style>

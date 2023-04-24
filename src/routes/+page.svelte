@@ -30,6 +30,7 @@
 			children={$mainTree.children}
 			route={$mainTree.route}
 			isMainTree={true}
+			isOpen={$mainTree.open}
 		/>
 	{/key}
 	<!-- 	<pre>
