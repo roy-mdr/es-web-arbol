@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { slide } from 'svelte/transition';
 	import ZoneSortable from '$lib/components/ZoneSortable.svelte';
 
 	import { mainTree } from '$lib/stores/mainTree';
@@ -28,7 +29,7 @@
 	</div>
 	<!-- Set transition in this div -->
 	{#if isOpen}
-		<div>
+		<div transition:slide|local={{ duration: 200 }}>
 			<ZoneSortable {route} content={children} />
 		</div>
 	{/if}
