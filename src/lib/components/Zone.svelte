@@ -17,14 +17,13 @@
 </script>
 
 <div {id} class="zone">
-	<div class="title" class:handle={!isMainTree} class:handle-copy={!isMainTree && $ctrlKeyIsDown}>
-		<button on:click={toggleOpen}>
-			{#if isOpen}
-				-
-			{:else}
-				+
-			{/if}
-		</button>
+	<!-- svelte-ignore a11y-click-events-have-key-events -->
+	<div
+		class="title"
+		class:handle={!isMainTree}
+		class:handle-copy={!isMainTree && $ctrlKeyIsDown}
+		on:click={toggleOpen}
+	>
 		{name}
 	</div>
 	<!-- Set transition in this div -->
