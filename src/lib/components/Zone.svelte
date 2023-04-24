@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, onDestroy } from 'svelte';
 	import Sortable from 'sortablejs';
 	import Activity from '$lib/components/Activity.svelte';
 
@@ -8,6 +8,10 @@
 
 	onMount(() => {
 		setupSortable();
+	});
+
+	onDestroy(() => {
+		if (zoneSortable) zoneSortable.destroy();
 	});
 
 	export let id: string;
