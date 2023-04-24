@@ -1,15 +1,12 @@
 <script lang="ts">
 	export let id: string;
 	export let name: string;
+	export let ctrlDown: boolean;
 </script>
 
-<div {id} class="handle activ">{name}</div>
+<div {id} class="handle activ" class:handle-copy={ctrlDown}>{name}</div>
 
 <style>
-	.handle {
-		cursor: grab;
-	}
-
 	.activ {
 		padding: 0.5em;
 		margin: 0.5em;

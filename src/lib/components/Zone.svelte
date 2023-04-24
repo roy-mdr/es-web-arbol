@@ -4,6 +4,7 @@
 	import Activity from '$lib/components/Activity.svelte';
 
 	import { mainTree } from '$lib/stores/mainTree';
+	import { ctrlKeyIsDown } from '$lib/stores/appState';
 
 	onMount(() => {
 		setupSortable();
@@ -37,65 +38,69 @@
 				if (e.fromSortable.options.group.name == 'zone') {
 					// console.log('moving:', e.item);
 
-					let moveMap = {
+					const moveMap = {
 						from_list: e.from.getAttribute('map') || '0',
 						from_index: e.oldIndex || 0,
 						to_list: e.to.getAttribute('map') || '0',
 						to_index: e.newIndex || 0
 					};
 
-					mainTree.moveItem(moveMap);
+					if ($ctrlKeyIsDown) {
+						mainTree.copyItem(moveMap);
+					} else {
+						mainTree.moveItem(moveMap);
+					}
 				}
 			},
 
 			onSort: (e) => {
 				// drag & drop within the same list
-				let moveMap = {
-					from_list: e.from.getAttribute('map') || '0',
-					from_index: e.oldIndex || 0,
-					to_list: e.to.getAttribute('map') || '0',
-					to_index: e.newIndex || 0
-				};
 
-				// /*
-				{
-					// only for copy
+				if ($ctrlKeyIsDown) {
+					const moveMap = {
+						from_list: e.from.getAttribute('map') || '0',
+						from_index: e.oldIndex || 0,
+						to_list: e.to.getAttribute('map') || '0',
+						to_index: e.newIndex || 0
+					};
+
+					// only for copy in same list
 					if (moveMap.to_index > moveMap.from_index) {
 						moveMap.to_index++;
 					}
 
 					mainTree.copyItem(moveMap);
+				} else {
+					/*
+					{
+						mainTree.moveItem(moveMap);
+					}
+					return;
+					*/
+
+					// @ts-ignore
+					const movingItem = children[e.oldIndex];
+
+					// Remove item from 'from' list
+					// @ts-ignore
+					children.splice(e.oldIndex, 1);
+
+					// Copy item to 'to' list
+					// @ts-ignore
+					children.splice(e.newIndex, 0, movingItem);
+
+					// Update all the tree to keep data in sync with DOM
+					mainTree.rebuild();
 				}
-				// */
-
-				/*
-				{
-					mainTree.moveItem(moveMap);
-				}
-				*/
-
-				return;
-
-				// @ts-ignore
-				const movingItem = children[e.oldIndex];
-
-				// Remove item from 'from' list
-				// @ts-ignore
-				children.splice(e.oldIndex, 1);
-
-				// Copy item to 'to' list
-				// @ts-ignore
-				children.splice(e.newIndex, 0, movingItem);
-
-				// Update all the tree to keep data in sync with DOM
-				mainTree.rebuild();
 			}
 		});
 	}
 </script>
 
 <div {id} class="zone">
-	<div class="title" class:handle={!isMainTree}>{name}</div>
+	<div class="title" class:handle={!isMainTree} class:handle-copy={!isMainTree && $ctrlKeyIsDown}>
+		{name}
+	</div>
 	<div class="z-content" bind:this={zoneSortEl} map={route}>
 		{#each children as child (child.id)}
 			{#if child.type == 'zone'}
@@ -106,7 +111,7 @@
 					route={child.route}
 				/>
 			{:else if child.type == 'act'}
-				<Activity id={child.id} name={child.name} />
+				<Activity id={child.id} name={child.name} ctrlDown={$ctrlKeyIsDown} />
 			{/if}
 		{/each}
 	</div>
@@ -121,7 +126,7 @@
 		margin: 0.5em;
 	}
 
-	.title {
+	.zone :global(.title) {
 		font-weight: bold;
 		background-color: rgba(0, 0, 0, 0.1);
 		width: max-content;
@@ -129,11 +134,15 @@
 		border-radius: 2px;
 	}
 
-	.handle {
+	.zone :global(.handle) {
 		cursor: grab;
 	}
 
-	.z-content {
+	.zone :global(.handle.handle-copy) {
+		cursor: copy;
+	}
+
+	.zone :global(.z-content) {
 		margin: 0.5em;
 		border-radius: 2px;
 		border: 1px dashed rgba(0, 0, 0, 0.25);
