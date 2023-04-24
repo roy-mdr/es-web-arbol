@@ -4,7 +4,7 @@
 	import Activity from '$lib/components/Activity.svelte';
 
 	import { mainTree } from '$lib/stores/mainTree';
-	import { ctrlKeyIsDown } from '$lib/stores/appState';
+	import { ctrlKeyIsDown, dragNewActivity } from '$lib/stores/appState';
 
 	onMount(() => {
 		setupSortable();
@@ -20,7 +20,10 @@
 
 	function setupSortable() {
 		Sortable.create(zoneSortEl, {
-			group: 'zone',
+			group: {
+				name: 'zone',
+				put: ['zone', 'panel-act']
+			},
 			// @ts-ignore
 			revertDOM: true,
 			animation: 150,
@@ -33,7 +36,7 @@
 			onAdd: (e) => {
 				// drag from one list and drop into another
 
-				// Accept items only from list "zone"
+				// If origin list is "zone"
 				// @ts-ignore
 				if (e.fromSortable.options.group.name == 'zone') {
 					// console.log('moving:', e.item);
@@ -50,6 +53,20 @@
 					} else {
 						mainTree.moveItem(moveMap);
 					}
+				}
+
+				// If origin list is "panel-act"
+				// @ts-ignore
+				if (e.fromSortable.options.group.name == 'panel-act') {
+					// console.log('adding:', e.item);
+
+					if (!$dragNewActivity) return;
+
+					const newActData = <App.ActivityClass>$dragNewActivity;
+					const to_list = e.to.getAttribute('map') || '0';
+					const to_index = e.newIndex || 0;
+
+					mainTree.addActivity(to_list, to_index, { name: newActData.name });
 				}
 			},
 

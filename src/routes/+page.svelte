@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Zone from '$lib/components/Zone.svelte';
+	import PanelActs from '$lib/components/PanelActs.svelte';
 
 	import { mainTree } from '$lib/stores/mainTree';
 	import { ctrlKeyIsDown } from '$lib/stores/appState';
@@ -18,6 +19,8 @@
 {$ctrlKeyIsDown}
 
 <div style="display: flex;">
+	<PanelActs />
+
 	{#key $mainTree.id}
 		<Zone
 			id={$mainTree.id}
@@ -27,7 +30,7 @@
 			isMainTree={true}
 		/>
 	{/key}
-	<pre>
+	<!-- 	<pre>
 {dataAsJSON}
-	</pre>
+	</pre> -->
 </div>
