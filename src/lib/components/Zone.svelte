@@ -10,7 +10,7 @@
 	export let children: App.Zone['children'];
 	export let isMainTree = false;
 	export let route: App.Zone['route'];
-	export let isOpen: App.Zone['open'];
+	export let isOpen: App.Zone['open'] = true;
 
 	function toggleOpen() {
 		mainTree.toggleOpenZone(route);

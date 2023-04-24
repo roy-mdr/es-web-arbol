@@ -210,6 +210,10 @@ function initMainTree() {
 		toggleOpenZone: (map: App.Zone['route']) => {
 			update(mt => {
 				const zone = getZone(map);
+				if (zone.open === undefined) {
+					zone.open = false;
+					return mt;
+				}
 				zone.open = !zone.open;
 				return mt;
 			});

@@ -1,6 +1,6 @@
 <script lang="ts">
-	export let id: string;
-	export let name: string;
+	export let id: App.Activity['id'];
+	export let name: App.Activity['name'];
 	export let ctrlDown: boolean;
 </script>
 
