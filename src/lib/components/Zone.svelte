@@ -17,9 +17,29 @@
 	export let route: string;
 
 	let zoneSortEl: HTMLElement;
+	let zoneSortable: Sortable;
+
+	$: toggleSortableClone($ctrlKeyIsDown);
+
+	function toggleSortableClone(ctrlKeyDown: boolean) {
+		if (!zoneSortable) return;
+
+		if (ctrlKeyDown) {
+			zoneSortable?.option('group', {
+				name: 'zone',
+				put: ['zone', 'panel-act', 'panel-zone'],
+				pull: 'clone'
+			});
+		} else {
+			zoneSortable?.option('group', {
+				name: 'zone',
+				put: ['zone', 'panel-act', 'panel-zone']
+			});
+		}
+	}
 
 	function setupSortable() {
-		Sortable.create(zoneSortEl, {
+		zoneSortable = Sortable.create(zoneSortEl, {
 			group: {
 				name: 'zone',
 				put: ['zone', 'panel-act', 'panel-zone']
