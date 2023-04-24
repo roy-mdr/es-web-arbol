@@ -9,18 +9,21 @@
 		mainTree.loadMainTree({
 			id: 'z.HCFEO',
 			type: 'zone',
+			open: true,
 			route: '',
 			name: 'Sistema solar bb 8)',
 			children: [
 				{
 					id: 'z.r943a',
 					type: 'zone',
+					open: false,
 					name: 'nop',
 					route: '',
 					children: [
 						{
 							id: 'z.r943b',
 							type: 'zone',
+							open: true,
 							name: 'nop',
 							route: '',
 							children: [
@@ -36,6 +39,7 @@
 				{
 					id: 'z.r943E',
 					type: 'zone',
+					open: true,
 					name: 'nop',
 					route: '',
 					children: []
@@ -48,6 +52,7 @@
 				{
 					id: 'z.S9V74',
 					type: 'zone',
+					open: true,
 					name: 'nop',
 					route: '',
 					children: []
@@ -65,6 +70,7 @@
 		mainTree.loadMainTree({
 			id: 'z-0',
 			type: 'zone',
+			open: true,
 			route: '',
 			name: 'sistema',
 			children: [
@@ -76,6 +82,7 @@
 				{
 					id: 'z-1',
 					type: 'zone',
+					open: true,
 					route: '',
 					name: 'social',
 					children: [
@@ -87,6 +94,7 @@
 						{
 							id: 'z-2',
 							type: 'zone',
+							open: false,
 							route: '',
 							name: 'social intima',
 							children: [
