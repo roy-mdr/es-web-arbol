@@ -2,6 +2,7 @@
 	import Zone from '$lib/components/Zone.svelte';
 	import PanelActs from '$lib/components/PanelActs.svelte';
 	import PanelNewZone from '$lib/components/PanelNewZone.svelte';
+	import TrashBin from '$lib/components/TrashBin.svelte';
 
 	import { mainTree } from '$lib/stores/mainTree';
 	import { ctrlKeyIsDown } from '$lib/stores/appState';
@@ -33,6 +34,7 @@
 			isOpen={$mainTree.open}
 		/>
 	{/key}
+	<TrashBin />
 	<!-- 	<pre>
 {dataAsJSON}
 	</pre> -->
