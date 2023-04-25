@@ -111,7 +111,32 @@ function initMainTree() {
 		},
 
 		// editItem: (map: App.TargetSingleMap) => update(n => n + 1),
-		// deleteItem: (map: App.TargetSingleMap) => update(n => n + 1),
+
+		deleteItem: (map: App.Zone['route'], targetIndex: number) => {
+			update(mt => {
+
+				let fromList: App.Zone['children'];
+				try {
+					fromList = getZoneList(map);
+				} catch (error: any) {
+					console.error(error.message);
+					return mt;
+				}
+
+				const movingItem = fromList[targetIndex];
+
+				if (!movingItem) {
+					console.error('Origin item not found');
+					return mt;
+				}
+
+				// Remove item from 'from' list
+				fromList.splice(targetIndex, 1);
+
+				updateRoutesAndSyncIds(mt);
+				return mt;
+			})
+		},
 
 		moveItem: (map: App.MoveSingleMap) => {
 			update(mt => {
