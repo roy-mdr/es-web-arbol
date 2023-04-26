@@ -6,6 +6,7 @@
 
 	import { mainTree } from '$lib/stores/mainTree';
 	import { ctrlKeyIsDown } from '$lib/stores/appState';
+	import EditItem from '$lib/components/EditSelected.svelte';
 
 	function handleKeydown(ev: KeyboardEvent) {
 		ctrlKeyIsDown.set(ev.ctrlKey);
@@ -35,6 +36,7 @@
 		/>
 	{/key}
 	<TrashBin />
+	<EditItem />
 	<!-- 	<pre>
 {dataAsJSON}
 	</pre> -->

@@ -48,6 +48,9 @@ function initMainTree() {
 		},
 
 		addZone: (map: App.Zone['route'], targetIndex: number | undefined = undefined, newZone: App.NewZone) => {
+
+			if (!map) return;
+
 			update(mt => {
 				let setItem: App.Zone = {
 					id: newMtId('zone'),
@@ -81,6 +84,9 @@ function initMainTree() {
 		},
 
 		addActivity: (map: App.Zone['route'], targetIndex: number | undefined = undefined, newAct: App.NewActivity) => {
+
+			if (!map) return;
+
 			update(mt => {
 				let setItem: App.Activity = {
 					id: newMtId('act'),
@@ -114,6 +120,9 @@ function initMainTree() {
 		// editItem: (map: App.TargetSingleMap) => update(n => n + 1),
 
 		deleteItem: (map: App.Zone['route'], targetIndex: number) => {
+
+			if (!map) return;
+
 			update(mt => {
 
 				let fromList: App.Zone['children'];
@@ -140,6 +149,9 @@ function initMainTree() {
 		},
 
 		moveItem: (map: App.MoveSingleMap) => {
+
+			if (!map) return;
+
 			update(mt => {
 
 				let fromList: App.Zone['children'];
@@ -183,6 +195,9 @@ function initMainTree() {
 		},
 
 		copyItem: (map: App.MoveSingleMap) => {
+
+			if (!map) return;
+
 			update(mt => {
 
 				let fromList: App.Zone['children'];
@@ -234,6 +249,9 @@ function initMainTree() {
 		}),
 
 		toggleOpenZone: (map: App.Zone['route']) => {
+
+			if (!map) return;
+
 			update(mt => {
 				const zone = getZone(map);
 				if (zone.open === undefined) {

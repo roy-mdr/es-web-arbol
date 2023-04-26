@@ -3,7 +3,7 @@
 	import ZoneSortable from '$lib/components/ZoneSortable.svelte';
 
 	import { mainTree } from '$lib/stores/mainTree';
-	import { ctrlKeyIsDown } from '$lib/stores/appState';
+	import { ctrlKeyIsDown, selectedId } from '$lib/stores/appState';
 
 	export let id: App.Zone['id'];
 	export let name: App.Zone['name'];
@@ -17,15 +17,21 @@
 	}
 </script>
 
-<div {id} class="zone">
-	<!-- svelte-ignore a11y-click-events-have-key-events -->
-	<div
-		class="title"
-		class:handle={!isMainTree}
-		class:handle-copy={!isMainTree && $ctrlKeyIsDown}
-		on:click={toggleOpen}
-	>
-		{name}
+<div {id} class="zone" class:selected={$selectedId == id}>
+	<div class="header">
+		{#if !isMainTree}
+			<!-- svelte-ignore a11y-click-events-have-key-events -->
+			<div class="arrow" class:open={isOpen} on:click={toggleOpen}>►</div>
+		{/if}
+		<!-- svelte-ignore a11y-click-events-have-key-events -->
+		<div
+			class="title"
+			class:handle={!isMainTree}
+			class:handle-copy={!isMainTree && $ctrlKeyIsDown}
+			on:click={() => selectedId.set(id)}
+		>
+			{name}
+		</div>
 	</div>
 	<!-- Set transition in this div -->
 	{#if isOpen}
@@ -42,6 +48,10 @@
 		border-radius: 2px;
 		box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.25);
 		margin: 0.5em;
+	}
+
+	.zone :global(.header) {
+		display: flex;
 	}
 
 	.zone :global(.title) {
@@ -65,5 +75,19 @@
 		border-radius: 2px;
 		border: 1px dashed rgba(0, 0, 0, 0.25);
 		min-height: 2em;
+	}
+
+	.zone :global(.arrow) {
+		margin-right: 0.5em;
+		cursor: pointer;
+		transition: transform 0.2s;
+	}
+
+	.zone :global(.arrow.open) {
+		transform: rotate(90deg);
+	}
+
+	.selected {
+		border: 1px solid #ff3e00;
 	}
 </style>
