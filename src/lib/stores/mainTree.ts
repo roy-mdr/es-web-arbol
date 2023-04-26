@@ -85,6 +85,7 @@ function initMainTree() {
 				let setItem: App.Activity = {
 					id: newMtId('act'),
 					type: 'act',
+					route: '',
 					name: newAct.name
 				}
 
@@ -365,6 +366,10 @@ function deepRecurse(root: App.Zone | App.Activity, options: deepRecurseOptionsN
 	}
 
 	if (root.type == 'act') {
+		if (options.remakeRoutes) {
+			root.route = options.initRoute;
+		}
+
 		if (options.remakeIds) {
 			root.id = newMtId('act');
 		}

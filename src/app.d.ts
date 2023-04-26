@@ -28,6 +28,7 @@ declare global {
 		interface Activity {
 			id: string;
 			type: 'act';
+			route: string;
 			name: string;
 		}
 
