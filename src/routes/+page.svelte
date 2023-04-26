@@ -5,11 +5,15 @@
 	import TrashBin from '$lib/components/TrashBin.svelte';
 
 	import { mainTree } from '$lib/stores/mainTree';
-	import { ctrlKeyIsDown } from '$lib/stores/appState';
+	import { ctrlKeyIsDown, selectedId } from '$lib/stores/appState';
 	import EditItem from '$lib/components/EditSelected.svelte';
 
 	function handleKeydown(ev: KeyboardEvent) {
 		ctrlKeyIsDown.set(ev.ctrlKey);
+
+		if (ev.key === 'Escape') {
+			selectedId.set('');
+		}
 	}
 
 	$: dataAsJSON = JSON.stringify($mainTree, null, 2);
