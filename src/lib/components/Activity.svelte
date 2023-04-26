@@ -4,6 +4,14 @@
 	export let id: App.Activity['id'];
 	export let name: App.Activity['name'];
 	export let ctrlDown: boolean;
+
+	function toggleSelect() {
+		if ($selectedId == id) {
+			selectedId.set('');
+		} else {
+			selectedId.set(id);
+		}
+	}
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -12,7 +20,7 @@
 	class="handle activ"
 	class:handle-copy={ctrlDown}
 	class:selected={$selectedId == id}
-	on:click={() => selectedId.set(id)}
+	on:click={toggleSelect}
 >
 	{name}
 </div>

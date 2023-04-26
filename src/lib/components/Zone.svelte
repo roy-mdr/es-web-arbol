@@ -15,6 +15,14 @@
 	function toggleOpen() {
 		mainTree.toggleOpenZone(route);
 	}
+
+	function toggleSelect() {
+		if ($selectedId == id) {
+			selectedId.set('');
+		} else {
+			selectedId.set(id);
+		}
+	}
 </script>
 
 <div {id} class="zone" class:selected={$selectedId == id}>
@@ -28,7 +36,7 @@
 			class="title"
 			class:handle={!isMainTree}
 			class:handle-copy={!isMainTree && $ctrlKeyIsDown}
-			on:click={() => selectedId.set(id)}
+			on:click={toggleSelect}
 		>
 			{name}
 		</div>
