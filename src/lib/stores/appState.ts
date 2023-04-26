@@ -1,6 +1,8 @@
 import { writable } from 'svelte/store';
 
 export const ctrlKeyIsDown = writable(false);
+export const draggingType = writable("");
+export const draggingData = writable("");
 
 
 

@@ -5,7 +5,7 @@
 	import Activity from '$lib/components/Activity.svelte';
 
 	import { mainTree } from '$lib/stores/mainTree';
-	import { ctrlKeyIsDown, dragNewActivity } from '$lib/stores/appState';
+	import { ctrlKeyIsDown, dragNewActivity, draggingType, draggingData } from '$lib/stores/appState';
 
 	onMount(() => {
 		setupSortable(zoneSortEl);
@@ -147,6 +147,23 @@
 					// Update all the tree to keep data in sync with DOM
 					mainTree.rebuild();
 				}
+			},
+
+			onStart: (e) => {
+				// ~ dragstart:
+				// draggingEl.update( (el) => e.item ); // trigger
+				// ~ own dataTransfer.setData():
+				draggingType.update((t) => 'zone-item');
+				draggingData.update((d) => `${e.from.getAttribute('map')}|${e.oldIndex}`);
+				// draggingParentEl.update((p) => inboxEl);
+			},
+
+			onEnd: (e) => {
+				// ~ dragend:
+				// draggingEl.update( (el) => undefined ); // kinda unnecesary (it is handled by the polyfill drop event)
+				// ~ own dataTransfer.setData():
+				draggingType.update((t) => '');
+				draggingData.update((d) => '');
 			}
 		});
 	}

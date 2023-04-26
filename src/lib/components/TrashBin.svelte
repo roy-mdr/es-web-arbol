@@ -1,19 +1,22 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import Sortable from 'sortablejs';
+	import { onMount } from 'svelte';
+
 	import { mainTree } from '$lib/stores/mainTree';
-	import { ctrlKeyIsDown } from '$lib/stores/appState';
+	import { ctrlKeyIsDown, draggingType, draggingData } from '$lib/stores/appState';
 
 	onMount(() => {
 		setupSortable();
 	});
 
 	let sortEl: HTMLElement;
+	let isHover = false;
 
 	function setupSortable() {
 		Sortable.create(sortEl, {
 			group: {
 				name: 'trashbin',
+				pull: false,
 				put: ['zone']
 			},
 			sort: false,
@@ -26,12 +29,47 @@
 			delay: 200,
 			delayOnTouchOnly: true,
 
+			// @ts-ignore
+			onDragIn: (e) => {
+				if ($draggingType == 'zone-item' && !isHover) {
+					console.log('in');
+					isHover = true;
+				}
+			},
+
+			// @ts-ignore
+			onDragOut: (e) => {
+				console.log('out');
+				isHover = false;
+			},
+
+			// @ts-ignore
+			onDrop: (e) => {
+				console.log('Dropped!', $draggingData);
+				isHover = false;
+
+				/*
+				if (e.explicitOriginalTarget === sortEl) {
+					// if (e.fromSortable.options.group.name == 'zone') {
+					// console.log('deleting:', e.item);
+
+					let from_list = e.from.getAttribute('map') || '0';
+					let from_index = e.oldIndex || 0;
+
+					if ($ctrlKeyIsDown) return;
+
+					mainTree.deleteItem(from_list, from_index);
+					// }
+				}
+				*/
+			},
+
 			onAdd: (e) => {
 				// drag from one list and drop into another
 
 				// If origin list is "zone"
 				// @ts-ignore
-				if (e.fromSortable.options.group.name == 'zone') {
+				if ($draggingType == 'zone-item' && isHover) {
 					// console.log('moving:', e.item);
 
 					let from_list = e.from.getAttribute('map') || '0';
@@ -41,53 +79,40 @@
 
 					mainTree.deleteItem(from_list, from_index);
 				}
+				isHover = false;
 			}
 		});
 	}
 </script>
 
 <div class="panel">
-	<div class="title">Delete</div>
-	<div class="p-content" bind:this={sortEl} />
+	<div class="container" class:is-hover={isHover} bind:this={sortEl}>
+		<p>Delete</p>
+	</div>
 </div>
 
 <style>
+	.panel :global(.sortable-ghost) {
+		display: none !important;
+	}
+
 	.panel {
-		padding: 0.5em;
-		background-color: rgba(0, 0, 0, 0.1);
-		border-radius: 2px;
-		box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.25);
-		margin: 0.5em;
+		display: flex;
 	}
 
-	.panel :global(.title) {
-		font-weight: bold;
-		background-color: rgba(0, 0, 0, 0.1);
-		width: max-content;
-		padding: 0 0.5em;
-		border-radius: 2px;
-	}
-
-	.panel :global(.handle) {
-		cursor: grab;
-	}
-
-	.panel :global(.handle.handle-copy) {
-		cursor: copy;
-	}
-
-	.panel :global(.p-content) {
-		margin: 0.5em;
-		border-radius: 2px;
-		border: 1px dashed rgba(0, 0, 0, 0.25);
-		min-height: 2em;
-	}
-
-	.activ {
-		padding: 0.5em;
-		margin: 0.5em;
+	.container {
 		background-color: white;
-		box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.25);
-		border-radius: 2px;
+		border: 1px solid white;
+		margin: 1em;
+		padding: 0.5em;
+		min-width: 250px;
+		border-radius: 10px;
+		box-shadow: 0px 1px 1px 0 rgb(0 0 0 / 10%);
+		transition: all 0.2s;
+	}
+
+	.container.is-hover {
+		border: 1px solid #ff3e00;
+		box-shadow: 0px 5px 5px 0 rgb(0 0 0 / 10%);
 	}
 </style>
