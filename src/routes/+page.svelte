@@ -5,10 +5,18 @@
 	import { mainTree } from '$lib/stores/mainTree';
 	import { ctrlKeyIsDown, selectedId } from '$lib/stores/appState';
 
+	let mtZone: HTMLElement;
+
 	function handleKeydown(ev: KeyboardEvent) {
 		ctrlKeyIsDown.set(ev.ctrlKey);
 
 		if (ev.key === 'Escape') {
+			selectedId.set('');
+		}
+	}
+
+	function handleMtZoneClick(ev: Event) {
+		if (ev.target === mtZone) {
 			selectedId.set('');
 		}
 	}
@@ -20,7 +28,8 @@
 	<!-- <a href="/store">Check Store State</a> -->
 	<SidePanel />
 
-	<div class="panel-zone">
+	<!-- svelte-ignore a11y-click-events-have-key-events -->
+	<div class="mt-zone" bind:this={mtZone} on:click={handleMtZoneClick}>
 		{#key $mainTree.id}
 			<Zone
 				id={$mainTree.id}
@@ -40,7 +49,7 @@
 		height: 100vh;
 	}
 
-	.panel-zone {
+	.mt-zone {
 		overflow: auto;
 		width: 100%;
 		padding: 10em;
