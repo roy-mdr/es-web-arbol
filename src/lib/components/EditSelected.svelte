@@ -4,11 +4,15 @@
 
 	let parentRoute: App.Zone['route'] | undefined;
 	let thisIndex: number | undefined;
+	let inputName: HTMLElement;
+	let itemData: App.Zone | App.Activity | undefined;
+	let itemClone: App.Zone | App.Activity | undefined;
 
 	function getSelected(rootItem: App.Zone | App.Activity, id: App.Zone['id'] | App.Activity['id']) {
 		parentRoute = undefined;
 		thisIndex = undefined;
-		return selectById(rootItem, id);
+		itemData = selectById(rootItem, id);
+		itemClone = structuredClone(itemData);
 	}
 
 	function selectById(
@@ -44,19 +48,44 @@
 		}
 	}
 
-	$: itemData = getSelected($mainTree, $selectedId);
+	function focusInput(trigger: any) {
+		inputName?.focus();
+	}
+
+	$: getSelected($mainTree, $selectedId);
+	$: focusInput(inputName);
+	$: focusInput($selectedId);
+
+	function duplicateItem() {
+		mainTree.copyItem({
+			from_list: parentRoute || '',
+			from_index: thisIndex || 0,
+			to_list: parentRoute || '',
+			to_index: (thisIndex || 0) + 1
+		});
+	}
+
+	function submitChanges() {
+		for (const key in itemData) {
+			// @ts-ignore --- tu q vasa ber d la bida mijo
+			itemData[key] = itemClone[key];
+		}
+		mainTree.rebuild();
+		selectedId.set('');
+	}
 </script>
 
-{#if itemData}
+{#if itemClone}
 	<div class="panel">
-		<div class="title">{itemData.id}</div>
-		<form>
+		<div class="title">{itemClone.id}</div>
+		<form on:submit|preventDefault={submitChanges}>
 			<label>
 				Name:
-				<input type="text" bind:value={itemData.name} />
+				<input type="text" bind:value={itemClone.name} bind:this={inputName} />
 			</label>
 			<div>
-				<button type="button" on:click={() => mainTree.rebuild()}>Save</button>
+				<button type="submit">Save</button>
+				<button type="button" on:click={duplicateItem}>Duplicate</button>
 				<button type="button" on:click={() => selectedId.set('')}>Cancel</button>
 				{#if parentRoute}
 					<button
