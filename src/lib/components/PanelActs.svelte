@@ -21,7 +21,7 @@
 			sort: false,
 			// @ts-ignore
 			revertDOM: true,
-			animation: 150,
+			animation: 300,
 			handle: '.handle',
 			fallbackOnBody: true,
 			invertSwap: true,
@@ -39,53 +39,30 @@
 	}
 </script>
 
-<div class="panel">
-	<div class="title">Activitis</div>
+<div class="panel radius flex-column" style="flex-grow: 1;">
+	<div class="header">
+		<div class="title">Activities</div>
+	</div>
 	<AddActiv />
-	<div class="p-content" bind:this={sortEl}>
+	<div class="container custom-overflow" class:empty={$activityLib.length < 1} bind:this={sortEl}>
 		{#each $activityLib as act (act.id)}
-			<div class="handle activ">{act.name}</div>
+			<div class="handle draggable">{act.name}</div>
 		{/each}
 	</div>
 </div>
 
 <style>
-	.panel {
-		padding: 0.5em;
-		background-color: rgba(0, 0, 0, 0.1);
-		border-radius: 2px;
-		box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.25);
-		margin: 0.5em;
+	.flex-column {
+		display: flex;
+		flex-direction: column;
+		/* flex-grow: 1; */
+		min-height: 0px;
 	}
 
-	.panel :global(.title) {
-		font-weight: bold;
-		background-color: rgba(0, 0, 0, 0.1);
-		width: max-content;
-		padding: 0 0.5em;
-		border-radius: 2px;
-	}
-
-	.panel :global(.handle) {
-		cursor: grab;
-	}
-
-	.panel :global(.handle.handle-copy) {
-		cursor: copy;
-	}
-
-	.panel :global(.p-content) {
-		margin: 0.5em;
-		border-radius: 2px;
-		border: 1px dashed rgba(0, 0, 0, 0.25);
-		min-height: 2em;
-	}
-
-	.activ {
-		padding: 0.5em;
-		margin: 0.5em;
-		background-color: white;
-		box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.25);
-		border-radius: 2px;
+	.custom-overflow {
+		overflow-y: auto;
+		overflow-x: hidden;
+		/* height: 100%; */
+		flex-grow: 1;
 	}
 </style>

@@ -22,7 +22,7 @@
 			sort: false,
 			// @ts-ignore
 			revertDOM: true,
-			animation: 150,
+			animation: 300,
 			handle: '.handle',
 			fallbackOnBody: true,
 			invertSwap: true,
@@ -85,9 +85,9 @@
 	}
 </script>
 
-<div class="panel">
-	<div class="container" class:is-hover={isHover} bind:this={sortEl}>
-		<p>Delete</p>
+<div class="panel radius">
+	<div class="container" bind:this={sortEl}>
+		<div class="icon" class:is-hover={isHover}>Trash Bin</div>
 	</div>
 </div>
 
@@ -96,23 +96,18 @@
 		display: none !important;
 	}
 
-	.panel {
-		display: flex;
+	.icon {
+		background-color: var(--carpet);
+		padding: var(--space-unit);
+		color: var(--main-text);
+		border: 1px solid var(--light);
+		border-radius: var(--radius-unit);
+		transition: background-color var(--speed-normal);
 	}
 
-	.container {
-		background-color: white;
-		border: 1px solid white;
-		margin: 1em;
-		padding: 0.5em;
-		min-width: 250px;
-		border-radius: 10px;
-		box-shadow: 0px 1px 1px 0 rgb(0 0 0 / 10%);
-		transition: all 0.2s;
-	}
-
-	.container.is-hover {
-		border: 1px solid #ff3e00;
-		box-shadow: 0px 5px 5px 0 rgb(0 0 0 / 10%);
+	.is-hover {
+		border-color: var(--cancel);
+		background-color: var(--cancel);
+		box-shadow: inset var(--shadow-hover);
 	}
 </style>

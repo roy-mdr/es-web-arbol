@@ -17,7 +17,7 @@
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div
 	{id}
-	class="handle activ"
+	class="handle draggable"
 	class:handle-copy={ctrlDown}
 	class:selected={$selectedId == id}
 	on:click={toggleSelect}
@@ -26,15 +26,8 @@
 </div>
 
 <style>
-	.activ {
-		padding: 0.5em;
-		margin: 0.5em;
-		background-color: white;
-		box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.25);
-		border-radius: 2px;
-	}
-
 	.selected {
-		border: 1px solid #ff3e00;
+		background-color: var(--accent);
+		border: 1px solid var(--accent);
 	}
 </style>

@@ -76,8 +76,10 @@
 </script>
 
 {#if itemClone}
-	<div class="panel">
-		<div class="title">{itemClone.id}</div>
+	<div class="panel radius">
+		<div class="header">
+			<div class="title">Edit: {itemClone.id}</div>
+		</div>
 		<form on:submit|preventDefault={submitChanges}>
 			<label>
 				Name:
@@ -97,21 +99,3 @@
 		</form>
 	</div>
 {/if}
-
-<style>
-	.panel {
-		padding: 0.5em;
-		background-color: rgba(0, 0, 0, 0.1);
-		border-radius: 2px;
-		box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.25);
-		margin: 0.5em;
-	}
-
-	.panel :global(.title) {
-		font-weight: bold;
-		background-color: rgba(0, 0, 0, 0.1);
-		width: max-content;
-		padding: 0 0.5em;
-		border-radius: 2px;
-	}
-</style>

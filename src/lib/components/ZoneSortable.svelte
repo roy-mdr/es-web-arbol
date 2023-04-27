@@ -55,7 +55,7 @@
 			},
 			// @ts-ignore
 			revertDOM: true,
-			animation: 150,
+			animation: 300,
 			handle: '.handle',
 			fallbackOnBody: true,
 			invertSwap: true,
@@ -169,7 +169,7 @@
 	}
 </script>
 
-<div class="z-content" bind:this={zoneSortEl} map={route}>
+<div class="container" class:empty={content.length < 1} bind:this={zoneSortEl} map={route}>
 	{#each content as child (child.id)}
 		{#if child.type == 'zone'}
 			<Zone

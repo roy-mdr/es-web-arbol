@@ -25,7 +25,7 @@
 	}
 </script>
 
-<div {id} class="zone" class:selected={$selectedId == id}>
+<div {id} class="panel zone" class:radius={isMainTree} class:selected={$selectedId == id}>
 	<div class="header">
 		{#if !isMainTree}
 			<!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -43,59 +43,25 @@
 	</div>
 	<!-- Set transition in this div -->
 	{#if isOpen}
-		<div transition:slide|local={{ duration: 200 }}>
+		<div transition:slide|local={{ duration: 300 }}>
 			<ZoneSortable {route} content={children} />
 		</div>
 	{/if}
 </div>
 
 <style>
-	.zone {
-		padding: 0.5em;
-		background-color: rgba(0, 0, 0, 0.1);
-		border-radius: 2px;
-		box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.25);
-		margin: 0.5em;
-	}
-
-	.zone :global(.header) {
-		display: flex;
-	}
-
-	.zone :global(.title) {
-		font-weight: bold;
-		background-color: rgba(0, 0, 0, 0.1);
-		width: max-content;
-		padding: 0 0.5em;
-		border-radius: 2px;
-	}
-
-	.zone :global(.handle) {
-		cursor: grab;
-	}
-
-	.zone :global(.handle.handle-copy) {
-		cursor: copy;
-	}
-
-	.zone :global(.z-content) {
-		margin: 0.5em;
-		border-radius: 2px;
-		border: 1px dashed rgba(0, 0, 0, 0.25);
-		min-height: 2em;
-	}
-
-	.zone :global(.arrow) {
-		margin-right: 0.5em;
+	.arrow {
+		margin-right: var(--space-half);
 		cursor: pointer;
-		transition: transform 0.2s;
+		transition: transform var(--speed-normal);
 	}
 
-	.zone :global(.arrow.open) {
+	.arrow.open {
 		transform: rotate(90deg);
 	}
 
 	.selected {
-		border: 1px solid #ff3e00;
+		background-color: var(--accent);
+		border: 1px solid var(--accent);
 	}
 </style>
