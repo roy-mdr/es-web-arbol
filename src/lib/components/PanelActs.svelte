@@ -1,29 +1,16 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import Sortable from 'sortablejs';
+	import AddActiv from '$lib/components/AddActiv.svelte';
 
 	import { dragNewActivity } from '$lib/stores/appState';
+	import { activityLib } from '$lib/stores/activityLib';
 
 	onMount(() => {
 		setupSortable();
 	});
 
 	let sortEl: HTMLElement;
-
-	let actClasses: App.ActivityClass[] = [
-		{
-			id: 'ac.0',
-			name: 'Coca'
-		},
-		{
-			id: 'ac.1',
-			name: 'Cola'
-		},
-		{
-			id: 'ac.2',
-			name: 'Loka'
-		}
-	];
 
 	function setupSortable() {
 		Sortable.create(sortEl, {
@@ -42,7 +29,7 @@
 			delayOnTouchOnly: true,
 
 			onStart: (e) => {
-				dragNewActivity.setActData(actClasses[<number>e.oldIndex]);
+				dragNewActivity.setActData($activityLib[<number>e.oldIndex]);
 			},
 
 			onEnd: (e) => {
@@ -54,8 +41,9 @@
 
 <div class="panel">
 	<div class="title">Activitis</div>
+	<AddActiv />
 	<div class="p-content" bind:this={sortEl}>
-		{#each actClasses as act (act.id)}
+		{#each $activityLib as act (act.id)}
 			<div class="handle activ">{act.name}</div>
 		{/each}
 	</div>

@@ -12,6 +12,10 @@ declare global {
 			name: string;
 		}
 
+		interface NewActivityClass {
+			name: string;
+		}
+
 		interface Zone {
 			id: string;
 			type: 'zone';
