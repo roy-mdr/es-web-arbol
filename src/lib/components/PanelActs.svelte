@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { slide } from 'svelte/transition';
 	import Sortable from 'sortablejs';
 	import AddActiv from '$lib/components/AddActiv.svelte';
 
@@ -47,7 +48,7 @@
 	<AddActiv />
 	<div class="container custom-overflow" class:empty={$activityLib.length < 1} bind:this={sortEl}>
 		{#each $activityLib as act (act.id)}
-			<div class="handle draggable">{act.name}</div>
+			<div class="handle draggable" transition:slide|local={{ duration: speedMs }}>{act.name}</div>
 		{/each}
 	</div>
 </div>

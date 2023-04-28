@@ -1,6 +1,9 @@
 <script lang="ts">
+	import { slide } from 'svelte/transition';
+
 	import { mainTree } from '$lib/stores/mainTree';
 	import { selectedId } from '$lib/stores/appState';
+	import { speedMs } from '$lib/stores/appConstants';
 
 	let parentRoute: App.Zone['route'] | undefined;
 	let thisIndex: number | undefined;
@@ -53,7 +56,6 @@
 	}
 
 	$: getSelected($mainTree, $selectedId);
-	$: focusInput(inputName);
 	$: focusInput($selectedId);
 
 	function duplicateItem() {
@@ -76,7 +78,7 @@
 </script>
 
 {#if itemClone}
-	<div class="panel radius">
+	<div class="panel radius" transition:slide|local={{ duration: speedMs }} on:introend={focusInput}>
 		<div class="header">
 			<div class="title">Edit: {itemClone.id}</div>
 		</div>
