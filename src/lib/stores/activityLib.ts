@@ -33,7 +33,7 @@ function initActsLib() {
 					name: newAct.name
 				}
 
-				actL.push(setItem);
+				actL.unshift(setItem);
 
 				// updateRoutesAndSyncIds(actL);
 				return actL;
