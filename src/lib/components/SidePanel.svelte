@@ -15,8 +15,8 @@
 <style>
 	.side-panel {
 		height: 100%;
-		display: flex;
-		flex-direction: column;
+		display: grid;
+		grid-template-rows: auto auto 1fr auto;
 	}
 
 	.side-panel :global(> *) {
