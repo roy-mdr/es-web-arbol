@@ -10,10 +10,12 @@ declare global {
 		interface ActivityClass {
 			id: string;
 			name: string;
+			area: number;
 		}
 
 		interface NewActivityClass {
 			name: string;
+			area: number;
 		}
 
 		interface Zone {
@@ -22,11 +24,15 @@ declare global {
 			name: string;
 			route: string;
 			open: boolean;
+			factor: number;
+			sum: number;
+			sumfactor: number;
 			children: (Zone | Activity)[];
 		}
 
 		interface NewZone {
 			name: string;
+			factor?: number;
 		}
 
 		interface Activity {
@@ -34,10 +40,12 @@ declare global {
 			type: 'act';
 			route: string;
 			name: string;
+			area: number;
 		}
 
 		interface NewActivity {
 			name: string;
+			area: number;
 		}
 
 		interface MoveSingleMap {

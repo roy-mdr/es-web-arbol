@@ -38,6 +38,9 @@
 				route={$mainTree.route}
 				isMainTree={true}
 				isOpen={$mainTree.open}
+				factor={$mainTree.factor}
+				sum={$mainTree.sum}
+				sumfactor={$mainTree.sumfactor}
 			/>
 		{/key}
 	</div>

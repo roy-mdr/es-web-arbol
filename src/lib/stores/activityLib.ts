@@ -26,11 +26,13 @@ function initActsLib() {
 		addActivity: (newAct: App.NewActivityClass) => {
 
 			if (!newAct?.name) return;
+			if (newAct?.area === undefined) return;
 
 			update(actL => {
 				let setItem: App.ActivityClass = {
 					id: newActId(),
-					name: newAct.name
+					name: newAct.name,
+					area: parseInt(`${newAct.area}`) || 0
 				}
 
 				actL.unshift(setItem);
