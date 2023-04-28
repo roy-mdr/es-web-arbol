@@ -32,7 +32,7 @@ function initActsLib() {
 				let setItem: App.ActivityClass = {
 					id: newActId(),
 					name: newAct.name,
-					area: parseInt(`${newAct.area}`) || 0
+					area: newAct.area > 0 ? Math.round((+newAct.area + Number.EPSILON) * 100) / 100 : 0
 				}
 
 				actL.unshift(setItem);

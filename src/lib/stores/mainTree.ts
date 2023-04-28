@@ -64,7 +64,7 @@ function initMainTree() {
 					name: newZone.name,
 					route: '',
 					open: true,
-					factor: newZone.factor || 0,
+					factor: newZone.factor ? +newZone.factor : 0,
 					sum: 0,
 					sumfactor: 0,
 					children: []
@@ -102,7 +102,7 @@ function initMainTree() {
 					type: 'act',
 					route: '',
 					name: newAct.name,
-					area: newAct.area
+					area: +newAct.area || 0
 				}
 
 				let toList: App.Zone['children'];
@@ -424,15 +424,15 @@ function recalcSum(currentNode: App.Zone | App.Activity) {
 		if (currentNode.children.length > 0) {
 			for (let i = 0; i < currentNode.children.length; i++) {
 				let callback = recalcSum(currentNode.children[i]);
-				callback ? currentNode.sum += callback.sum : currentNode.sum = 0;
-				callback ? currentNode.sumfactor += callback.sumfactor * (1 + currentNode.factor) : currentNode.sumfactor = 0;
+				callback ? currentNode.sum += +callback.sum : currentNode.sum = 0;
+				callback ? currentNode.sumfactor += callback.sumfactor * (1 + +currentNode.factor) : currentNode.sumfactor = 0;
 			}
 		}
-		return { 'sum': currentNode.sum || 0, 'sumfactor': currentNode.sumfactor || 0 };
+		return { 'sum': +currentNode.sum || 0, 'sumfactor': +currentNode.sumfactor || 0 };
 	}
 
 	if (currentNode.type === 'act') {
-		return { 'sum': currentNode.area || 0, 'sumfactor': currentNode.area || 0 };
+		return { 'sum': +currentNode.area || 0, 'sumfactor': +currentNode.area || 0 };
 	}
 
 }

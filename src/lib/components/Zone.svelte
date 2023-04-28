@@ -42,7 +42,7 @@
 			class:handle-copy={!isMainTree && $ctrlKeyIsDown}
 			on:click={toggleSelect}
 		>
-			{name} ({sum}m2)
+			{name} ({Math.round((sumfactor + Number.EPSILON) * 100) / 100}m2)
 		</div>
 	</div>
 	<!-- Set transition in this div -->
