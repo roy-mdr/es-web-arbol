@@ -96,7 +96,7 @@
 					const to_list = e.to.getAttribute('map') || '0';
 					const to_index = e.newIndex || 0;
 
-					mainTree.addActivity(to_list, to_index, { name: newActData.name });
+					mainTree.addActivity(to_list, to_index, { name: newActData.name, area: newActData.area });
 				}
 
 				// If origin list is "panel-zone"
@@ -179,9 +179,12 @@
 				children={child.children}
 				route={child.route}
 				isOpen={child.open}
+				factor={child.factor}
+				sum={child.sum}
+				sumfactor={child.sumfactor}
 			/>
 		{:else if child.type == 'act'}
-			<Activity id={child.id} name={child.name} ctrlDown={$ctrlKeyIsDown} />
+			<Activity id={child.id} name={child.name} area={child.area} ctrlDown={$ctrlKeyIsDown} />
 		{/if}
 	{/each}
 </div>

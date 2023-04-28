@@ -87,6 +87,21 @@
 				Name:
 				<input type="text" bind:value={itemClone.name} bind:this={inputName} />
 			</label>
+
+			{#if itemData?.type == 'zone'}
+				<label>
+					Factor:
+					<input type="text" bind:value={itemClone.factor} />
+				</label>
+			{/if}
+
+			{#if itemData?.type == 'act'}
+				<label>
+					Area:
+					<input type="text" bind:value={itemClone.area} />
+				</label>
+			{/if}
+
 			<div>
 				<button type="submit">Save</button>
 				<button type="button" on:click={duplicateItem}>Duplicate</button>

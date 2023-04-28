@@ -48,7 +48,9 @@
 	<AddActiv />
 	<div class="container custom-overflow" class:empty={$activityLib.length < 1} bind:this={sortEl}>
 		{#each $activityLib as act (act.id)}
-			<div class="handle draggable" transition:slide|local={{ duration: speedMs }}>{act.name}</div>
+			<div class="handle draggable" transition:slide|local={{ duration: speedMs }}>
+				{act.name} ({act.area}m2)
+			</div>
 		{/each}
 	</div>
 </div>

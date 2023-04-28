@@ -26,11 +26,13 @@ function initActsLib() {
 		addActivity: (newAct: App.NewActivityClass) => {
 
 			if (!newAct?.name) return;
+			if (newAct?.area === undefined) return;
 
 			update(actL => {
 				let setItem: App.ActivityClass = {
 					id: newActId(),
-					name: newAct.name
+					name: newAct.name,
+					area: newAct.area > 0 ? Math.round((+newAct.area + Number.EPSILON) * 100) / 100 : 0
 				}
 
 				actL.unshift(setItem);

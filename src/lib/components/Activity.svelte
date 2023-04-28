@@ -3,6 +3,7 @@
 
 	export let id: App.Activity['id'];
 	export let name: App.Activity['name'];
+	export let area: App.Activity['area'];
 	export let ctrlDown: boolean;
 
 	function toggleSelect() {
@@ -22,7 +23,7 @@
 	class:selected={$selectedId == id}
 	on:click={toggleSelect}
 >
-	{name}
+	{name} ({area}m2)
 </div>
 
 <style>

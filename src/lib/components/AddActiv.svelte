@@ -4,13 +4,15 @@
 	let inputName: HTMLElement;
 
 	let newAct: App.NewActivityClass = {
-		name: ''
+		name: '',
+		area: 0
 	};
 
 	function addActAndReset() {
 		activityLib.addActivity(newAct);
 		newAct = {
-			name: ''
+			name: '',
+			area: 0
 		};
 		inputName.focus();
 	}
@@ -18,5 +20,6 @@
 
 <form on:submit|preventDefault={addActAndReset}>
 	<input type="text" bind:value={newAct.name} bind:this={inputName} />
+	<input type="text" bind:value={newAct.area} />
 	<button type="submit">Add</button>
 </form>

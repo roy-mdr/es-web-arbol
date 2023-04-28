@@ -12,6 +12,9 @@
 	export let isMainTree = false;
 	export let route: App.Zone['route'];
 	export let isOpen: App.Zone['open'] = true;
+	export let factor: App.Zone['factor'];
+	export let sum: App.Zone['sum'];
+	export let sumfactor: App.Zone['sumfactor'];
 
 	function toggleOpen() {
 		mainTree.toggleOpenZone(route);
@@ -39,7 +42,7 @@
 			class:handle-copy={!isMainTree && $ctrlKeyIsDown}
 			on:click={toggleSelect}
 		>
-			{name}
+			{name} ({Math.round((sumfactor + Number.EPSILON) * 100) / 100}m2)
 		</div>
 	</div>
 	<!-- Set transition in this div -->

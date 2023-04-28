@@ -10,6 +10,9 @@ const defaultMainZone: App.Zone = {
 	route: '0',
 	name: 'Main',
 	open: true,
+	factor: 0,
+	sum: 0,
+	sumfactor: 0,
 	children: []
 }
 
@@ -29,6 +32,9 @@ function initMainTree() {
 				route: '0',
 				name: name,
 				open: true,
+				factor: 0,
+				sum: 0,
+				sumfactor: 0,
 				children: []
 			})
 			update(mt => {
@@ -58,6 +64,9 @@ function initMainTree() {
 					name: newZone.name,
 					route: '',
 					open: true,
+					factor: newZone.factor ? +newZone.factor : 0,
+					sum: 0,
+					sumfactor: 0,
 					children: []
 				}
 
@@ -92,7 +101,8 @@ function initMainTree() {
 					id: newMtId('act'),
 					type: 'act',
 					route: '',
-					name: newAct.name
+					name: newAct.name,
+					area: +newAct.area || 0
 				}
 
 				let toList: App.Zone['children'];
@@ -273,6 +283,7 @@ export const mainTree = initMainTree();
 
 function updateRoutesAndSyncIds(mainTree: App.Zone) {
 	mtIds.set([]);
+	recalcSum(mainTree);
 	deepRecurse(mainTree);
 }
 
@@ -402,4 +413,26 @@ function duplicatedId(list: App.Zone['children'], id: string) {
 		if (list[i].id == id) return true;
 	}
 	return false;
+}
+
+function recalcSum(currentNode: App.Zone | App.Activity) {
+
+	// internal nodes get their total from children
+	if (currentNode.type === 'zone') {
+		currentNode.sum = 0;
+		currentNode.sumfactor = 0;
+		if (currentNode.children.length > 0) {
+			for (let i = 0; i < currentNode.children.length; i++) {
+				let callback = recalcSum(currentNode.children[i]);
+				callback ? currentNode.sum += +callback.sum : currentNode.sum = 0;
+				callback ? currentNode.sumfactor += callback.sumfactor * (1 + +currentNode.factor) : currentNode.sumfactor = 0;
+			}
+		}
+		return { 'sum': +currentNode.sum || 0, 'sumfactor': +currentNode.sumfactor || 0 };
+	}
+
+	if (currentNode.type === 'act') {
+		return { 'sum': +currentNode.area || 0, 'sumfactor': +currentNode.area || 0 };
+	}
+
 }
