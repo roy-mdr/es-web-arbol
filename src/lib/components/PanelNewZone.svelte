@@ -2,6 +2,8 @@
 	import { onMount } from 'svelte';
 	import Sortable from 'sortablejs';
 
+	import { speedMs } from '$lib/stores/appConstants';
+
 	onMount(() => {
 		setupSortable();
 	});
@@ -17,7 +19,7 @@
 			sort: false,
 			// @ts-ignore
 			revertDOM: true,
-			animation: 300,
+			animation: speedMs,
 			handle: '.handle',
 			fallbackOnBody: true,
 			invertSwap: true,

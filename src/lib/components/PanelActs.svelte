@@ -5,6 +5,7 @@
 
 	import { dragNewActivity } from '$lib/stores/appState';
 	import { activityLib } from '$lib/stores/activityLib';
+	import { speedMs } from '$lib/stores/appConstants';
 
 	onMount(() => {
 		setupSortable();
@@ -21,7 +22,7 @@
 			sort: false,
 			// @ts-ignore
 			revertDOM: true,
-			animation: 300,
+			animation: speedMs,
 			handle: '.handle',
 			fallbackOnBody: true,
 			invertSwap: true,

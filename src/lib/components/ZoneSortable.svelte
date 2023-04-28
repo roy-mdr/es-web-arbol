@@ -6,6 +6,7 @@
 
 	import { mainTree } from '$lib/stores/mainTree';
 	import { ctrlKeyIsDown, dragNewActivity, draggingType, draggingData } from '$lib/stores/appState';
+	import { speedMs } from '$lib/stores/appConstants';
 
 	onMount(() => {
 		setupSortable(zoneSortEl);
@@ -55,7 +56,7 @@
 			},
 			// @ts-ignore
 			revertDOM: true,
-			animation: 300,
+			animation: speedMs,
 			handle: '.handle',
 			fallbackOnBody: true,
 			invertSwap: true,

@@ -4,6 +4,7 @@
 
 	import { mainTree } from '$lib/stores/mainTree';
 	import { ctrlKeyIsDown, selectedId } from '$lib/stores/appState';
+	import { speedMs } from '$lib/stores/appConstants';
 
 	export let id: App.Zone['id'];
 	export let name: App.Zone['name'];
@@ -43,7 +44,7 @@
 	</div>
 	<!-- Set transition in this div -->
 	{#if isOpen}
-		<div transition:slide|local={{ duration: 300 }}>
+		<div transition:slide|local={{ duration: speedMs }}>
 			<ZoneSortable {route} content={children} />
 		</div>
 	{/if}
