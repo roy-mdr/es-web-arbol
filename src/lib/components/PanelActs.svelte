@@ -43,7 +43,7 @@
 
 <div class="panel radius flex-column" style="flex-grow: 1;">
 	<div class="header">
-		<div class="title">Activities</div>
+		<div class="title">Elements</div>
 	</div>
 	<AddActiv />
 	<div class="container custom-overflow" class:empty={$activityLib.length < 1} bind:this={sortEl}>

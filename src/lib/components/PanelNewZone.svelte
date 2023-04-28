@@ -30,10 +30,7 @@
 </script>
 
 <div class="panel radius">
-	<div class="header">
-		<div class="title">Zones</div>
-	</div>
 	<div class="container" bind:this={sortEl}>
-		<div class="handle draggable">New Zone</div>
+		<div class="handle draggable">DnD New Group</div>
 	</div>
 </div>

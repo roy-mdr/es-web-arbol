@@ -105,7 +105,7 @@
 					const to_list = e.to.getAttribute('map') || '0';
 					const to_index = e.newIndex || 0;
 
-					mainTree.addZone(to_list, to_index, { name: 'New Zone' });
+					mainTree.addZone(to_list, to_index, { name: 'New Group' });
 				}
 			},
 
