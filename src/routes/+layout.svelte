@@ -7,3 +7,10 @@
 		<slot />
 	</main>
 </div>
+
+<style>
+	.app,
+	main {
+		height: 100%;
+	}
+</style>

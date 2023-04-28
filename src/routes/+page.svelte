@@ -46,7 +46,7 @@
 <style>
 	.layout {
 		display: flex;
-		height: 100vh;
+		height: 100%;
 	}
 
 	.mt-zone {
