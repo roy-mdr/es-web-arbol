@@ -15,6 +15,10 @@
 	export let factor: App.Zone['factor'];
 	export let sum: App.Zone['sum'];
 	export let sumfactor: App.Zone['sumfactor'];
+	export let color: App.Zone['color'];
+
+	$: bgColor = color === undefined ? '' : `background-color: ${color};`;
+	$: lineColor = color === undefined ? '' : `border-color: ${color};`;
 
 	function toggleOpen() {
 		mainTree.toggleOpenZone(route);
@@ -29,7 +33,13 @@
 	}
 </script>
 
-<div {id} class="panel zone" class:radius={isMainTree} class:selected={$selectedId == id}>
+<div
+	{id}
+	class="panel zone"
+	class:radius={isMainTree}
+	class:selected={$selectedId == id}
+	style="{bgColor} {lineColor}"
+>
 	<div class="header">
 		{#if !isMainTree}
 			<!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -65,7 +75,7 @@
 	}
 
 	.selected {
-		background-color: var(--accent);
-		border: 1px solid var(--accent);
+		background-color: var(--accent) !important;
+		border: 1px solid var(--accent) !important;
 	}
 </style>

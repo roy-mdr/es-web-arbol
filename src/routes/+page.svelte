@@ -41,6 +41,7 @@
 				factor={$mainTree.factor}
 				sum={$mainTree.sum}
 				sumfactor={$mainTree.sumfactor}
+				color={$mainTree.color}
 			/>
 		{/key}
 	</div>
