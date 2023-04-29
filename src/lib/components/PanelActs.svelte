@@ -49,7 +49,12 @@
 	<div class="container custom-overflow" class:empty={$activityLib.length < 1} bind:this={sortEl}>
 		{#each $activityLib as act (act.id)}
 			<div class="handle draggable" transition:slide|local={{ duration: speedMs }}>
-				{act.name} ({act.area}m2)
+				<div class="act-name">
+					{act.name}
+				</div>
+				<div class="act-details">
+					{act.area}m2
+				</div>
 			</div>
 		{/each}
 	</div>
@@ -68,5 +73,11 @@
 		overflow-x: hidden;
 		/* height: 100%; */
 		flex-grow: 1;
+	}
+
+	.act-details {
+		font-size: small;
+		font-style: italic;
+		color: var(--mid);
 	}
 </style>
