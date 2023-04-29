@@ -88,14 +88,14 @@
 				<input type="text" bind:value={itemClone.name} bind:this={inputName} />
 			</label>
 
-			{#if itemData?.type == 'zone'}
+			{#if itemClone.type == 'zone'}
 				<label>
 					Factor:
 					<input type="text" bind:value={itemClone.factor} />
 				</label>
 			{/if}
 
-			{#if itemData?.type == 'act'}
+			{#if itemClone?.type == 'act'}
 				<label>
 					Area:
 					<input type="text" bind:value={itemClone.area} />
