@@ -20,6 +20,8 @@
 			selectedId.set('');
 		}
 	}
+
+	$: store = JSON.stringify($mainTree, undefined, 2);
 </script>
 
 <svelte:window on:keydown={handleKeydown} on:keyup={handleKeydown} />
@@ -27,6 +29,10 @@
 <div class="layout">
 	<!-- <a href="/store">Check Store State</a> -->
 	<SidePanel />
+
+	<pre class="watermark noselect">
+{store}
+	</pre>
 
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<div class="mt-group" bind:this={mtGroup} on:click={handleMtGroupClick}>
@@ -53,5 +59,16 @@
 		overflow: auto;
 		width: 100%;
 		padding: 10em;
+	}
+
+	.watermark {
+		z-index: -1;
+		font-size: small;
+		color: var(--mid);
+		position: absolute;
+		top: 2em;
+		left: 20em;
+		max-height: calc(100% - 4em);
+		overflow: hidden;
 	}
 </style>
