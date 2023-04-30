@@ -182,6 +182,7 @@
 				factor={child.factor}
 				sum={child.sum}
 				sumfactor={child.sumfactor}
+				color={child.color}
 			/>
 		{:else if child.type == 'act'}
 			<Activity id={child.id} name={child.name} area={child.area} ctrlDown={$ctrlKeyIsDown} />

@@ -26,6 +26,7 @@ declare global {
 			open: boolean;
 			factor: number;
 			sum: number;
+			color?: string;
 			sumfactor: number;
 			children: (Zone | Activity)[];
 		}
@@ -33,6 +34,7 @@ declare global {
 		interface NewZone {
 			name: string;
 			factor?: number;
+			color?: string;
 		}
 
 		interface Activity {

@@ -5,7 +5,10 @@
 	import { mainTree } from '$lib/stores/mainTree';
 	import { ctrlKeyIsDown, selectedId } from '$lib/stores/appState';
 
+	import { readTextFile, writeTextFile } from '$lib/util/fileMgmt';
+
 	let mtZone: HTMLElement;
+	let fileSelect: HTMLInputElement;
 
 	function handleKeydown(ev: KeyboardEvent) {
 		ctrlKeyIsDown.set(ev.ctrlKey);
@@ -20,6 +23,18 @@
 			selectedId.set('');
 		}
 	}
+
+	function loadTree() {
+		if (!fileSelect || !fileSelect.files) return;
+
+		readTextFile(fileSelect.files[0], (mtJSON: string) => {
+			mainTree.loadMainTree(JSON.parse(mtJSON));
+		});
+	}
+
+	function saveTree() {
+		writeTextFile(JSON.stringify($mainTree), $mainTree.name, '.systree');
+	}
 </script>
 
 <svelte:window on:keydown={handleKeydown} on:keyup={handleKeydown} />
@@ -30,6 +45,8 @@
 
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<div class="mt-zone" bind:this={mtZone} on:click={handleMtZoneClick}>
+		<input type="file" bind:this={fileSelect} on:change={loadTree} />
+		<button type="button" on:click={saveTree}>Save Tree</button>
 		{#key $mainTree.id}
 			<Zone
 				id={$mainTree.id}
@@ -41,6 +58,7 @@
 				factor={$mainTree.factor}
 				sum={$mainTree.sum}
 				sumfactor={$mainTree.sumfactor}
+				color={$mainTree.color}
 			/>
 		{/key}
 	</div>

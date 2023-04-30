@@ -11,11 +11,14 @@
 	let itemData: App.Zone | App.Activity | undefined;
 	let itemClone: App.Zone | App.Activity | undefined;
 
+	let setColor = false;
+
 	function getSelected(rootItem: App.Zone | App.Activity, id: App.Zone['id'] | App.Activity['id']) {
 		parentRoute = undefined;
 		thisIndex = undefined;
 		itemData = selectById(rootItem, id);
 		itemClone = structuredClone(itemData);
+		setColor = itemClone?.type == 'zone' ? (itemClone?.color ? true : false) : false;
 	}
 
 	function selectById(
@@ -68,9 +71,12 @@
 	}
 
 	function submitChanges() {
-		for (const key in itemData) {
+		for (const key in itemClone) {
 			// @ts-ignore --- tu q vasa ber d la bida mijo
 			itemData[key] = itemClone[key];
+		}
+		if (!setColor && itemData?.type == 'zone') {
+			delete itemData?.color;
 		}
 		mainTree.rebuild();
 		selectedId.set('');
@@ -88,14 +94,24 @@
 				<input type="text" bind:value={itemClone.name} bind:this={inputName} />
 			</label>
 
-			{#if itemData?.type == 'zone'}
+			{#if itemClone.type == 'zone'}
 				<label>
 					Factor:
 					<input type="text" bind:value={itemClone.factor} />
 				</label>
+				<label>
+					Color:
+					<input type="checkbox" bind:checked={setColor} />
+				</label>
+				{#if setColor}
+					<label>
+						Set Color:
+						<input type="color" bind:value={itemClone.color} />
+					</label>
+				{/if}
 			{/if}
 
-			{#if itemData?.type == 'act'}
+			{#if itemClone?.type == 'act'}
 				<label>
 					Area:
 					<input type="text" bind:value={itemClone.area} />

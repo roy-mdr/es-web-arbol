@@ -23,12 +23,23 @@
 	class:selected={$selectedId == id}
 	on:click={toggleSelect}
 >
-	{name} ({area}m2)
+	<div class="act-name">
+		{name}
+	</div>
+	<div class="act-details">
+		{area}m2
+	</div>
 </div>
 
 <style>
 	.selected {
 		background-color: var(--accent);
 		border: 1px solid var(--accent);
+	}
+
+	.act-details {
+		font-size: small;
+		font-style: italic;
+		color: var(--mid);
 	}
 </style>

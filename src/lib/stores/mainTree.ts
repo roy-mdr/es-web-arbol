@@ -65,6 +65,7 @@ function initMainTree() {
 					route: '',
 					open: true,
 					factor: newZone.factor ? +newZone.factor : 0,
+					color: newZone.color,
 					sum: 0,
 					sumfactor: 0,
 					children: []

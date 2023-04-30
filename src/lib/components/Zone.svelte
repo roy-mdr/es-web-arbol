@@ -15,6 +15,10 @@
 	export let factor: App.Zone['factor'];
 	export let sum: App.Zone['sum'];
 	export let sumfactor: App.Zone['sumfactor'];
+	export let color: App.Zone['color'];
+
+	$: bgColor = color === undefined ? '' : `background-color: ${color};`;
+	$: lineColor = color === undefined ? '' : `border-color: ${color};`;
 
 	function toggleOpen() {
 		mainTree.toggleOpenZone(route);
@@ -29,11 +33,19 @@
 	}
 </script>
 
-<div {id} class="panel zone" class:radius={isMainTree} class:selected={$selectedId == id}>
+<div
+	{id}
+	class="panel zone"
+	class:radius={isMainTree}
+	class:selected={$selectedId == id}
+	style="{bgColor} {lineColor}"
+>
 	<div class="header">
 		{#if !isMainTree}
-			<!-- svelte-ignore a11y-click-events-have-key-events -->
-			<div class="arrow" class:open={isOpen} on:click={toggleOpen}>►</div>
+			<div class="arrow-wrapper">
+				<!-- svelte-ignore a11y-click-events-have-key-events -->
+				<div class="arrow" class:open={isOpen} on:click={toggleOpen}>►</div>
+			</div>
 		{/if}
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<div
@@ -42,7 +54,15 @@
 			class:handle-copy={!isMainTree && $ctrlKeyIsDown}
 			on:click={toggleSelect}
 		>
-			{name} ({Math.round((sumfactor + Number.EPSILON) * 100) / 100}m2)
+			<div class="zone-name">
+				{name}
+			</div>
+			<div class="zone-sumfactor">
+				{Math.round((sumfactor + Number.EPSILON) * 100) / 100}m2
+			</div>
+			<div class="zone-details">
+				{Math.round((sum + Number.EPSILON) * 100) / 100}m2 + {factor * 100}%
+			</div>
 		</div>
 	</div>
 	<!-- Set transition in this div -->
@@ -54,6 +74,11 @@
 </div>
 
 <style>
+	.arrow-wrapper {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
 	.arrow {
 		margin-right: var(--space-half);
 		cursor: pointer;
@@ -65,7 +90,22 @@
 	}
 
 	.selected {
-		background-color: var(--accent);
-		border: 1px solid var(--accent);
+		background-color: var(--accent) !important;
+		border: 1px solid var(--accent) !important;
+	}
+
+	.zone-sumfactor,
+	.zone-details {
+		font-size: small;
+		font-style: italic;
+		color: var(--mid);
+	}
+
+	.zone-sumfactor {
+		font-weight: bold;
+	}
+
+	.zone-details {
+		font-weight: normal;
 	}
 </style>
