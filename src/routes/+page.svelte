@@ -45,7 +45,7 @@
 
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<div class="mt-zone" bind:this={mtZone} on:click={handleMtZoneClick}>
-		<input type="file" bind:this={fileSelect} on:change={loadTree} />
+		<input type="file" accept=".systree" bind:this={fileSelect} on:change={loadTree} />
 		<button type="button" on:click={saveTree}>Save Tree</button>
 		{#key $mainTree.id}
 			<Zone
