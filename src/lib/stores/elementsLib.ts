@@ -13,16 +13,6 @@ function initElmtsLib() {
 	return {
 		subscribe,
 
-		loadLibrary: (lib: App.ElementClass[]) => {
-			/* EVALUATE CLIENT INPUT */
-			/* ===================== */
-			set(lib);
-			update(elmtL => {
-				// updateRoutesAndSyncIds(elmtL);
-				return elmtL;
-			})
-		},
-
 		addElement: (newEl: App.NewElementClass) => {
 
 			if (!newEl?.name) return;
@@ -35,30 +25,9 @@ function initElmtsLib() {
 
 				elmtL.unshift(setItem);
 
-				// updateRoutesAndSyncIds(elmtL);
 				return elmtL;
 			})
-		},
-
-		// editItem: (map: App.TargetSingleMap) => update(n => n + 1),
-
-		deleteElement: (id: App.ElementClass['id']) => {
-			update(elmtL => {
-
-				//... SELECT ELEMENT BY ID
-
-				// Remove item from 'from' list
-				// elmtL.splice(targetIndex, 1);
-
-				// updateRoutesAndSyncIds(elmtL);
-				return elmtL;
-			})
-		},
-
-		rebuild: () => update(elmtL => {
-			// updateRoutesAndSyncIds(elmtL);
-			return elmtL;
-		})
+		}
 	}
 }
 
@@ -67,11 +36,6 @@ export const elementLib = initElmtsLib();
 
 
 /* HELPERS */
-
-function updateRoutesAndSyncIds(mainTree: App.Group) {
-	elIds.set([]);
-	// deepRecurse(mainTree);
-}
 
 function newElId(): string {
 
@@ -94,11 +58,4 @@ function makeId(prefix = '', length = 5): string {
 		result += characters.charAt(Math.floor(Math.random() * charactersLength));
 	}
 	return result;
-}
-
-function duplicatedId(list: App.Group['children'], id: string) {
-	for (let i = 0; i < list.length; i++) {
-		if (list[i].id == id) return true;
-	}
-	return false;
 }
