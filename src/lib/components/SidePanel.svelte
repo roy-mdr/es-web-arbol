@@ -1,14 +1,14 @@
 <script lang="ts">
 	import EditSelected from '$lib/components/EditSelected.svelte';
-	import PanelActs from '$lib/components/PanelElements.svelte';
-	import PanelNewZone from '$lib/components/PanelNewGroup.svelte';
+	import PanelElements from '$lib/components/PanelElements.svelte';
+	import PanelNewGroup from '$lib/components/PanelNewGroup.svelte';
 	import TrashBin from '$lib/components/TrashBin.svelte';
 </script>
 
 <div class="side-panel">
 	<TrashBin />
-	<PanelNewZone />
-	<PanelActs />
+	<PanelNewGroup />
+	<PanelElements />
 	<EditSelected />
 </div>
 

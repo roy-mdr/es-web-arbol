@@ -13,7 +13,7 @@
 	function setupSortable() {
 		Sortable.create(sortEl, {
 			group: {
-				name: 'panel-zone',
+				name: 'panel-group',
 				pull: 'clone'
 			},
 			sort: false,

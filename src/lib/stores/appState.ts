@@ -7,17 +7,17 @@ export const draggingData = writable("");
 
 
 
-function initDragNewAct() {
+function initDragNewEl() {
 
 	const { subscribe, set, update } = writable();
 
 	return {
 		subscribe,
 
-		setActData: (actData: App.ElementClass) => set(actData),
+		setElData: (elData: App.ElementClass) => set(elData),
 
 		clear: () => set(undefined)
 	}
 }
 
-export const dragNewActivity = initDragNewAct();
+export const dragNewElement = initDragNewEl();

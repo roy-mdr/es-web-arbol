@@ -1,11 +1,11 @@
 import { get, writable } from 'svelte/store';
 
-export const mtIds = writable(['z.0']);
+export const mtIds = writable(['g.0']);
 
 
 
-const defaultMainZone: App.Group = {
-	id: 'z.0',
+const defaultMainGroup: App.Group = {
+	id: 'g.0',
 	type: 'group',
 	route: '0',
 	name: 'Main',
@@ -13,7 +13,7 @@ const defaultMainZone: App.Group = {
 	children: []
 }
 
-const mainTreeStore = writable(defaultMainZone);
+const mainTreeStore = writable(defaultMainGroup);
 
 function initMainTree() {
 
@@ -47,7 +47,7 @@ function initMainTree() {
 			})
 		},
 
-		addZone: (map: App.Group['route'], targetIndex: number | undefined = undefined, newZone: App.NewGroup) => {
+		addGroup: (map: App.Group['route'], targetIndex: number | undefined = undefined, newGroup: App.NewGroup) => {
 
 			if (!map) return;
 
@@ -55,7 +55,7 @@ function initMainTree() {
 				let setItem: App.Group = {
 					id: newMtId('group'),
 					type: 'group',
-					name: newZone.name,
+					name: newGroup.name,
 					route: '',
 					open: true,
 					children: []
@@ -63,7 +63,7 @@ function initMainTree() {
 
 				let toList: App.Group['children'];
 				try {
-					toList = getZoneList(map);
+					toList = getGroupList(map);
 				} catch (error: any) {
 					console.error(error.message);
 					return mt;
@@ -83,7 +83,7 @@ function initMainTree() {
 			})
 		},
 
-		addActivity: (map: App.Group['route'], targetIndex: number | undefined = undefined, newAct: App.NewElement) => {
+		addElement: (map: App.Group['route'], targetIndex: number | undefined = undefined, newEl: App.NewElement) => {
 
 			if (!map) return;
 
@@ -92,12 +92,12 @@ function initMainTree() {
 					id: newMtId('element'),
 					type: 'element',
 					route: '',
-					name: newAct.name
+					name: newEl.name
 				}
 
 				let toList: App.Group['children'];
 				try {
-					toList = getZoneList(map);
+					toList = getGroupList(map);
 				} catch (error: any) {
 					console.error(error.message);
 					return mt;
@@ -127,7 +127,7 @@ function initMainTree() {
 
 				let fromList: App.Group['children'];
 				try {
-					fromList = getZoneList(map);
+					fromList = getGroupList(map);
 				} catch (error: any) {
 					console.error(error.message);
 					return mt;
@@ -158,8 +158,8 @@ function initMainTree() {
 				let toList: App.Group['children'];
 
 				try {
-					fromList = getZoneList(map.from_list);
-					toList = getZoneList(map.to_list);
+					fromList = getGroupList(map.from_list);
+					toList = getGroupList(map.to_list);
 				} catch (error: any) {
 					console.error(error.message)
 					return mt;
@@ -204,8 +204,8 @@ function initMainTree() {
 				let toList: App.Group['children'];
 
 				try {
-					fromList = getZoneList(map.from_list);
-					toList = getZoneList(map.to_list);
+					fromList = getGroupList(map.from_list);
+					toList = getGroupList(map.to_list);
 				} catch (error: any) {
 					console.error(error.message);
 					return mt;
@@ -248,17 +248,17 @@ function initMainTree() {
 			return mt;
 		}),
 
-		toggleOpenZone: (map: App.Group['route']) => {
+		toggleOpenGroup: (map: App.Group['route']) => {
 
 			if (!map) return;
 
 			update(mt => {
-				const zone = getZone(map);
-				if (zone.open === undefined) {
-					zone.open = false;
+				const group = getGroup(map);
+				if (group.open === undefined) {
+					group.open = false;
 					return mt;
 				}
-				zone.open = !zone.open;
+				group.open = !group.open;
 				return mt;
 			});
 		}
@@ -280,8 +280,8 @@ function newMtId(itemType: App.Group['type'] | App.Element['type']): string {
 
 	let tmpId: string = '';
 
-	if (itemType == 'group') tmpId = makeId('z.', 5);
-	if (itemType == 'element') tmpId = makeId('a.', 5);
+	if (itemType == 'group') tmpId = makeId('g.', 5);
+	if (itemType == 'element') tmpId = makeId('e.', 5);
 
 	if (tmpId == '') throw new Error(`Invalid type '${itemType}'`);
 
@@ -302,40 +302,40 @@ function makeId(prefix = '', length = 5): string {
 	return result;
 }
 
-function getZone(zoneRoute: App.Group['route']) {
-	const route: string[] = zoneRoute.split('/');
+function getGroup(groupRoute: App.Group['route']) {
+	const route: string[] = groupRoute.split('/');
 
-	let currentZone = get(mainTreeStore);
-	let currentZoneList = currentZone.children;
+	let currentGroup = get(mainTreeStore);
+	let currentGroupList = currentGroup.children;
 
 	route.shift(); // Ignore first item (home route)
 
 	for (let ix = 0; ix < route.length; ix++) {
-		// @ts-ignore // I guess I need conditional types... currentZoneList is a Zone bc the function that called getList read the value from a Zone
-		currentZone = currentZoneList[parseInt(route[ix])];
-		currentZoneList = currentZone?.children || undefined;
+		// @ts-ignore // I guess I need conditional types... currentGroupList is a Group bc the function that called getList read the value from a Group
+		currentGroup = currentGroupList[parseInt(route[ix])];
+		currentGroupList = currentGroup?.children || undefined;
 	}
 
-	if (!currentZoneList) throw new Error(`Children of '${zoneRoute}' not found`);
+	if (!currentGroupList) throw new Error(`Children of '${groupRoute}' not found`);
 
-	return currentZone;
+	return currentGroup;
 }
 
-function getZoneList(zoneRoute: App.Group['route']) {
-	const route: string[] = zoneRoute.split('/');
+function getGroupList(groupRoute: App.Group['route']) {
+	const route: string[] = groupRoute.split('/');
 
-	let currentZone = get(mainTreeStore).children;
+	let currentGroup = get(mainTreeStore).children;
 
 	route.shift(); // Ignore first item (home route)
 
 	for (let ix = 0; ix < route.length; ix++) {
-		// @ts-ignore // I guess I need conditional types... currentZone is a Zone bc the function that called getList read the value from a Zone
-		currentZone = currentZone[parseInt(route[ix])]?.children || undefined;
+		// @ts-ignore // I guess I need conditional types... currentGroup is a Group bc the function that called getList read the value from a Group
+		currentGroup = currentGroup[parseInt(route[ix])]?.children || undefined;
 	}
 
-	if (!currentZone) throw new Error(`Children of '${zoneRoute}' not found`);
+	if (!currentGroup) throw new Error(`Children of '${groupRoute}' not found`);
 
-	return currentZone;
+	return currentGroup;
 }
 
 interface deepRecurseOptionsNoRoutes {

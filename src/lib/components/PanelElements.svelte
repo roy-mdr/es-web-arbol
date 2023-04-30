@@ -2,10 +2,10 @@
 	import { onMount } from 'svelte';
 	import { slide } from 'svelte/transition';
 	import Sortable from 'sortablejs';
-	import AddActiv from '$lib/components/AddElement.svelte';
+	import AddElement from '$lib/components/AddElement.svelte';
 
-	import { dragNewActivity } from '$lib/stores/appState';
-	import { activityLib } from '$lib/stores/elementsLib';
+	import { dragNewElement } from '$lib/stores/appState';
+	import { elementLib } from '$lib/stores/elementsLib';
 	import { speedMs } from '$lib/stores/appConstants';
 
 	onMount(() => {
@@ -17,7 +17,7 @@
 	function setupSortable() {
 		Sortable.create(sortEl, {
 			group: {
-				name: 'panel-act',
+				name: 'panel-els',
 				pull: 'clone'
 			},
 			sort: false,
@@ -31,11 +31,11 @@
 			delayOnTouchOnly: true,
 
 			onStart: (e) => {
-				dragNewActivity.setActData($activityLib[<number>e.oldIndex]);
+				dragNewElement.setElData($elementLib[<number>e.oldIndex]);
 			},
 
 			onEnd: (e) => {
-				dragNewActivity.clear();
+				dragNewElement.clear();
 			}
 		});
 	}
@@ -45,10 +45,10 @@
 	<div class="header">
 		<div class="title">Elements</div>
 	</div>
-	<AddActiv />
-	<div class="container custom-overflow" class:empty={$activityLib.length < 1} bind:this={sortEl}>
-		{#each $activityLib as act (act.id)}
-			<div class="handle draggable" transition:slide|local={{ duration: speedMs }}>{act.name}</div>
+	<AddElement />
+	<div class="container custom-overflow" class:empty={$elementLib.length < 1} bind:this={sortEl}>
+		{#each $elementLib as elmt (elmt.id)}
+			<div class="handle draggable" transition:slide|local={{ duration: speedMs }}>{elmt.name}</div>
 		{/each}
 	</div>
 </div>

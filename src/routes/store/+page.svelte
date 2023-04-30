@@ -7,28 +7,28 @@
 
 	function loadMainTree_1() {
 		mainTree.loadMainTree({
-			id: 'z.HCFEO',
+			id: 'g.HCFEO',
 			type: 'group',
 			open: true,
 			route: '',
 			name: 'Sistema solar bb 8)',
 			children: [
 				{
-					id: 'z.r943a',
+					id: 'g.r943a',
 					type: 'group',
 					open: false,
 					name: 'nop',
 					route: '',
 					children: [
 						{
-							id: 'z.r943b',
+							id: 'g.r943b',
 							type: 'group',
 							open: true,
 							name: 'nop',
 							route: '',
 							children: [
 								{
-									id: 'a._0Bla',
+									id: 'e._0Bla',
 									type: 'element',
 									name: 'nop',
 									route: ''
@@ -38,7 +38,7 @@
 					]
 				},
 				{
-					id: 'z.r943E',
+					id: 'g.r943E',
 					type: 'group',
 					open: true,
 					name: 'nop',
@@ -46,13 +46,13 @@
 					children: []
 				},
 				{
-					id: 'a._0Bln',
+					id: 'e._0Bln',
 					type: 'element',
 					name: 'nop',
 					route: ''
 				},
 				{
-					id: 'z.S9V74',
+					id: 'g.S9V74',
 					type: 'group',
 					open: true,
 					name: 'nop',
@@ -60,7 +60,7 @@
 					children: []
 				},
 				{
-					id: 'a.PCzLA',
+					id: 'e.PCzLA',
 					type: 'element',
 					name: 'nop',
 					route: ''
@@ -147,14 +147,14 @@
 		});
 	}
 
-	function addZone() {
-		mainTree.addZone('0', 1, {
+	function addGroup() {
+		mainTree.addGroup('0', 1, {
 			name: 'nop'
 		});
 	}
 
-	function addActivity() {
-		mainTree.addActivity('0/0', 1, {
+	function addElement() {
+		mainTree.addElement('0/0', 1, {
 			name: 'nop'
 		});
 	}
@@ -186,8 +186,8 @@
 	<button type="button" on:click={newMainTree}>New Main Tree</button>
 	<button type="button" on:click={loadMainTree_1}>Load Tree #1</button>
 	<button type="button" on:click={loadMainTree_2}>Load Tree #2</button>
-	<button type="button" on:click={addZone}>Add Zone</button>
-	<button type="button" on:click={addActivity}>Add activity</button>
+	<button type="button" on:click={addGroup}>Add Group</button>
+	<button type="button" on:click={addElement}>Add element</button>
 	<button type="button" on:click={moveItem}>Move item</button>
 	<button type="button" on:click={copyItem}>Copy item</button>
 </div>

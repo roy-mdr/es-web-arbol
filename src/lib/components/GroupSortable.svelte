@@ -1,58 +1,58 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
 	import Sortable from 'sortablejs';
-	import Zone from '$lib/components/Group.svelte';
-	import Activity from '$lib/components/Element.svelte';
+	import Group from '$lib/components/Group.svelte';
+	import Element from '$lib/components/Element.svelte';
 
 	import { mainTree } from '$lib/stores/mainTree';
-	import { ctrlKeyIsDown, dragNewActivity, draggingType, draggingData } from '$lib/stores/appState';
+	import { ctrlKeyIsDown, dragNewElement, draggingType, draggingData } from '$lib/stores/appState';
 	import { speedMs } from '$lib/stores/appConstants';
 
 	onMount(() => {
-		setupSortable(zoneSortEl);
+		setupSortable(groupSortEl);
 	});
 
 	onDestroy(() => {
-		if (zoneSortable) {
-			zoneSortable.destroy();
-			zoneSortable = undefined;
+		if (groupSortable) {
+			groupSortable.destroy();
+			groupSortable = undefined;
 		}
 	});
 
 	export let content: App.Group['children'];
 	export let route: App.Group['route'];
 
-	let zoneSortEl: HTMLElement;
-	let zoneSortable: Sortable | undefined;
+	let groupSortEl: HTMLElement;
+	let groupSortable: Sortable | undefined;
 
 	$: toggleSortableClone($ctrlKeyIsDown);
 
 	function toggleSortableClone(ctrlKeyDown: boolean) {
-		if (!zoneSortable) return;
+		if (!groupSortable) return;
 
 		if (ctrlKeyDown) {
-			zoneSortable?.option('group', {
-				name: 'zone',
-				put: ['zone', 'panel-act', 'panel-zone'],
+			groupSortable?.option('group', {
+				name: 'group',
+				put: ['group', 'panel-els', 'panel-group'],
 				pull: 'clone'
 			});
 		} else {
-			zoneSortable?.option('group', {
-				name: 'zone',
-				put: ['zone', 'panel-act', 'panel-zone']
+			groupSortable?.option('group', {
+				name: 'group',
+				put: ['group', 'panel-els', 'panel-group']
 			});
 		}
 	}
 
-	// $: setupSortable(zoneSortEl);
+	// $: setupSortable(groupSortEl);
 
 	function setupSortable(sortableEl: HTMLElement) {
 		if (!sortableEl) return;
 
-		zoneSortable = Sortable.create(sortableEl, {
+		groupSortable = Sortable.create(sortableEl, {
 			group: {
-				name: 'zone',
-				put: ['zone', 'panel-act', 'panel-zone']
+				name: 'group',
+				put: ['group', 'panel-els', 'panel-group']
 			},
 			// @ts-ignore
 			revertDOM: true,
@@ -66,9 +66,9 @@
 			onAdd: (e) => {
 				// drag from one list and drop into another
 
-				// If origin list is "zone"
+				// If origin list is "group"
 				// @ts-ignore
-				if (e.fromSortable.options.group.name == 'zone') {
+				if (e.fromSortable.options.group.name == 'group') {
 					// console.log('moving:', e.item);
 
 					const moveMap = {
@@ -85,27 +85,27 @@
 					}
 				}
 
-				// If origin list is "panel-act"
+				// If origin list is "panel-els"
 				// @ts-ignore
-				if (e.fromSortable.options.group.name == 'panel-act') {
+				if (e.fromSortable.options.group.name == 'panel-els') {
 					// console.log('adding:', e.item);
 
-					if (!$dragNewActivity) return;
+					if (!$dragNewElement) return;
 
-					const newActData = <App.ElementClass>$dragNewActivity;
+					const newElData = <App.ElementClass>$dragNewElement;
 					const to_list = e.to.getAttribute('map') || '0';
 					const to_index = e.newIndex || 0;
 
-					mainTree.addActivity(to_list, to_index, { name: newActData.name });
+					mainTree.addElement(to_list, to_index, { name: newElData.name });
 				}
 
-				// If origin list is "panel-zone"
+				// If origin list is "panel-group"
 				// @ts-ignore
-				if (e.fromSortable.options.group.name == 'panel-zone') {
+				if (e.fromSortable.options.group.name == 'panel-group') {
 					const to_list = e.to.getAttribute('map') || '0';
 					const to_index = e.newIndex || 0;
 
-					mainTree.addZone(to_list, to_index, { name: 'New Group' });
+					mainTree.addGroup(to_list, to_index, { name: 'New Group' });
 				}
 			},
 
@@ -154,7 +154,7 @@
 				// ~ dragstart:
 				// draggingEl.update( (el) => e.item ); // trigger
 				// ~ own dataTransfer.setData():
-				draggingType.update((t) => 'zone-item');
+				draggingType.update((t) => 'group-item');
 				draggingData.update((d) => `${e.from.getAttribute('map')}|${e.oldIndex}`);
 				// draggingParentEl.update((p) => inboxEl);
 			},
@@ -170,10 +170,10 @@
 	}
 </script>
 
-<div class="container" class:empty={content.length < 1} bind:this={zoneSortEl} map={route}>
+<div class="container" class:empty={content.length < 1} bind:this={groupSortEl} map={route}>
 	{#each content as child (child.id)}
 		{#if child.type == 'group'}
-			<Zone
+			<Group
 				id={child.id}
 				name={child.name}
 				children={child.children}
@@ -181,7 +181,7 @@
 				isOpen={child.open}
 			/>
 		{:else if child.type == 'element'}
-			<Activity id={child.id} name={child.name} ctrlDown={$ctrlKeyIsDown} />
+			<Element id={child.id} name={child.name} ctrlDown={$ctrlKeyIsDown} />
 		{/if}
 	{/each}
 </div>

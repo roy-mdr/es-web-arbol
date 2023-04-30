@@ -1,14 +1,14 @@
 import { get, writable } from 'svelte/store';
 
-export const actIds = writable(<App.ElementClass['id'][]>[]);
+export const elIds = writable(<App.ElementClass['id'][]>[]);
 
 
 
-const actsLibStore = writable(<App.ElementClass[]>[]);
+const elsLibStore = writable(<App.ElementClass[]>[]);
 
-function initActsLib() {
+function initElmtsLib() {
 
-	const { subscribe, set, update } = actsLibStore
+	const { subscribe, set, update } = elsLibStore
 
 	return {
 		subscribe,
@@ -17,70 +17,70 @@ function initActsLib() {
 			/* EVALUAR INPUT DE CLIENTE */
 			/* ======================== */
 			set(lib);
-			update(actL => {
-				// updateRoutesAndSyncIds(actL);
-				return actL;
+			update(elmtL => {
+				// updateRoutesAndSyncIds(elmtL);
+				return elmtL;
 			})
 		},
 
-		addActivity: (newAct: App.NewElementClass) => {
+		addElement: (newEl: App.NewElementClass) => {
 
-			if (!newAct?.name) return;
+			if (!newEl?.name) return;
 
-			update(actL => {
+			update(elmtL => {
 				let setItem: App.ElementClass = {
-					id: newActId(),
-					name: newAct.name
+					id: newElId(),
+					name: newEl.name
 				}
 
-				actL.unshift(setItem);
+				elmtL.unshift(setItem);
 
-				// updateRoutesAndSyncIds(actL);
-				return actL;
+				// updateRoutesAndSyncIds(elmtL);
+				return elmtL;
 			})
 		},
 
 		// editItem: (map: App.TargetSingleMap) => update(n => n + 1),
 
-		deleteActivity: (id: App.ElementClass['id']) => {
-			update(actL => {
+		deleteElement: (id: App.ElementClass['id']) => {
+			update(elmtL => {
 
-				//... SELECT ACTIVITY BY ID
+				//... SELECT ELEMENT BY ID
 
 				// Remove item from 'from' list
-				// actL.splice(targetIndex, 1);
+				// elmtL.splice(targetIndex, 1);
 
-				// updateRoutesAndSyncIds(actL);
-				return actL;
+				// updateRoutesAndSyncIds(elmtL);
+				return elmtL;
 			})
 		},
 
-		rebuild: () => update(actL => {
-			// updateRoutesAndSyncIds(actL);
-			return actL;
+		rebuild: () => update(elmtL => {
+			// updateRoutesAndSyncIds(elmtL);
+			return elmtL;
 		})
 	}
 }
 
-export const activityLib = initActsLib();
+export const elementLib = initElmtsLib();
 
 
 
 /* HELPERS */
 
 function updateRoutesAndSyncIds(mainTree: App.Group) {
-	actIds.set([]);
+	elIds.set([]);
 	// deepRecurse(mainTree);
 }
 
-function newActId(): string {
+function newElId(): string {
 
 	let tmpId: string = '';
 
 	tmpId = makeId('ac.', 5);
 
-	if (get(actIds).includes(tmpId)) {
-		return newActId();
+	if (get(elIds).includes(tmpId)) {
+		return newElId();
 	} else {
 		return tmpId;
 	}

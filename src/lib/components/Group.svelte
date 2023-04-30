@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { slide } from 'svelte/transition';
-	import ZoneSortable from '$lib/components/GroupSortable.svelte';
+	import GroupSortable from '$lib/components/GroupSortable.svelte';
 
 	import { mainTree } from '$lib/stores/mainTree';
 	import { ctrlKeyIsDown, selectedId } from '$lib/stores/appState';
@@ -14,7 +14,7 @@
 	export let isOpen: App.Group['open'] = true;
 
 	function toggleOpen() {
-		mainTree.toggleOpenZone(route);
+		mainTree.toggleOpenGroup(route);
 	}
 
 	function toggleSelect() {
@@ -26,7 +26,7 @@
 	}
 </script>
 
-<div {id} class="panel zone" class:radius={isMainTree} class:selected={$selectedId == id}>
+<div {id} class="panel group" class:radius={isMainTree} class:selected={$selectedId == id}>
 	<div class="header">
 		{#if !isMainTree}
 			<!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -45,7 +45,7 @@
 	<!-- Set transition in this div -->
 	{#if isOpen}
 		<div transition:slide|local={{ duration: speedMs }}>
-			<ZoneSortable {route} content={children} />
+			<GroupSortable {route} content={children} />
 		</div>
 	{/if}
 </div>

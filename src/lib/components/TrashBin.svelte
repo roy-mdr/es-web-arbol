@@ -18,7 +18,7 @@
 			group: {
 				name: 'trashbin',
 				pull: false,
-				put: ['zone']
+				put: ['group']
 			},
 			sort: false,
 			// @ts-ignore
@@ -32,7 +32,7 @@
 
 			// @ts-ignore
 			onDragIn: (e) => {
-				if ($draggingType == 'zone-item' && !isHover) {
+				if ($draggingType == 'group-item' && !isHover) {
 					console.log('in');
 					isHover = true;
 				}
@@ -51,7 +51,7 @@
 
 				/*
 				if (e.explicitOriginalTarget === sortEl) {
-					// if (e.fromSortable.options.group.name == 'zone') {
+					// if (e.fromSortable.options.group.name == 'group') {
 					// console.log('deleting:', e.item);
 
 					let from_list = e.from.getAttribute('map') || '0';
@@ -68,9 +68,9 @@
 			onAdd: (e) => {
 				// drag from one list and drop into another
 
-				// If origin list is "zone"
+				// If origin list is "group"
 				// @ts-ignore
-				if ($draggingType == 'zone-item' && isHover) {
+				if ($draggingType == 'group-item' && isHover) {
 					// console.log('moving:', e.item);
 
 					let from_list = e.from.getAttribute('map') || '0';
