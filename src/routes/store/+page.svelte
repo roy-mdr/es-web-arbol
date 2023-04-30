@@ -2,7 +2,7 @@
 	import { mainTree, mtIds } from '$lib/stores/mainTree';
 
 	function newMainTree() {
-		mainTree.newMainTree('Sistema solar bb 8)');
+		mainTree.newMainTree('New Main Tree!');
 	}
 
 	function loadMainTree_1() {
@@ -11,26 +11,26 @@
 			type: 'group',
 			open: true,
 			route: '',
-			name: 'Sistema solar bb 8)',
+			name: 'Loaded a Main Tree',
 			children: [
 				{
 					id: 'g.r943a',
 					type: 'group',
 					open: false,
-					name: 'nop',
+					name: 'Group 1',
 					route: '',
 					children: [
 						{
 							id: 'g.r943b',
 							type: 'group',
 							open: true,
-							name: 'nop',
+							name: 'Group 2',
 							route: '',
 							children: [
 								{
 									id: 'e._0Bla',
 									type: 'element',
-									name: 'nop',
+									name: 'Element 1',
 									route: ''
 								}
 							]
@@ -41,28 +41,28 @@
 					id: 'g.r943E',
 					type: 'group',
 					open: true,
-					name: 'nop',
+					name: 'Group 3',
 					route: '',
 					children: []
 				},
 				{
 					id: 'e._0Bln',
 					type: 'element',
-					name: 'nop',
+					name: 'Element 2',
 					route: ''
 				},
 				{
 					id: 'g.S9V74',
 					type: 'group',
 					open: true,
-					name: 'nop',
+					name: 'Group 4',
 					route: '',
 					children: []
 				},
 				{
 					id: 'e.PCzLA',
 					type: 'element',
-					name: 'nop',
+					name: 'Element 3',
 					route: ''
 				}
 			]
@@ -75,12 +75,12 @@
 			type: 'group',
 			open: true,
 			route: '',
-			name: 'sistema',
+			name: 'Example #2',
 			children: [
 				{
 					id: 'a-7',
 					type: 'element',
-					name: 'takata',
+					name: 'Element A',
 					route: ''
 				},
 				{
@@ -88,12 +88,12 @@
 					type: 'group',
 					open: true,
 					route: '',
-					name: 'social',
+					name: 'Group A',
 					children: [
 						{
 							id: 'a-1',
 							type: 'element',
-							name: 'convivir',
+							name: '[COLLIDING ID] ELEMENT #1',
 							route: ''
 						},
 						{
@@ -101,24 +101,24 @@
 							type: 'group',
 							open: false,
 							route: '',
-							name: 'social intima',
+							name: 'Group B',
 							children: [
 								{
 									id: 'a-2',
 									type: 'element',
-									name: 'convivir 2',
+									name: 'Element B',
 									route: ''
 								},
 								{
 									id: 'a-6',
 									type: 'element',
-									name: 'convivir 3',
+									name: 'Element C',
 									route: ''
 								},
 								{
 									id: 'a-1',
 									type: 'element',
-									name: 'convivir 4',
+									name: '[COLLIDING ID] ELEMENT #2',
 									route: ''
 								}
 							]
@@ -128,19 +128,19 @@
 				{
 					id: 'a-3',
 					type: 'element',
-					name: 'a',
+					name: 'Element C',
 					route: ''
 				},
 				{
 					id: 'a-4',
 					type: 'element',
-					name: 'b',
+					name: 'Element D',
 					route: ''
 				},
 				{
 					id: 'a-5',
 					type: 'element',
-					name: 'c',
+					name: 'Element E',
 					route: ''
 				}
 			]
@@ -149,13 +149,13 @@
 
 	function addGroup() {
 		mainTree.addGroup('0', 1, {
-			name: 'nop'
+			name: 'Group added'
 		});
 	}
 
 	function addElement() {
 		mainTree.addElement('0/0', 1, {
-			name: 'nop'
+			name: 'Element added'
 		});
 	}
 
@@ -177,7 +177,11 @@
 		});
 	}
 
-	$: test = JSON.stringify($mainTree, undefined, 2);
+	function delItem() {
+		mainTree.deleteItem('0/0', 1);
+	}
+
+	$: store = JSON.stringify($mainTree, undefined, 2);
 </script>
 
 <a href="/">Go to Interactive Tree</a>
@@ -190,11 +194,12 @@
 	<button type="button" on:click={addElement}>Add element</button>
 	<button type="button" on:click={moveItem}>Move item</button>
 	<button type="button" on:click={copyItem}>Copy item</button>
+	<button type="button" on:click={delItem}>Delete item</button>
 </div>
 
 <div style="display: flex;">
 	<pre>
-{test}
+{store}
 	</pre>
 
 	<pre>
