@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
 	import Sortable from 'sortablejs';
-	import Zone from '$lib/components/Zone.svelte';
-	import Activity from '$lib/components/Activity.svelte';
+	import Zone from '$lib/components/Group.svelte';
+	import Activity from '$lib/components/Element.svelte';
 
 	import { mainTree } from '$lib/stores/mainTree';
 	import { ctrlKeyIsDown, dragNewActivity, draggingType, draggingData } from '$lib/stores/appState';

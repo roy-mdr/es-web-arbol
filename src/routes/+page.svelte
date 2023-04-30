@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Zone from '$lib/components/Zone.svelte';
+	import Zone from '$lib/components/Group.svelte';
 	import SidePanel from '$lib/components/SidePanel.svelte';
 
 	import { mainTree } from '$lib/stores/mainTree';

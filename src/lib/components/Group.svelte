@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { slide } from 'svelte/transition';
-	import ZoneSortable from '$lib/components/ZoneSortable.svelte';
+	import ZoneSortable from '$lib/components/GroupSortable.svelte';
 
 	import { mainTree } from '$lib/stores/mainTree';
 	import { ctrlKeyIsDown, selectedId } from '$lib/stores/appState';

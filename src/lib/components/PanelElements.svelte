@@ -2,10 +2,10 @@
 	import { onMount } from 'svelte';
 	import { slide } from 'svelte/transition';
 	import Sortable from 'sortablejs';
-	import AddActiv from '$lib/components/AddActiv.svelte';
+	import AddActiv from '$lib/components/AddElement.svelte';
 
 	import { dragNewActivity } from '$lib/stores/appState';
-	import { activityLib } from '$lib/stores/activityLib';
+	import { activityLib } from '$lib/stores/elementsLib';
 	import { speedMs } from '$lib/stores/appConstants';
 
 	onMount(() => {

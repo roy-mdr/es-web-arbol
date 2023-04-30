@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { activityLib } from '$lib/stores/activityLib';
+	import { activityLib } from '$lib/stores/elementsLib';
 
 	let inputName: HTMLElement;
 

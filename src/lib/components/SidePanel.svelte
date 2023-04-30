@@ -1,7 +1,7 @@
 <script lang="ts">
 	import EditSelected from '$lib/components/EditSelected.svelte';
-	import PanelActs from '$lib/components/PanelActs.svelte';
-	import PanelNewZone from '$lib/components/PanelNewZone.svelte';
+	import PanelActs from '$lib/components/PanelElements.svelte';
+	import PanelNewZone from '$lib/components/PanelNewGroup.svelte';
 	import TrashBin from '$lib/components/TrashBin.svelte';
 </script>
 
