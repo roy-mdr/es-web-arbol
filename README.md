@@ -1,38 +1,33 @@
-# create-svelte
+# Svelte Drang & Drop Demo Project
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+This is a reference / demo project in SvelteKit for drag and drop / sortable-lists applications.
+This project uses the native SortableJs that can be used for vanilla JavaScript applications.
 
-## Creating a project
+![demo-svelte-sortable](https://user-images.githubusercontent.com/8226073/235379627-04909f19-0dda-4ac5-bd68-eccdcd60db85.gif)
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Disclaimer
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+This project uses a [forked version](https://github.com/roy-mdr/Sortable/tree/roy) of the [SortableJs](https://github.com/SortableJS/Sortable) library.
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+This fork mainly addresses the data binding with the DOM rendering. Thus beeing able to use it natively with SvelteJs.
 
-## Developing
+Hopefuly in the near future the PRs get merged so we could all enjoy this functionality natively.
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+## Install
 
-```bash
-npm run dev
+1. `git clone ...`
+2. `cd ...`
+3. `npm i`
+4. `npm run dev`
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+## Install custom fork for your project
 
-## Building
+`npm install roy-mdr/Sortable#roy` instead of `npm install sortablejs`
 
-To create a production version of your app:
+## Issues and acknowledges
 
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+- Highly lacking accessibility interaction
+- Some Svelte related DOM-breaking situations (already addressed and worked-arround in this project)
+- Bugs / caveats form the SortableJs library such as:
+  - Don't set `transition: all ...;` to a Sortable Element.
+  - Don't set `display: none;` to every children of a Sortable Element
