@@ -7,43 +7,43 @@ declare global {
 		// interface PageData {}
 		// interface Platform {}
 
-		interface ActivityClass {
+		interface ElementClass {
 			id: string;
 			name: string;
 		}
 
-		interface NewActivityClass {
+		interface NewElementClass {
 			name: string;
 		}
 
-		interface Zone {
+		interface Group {
 			id: string;
-			type: 'zone';
+			type: 'group';
 			name: string;
 			route: string;
 			open: boolean;
-			children: (Zone | Activity)[];
+			children: (Group | Element)[];
 		}
 
-		interface NewZone {
+		interface NewGroup {
 			name: string;
 		}
 
-		interface Activity {
+		interface Element {
 			id: string;
-			type: 'act';
+			type: 'element';
 			route: string;
 			name: string;
 		}
 
-		interface NewActivity {
+		interface NewElement {
 			name: string;
 		}
 
 		interface MoveSingleMap {
-			from_list: Zone['route'];
+			from_list: Group['route'];
 			from_index: number;
-			to_list: Zone['route'];
+			to_list: Group['route'];
 			to_index: number;
 		}
 	}

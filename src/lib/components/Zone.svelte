@@ -6,12 +6,12 @@
 	import { ctrlKeyIsDown, selectedId } from '$lib/stores/appState';
 	import { speedMs } from '$lib/stores/appConstants';
 
-	export let id: App.Zone['id'];
-	export let name: App.Zone['name'];
-	export let children: App.Zone['children'];
+	export let id: App.Group['id'];
+	export let name: App.Group['name'];
+	export let children: App.Group['children'];
 	export let isMainTree = false;
-	export let route: App.Zone['route'];
-	export let isOpen: App.Zone['open'] = true;
+	export let route: App.Group['route'];
+	export let isOpen: App.Group['open'] = true;
 
 	function toggleOpen() {
 		mainTree.toggleOpenZone(route);

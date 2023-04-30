@@ -8,29 +8,30 @@
 	function loadMainTree_1() {
 		mainTree.loadMainTree({
 			id: 'z.HCFEO',
-			type: 'zone',
+			type: 'group',
 			open: true,
 			route: '',
 			name: 'Sistema solar bb 8)',
 			children: [
 				{
 					id: 'z.r943a',
-					type: 'zone',
+					type: 'group',
 					open: false,
 					name: 'nop',
 					route: '',
 					children: [
 						{
 							id: 'z.r943b',
-							type: 'zone',
+							type: 'group',
 							open: true,
 							name: 'nop',
 							route: '',
 							children: [
 								{
 									id: 'a._0Bla',
-									type: 'act',
-									name: 'nop'
+									type: 'element',
+									name: 'nop',
+									route: ''
 								}
 							]
 						}
@@ -38,7 +39,7 @@
 				},
 				{
 					id: 'z.r943E',
-					type: 'zone',
+					type: 'group',
 					open: true,
 					name: 'nop',
 					route: '',
@@ -46,12 +47,13 @@
 				},
 				{
 					id: 'a._0Bln',
-					type: 'act',
-					name: 'nop'
+					type: 'element',
+					name: 'nop',
+					route: ''
 				},
 				{
 					id: 'z.S9V74',
-					type: 'zone',
+					type: 'group',
 					open: true,
 					name: 'nop',
 					route: '',
@@ -59,8 +61,9 @@
 				},
 				{
 					id: 'a.PCzLA',
-					type: 'act',
-					name: 'nop'
+					type: 'element',
+					name: 'nop',
+					route: ''
 				}
 			]
 		});
@@ -69,49 +72,54 @@
 	function loadMainTree_2() {
 		mainTree.loadMainTree({
 			id: 'z-0',
-			type: 'zone',
+			type: 'group',
 			open: true,
 			route: '',
 			name: 'sistema',
 			children: [
 				{
 					id: 'a-7',
-					type: 'act',
-					name: 'takata'
+					type: 'element',
+					name: 'takata',
+					route: ''
 				},
 				{
 					id: 'z-1',
-					type: 'zone',
+					type: 'group',
 					open: true,
 					route: '',
 					name: 'social',
 					children: [
 						{
 							id: 'a-1',
-							type: 'act',
-							name: 'convivir'
+							type: 'element',
+							name: 'convivir',
+							route: ''
 						},
 						{
 							id: 'z-2',
-							type: 'zone',
+							type: 'group',
 							open: false,
 							route: '',
 							name: 'social intima',
 							children: [
 								{
 									id: 'a-2',
-									type: 'act',
-									name: 'convivir 2'
+									type: 'element',
+									name: 'convivir 2',
+									route: ''
 								},
 								{
 									id: 'a-6',
-									type: 'act',
-									name: 'convivir 3'
+									type: 'element',
+									name: 'convivir 3',
+									route: ''
 								},
 								{
 									id: 'a-1',
-									type: 'act',
-									name: 'convivir 4'
+									type: 'element',
+									name: 'convivir 4',
+									route: ''
 								}
 							]
 						}
@@ -119,18 +127,21 @@
 				},
 				{
 					id: 'a-3',
-					type: 'act',
-					name: 'a'
+					type: 'element',
+					name: 'a',
+					route: ''
 				},
 				{
 					id: 'a-4',
-					type: 'act',
-					name: 'b'
+					type: 'element',
+					name: 'b',
+					route: ''
 				},
 				{
 					id: 'a-5',
-					type: 'act',
-					name: 'c'
+					type: 'element',
+					name: 'c',
+					route: ''
 				}
 			]
 		});

@@ -5,13 +5,13 @@
 	import { selectedId } from '$lib/stores/appState';
 	import { speedMs } from '$lib/stores/appConstants';
 
-	let parentRoute: App.Zone['route'] | undefined;
+	let parentRoute: App.Group['route'] | undefined;
 	let thisIndex: number | undefined;
 	let inputName: HTMLElement;
-	let itemData: App.Zone | App.Activity | undefined;
-	let itemClone: App.Zone | App.Activity | undefined;
+	let itemData: App.Group | App.Element | undefined;
+	let itemClone: App.Group | App.Element | undefined;
 
-	function getSelected(rootItem: App.Zone | App.Activity, id: App.Zone['id'] | App.Activity['id']) {
+	function getSelected(rootItem: App.Group | App.Element, id: App.Group['id'] | App.Element['id']) {
 		parentRoute = undefined;
 		thisIndex = undefined;
 		itemData = selectById(rootItem, id);
@@ -19,9 +19,9 @@
 	}
 
 	function selectById(
-		rootItem: App.Zone | App.Activity,
-		id: App.Zone['id'] | App.Activity['id']
-	): App.Zone | App.Activity | undefined {
+		rootItem: App.Group | App.Element,
+		id: App.Group['id'] | App.Element['id']
+	): App.Group | App.Element | undefined {
 		if (rootItem.id == id) {
 			let thisRoute = rootItem.route.split('/') || '';
 			thisIndex = parseInt(<string>thisRoute?.pop()) || 0;
@@ -29,7 +29,7 @@
 
 			return rootItem;
 		} else {
-			if (rootItem.type == 'zone') {
+			if (rootItem.type == 'group') {
 				// Use a for loop instead of forEach to avoid nested functions
 				// Otherwise "return" will not work properly
 				for (let i = 0; i < rootItem.children.length; i++) {

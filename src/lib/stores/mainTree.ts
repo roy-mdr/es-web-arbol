@@ -4,9 +4,9 @@ export const mtIds = writable(['z.0']);
 
 
 
-const defaultMainZone: App.Zone = {
+const defaultMainZone: App.Group = {
 	id: 'z.0',
-	type: 'zone',
+	type: 'group',
 	route: '0',
 	name: 'Main',
 	open: true,
@@ -24,8 +24,8 @@ function initMainTree() {
 
 		newMainTree: (name: string) => {
 			set({
-				id: newMtId('zone'),
-				type: 'zone',
+				id: newMtId('group'),
+				type: 'group',
 				route: '0',
 				name: name,
 				open: true,
@@ -37,7 +37,7 @@ function initMainTree() {
 			})
 		},
 
-		loadMainTree: (mainTree: App.Zone) => {
+		loadMainTree: (mainTree: App.Group) => {
 			/* EVALUAR INPUT DE CLIENTE */
 			/* ======================== */
 			set(mainTree);
@@ -47,21 +47,21 @@ function initMainTree() {
 			})
 		},
 
-		addZone: (map: App.Zone['route'], targetIndex: number | undefined = undefined, newZone: App.NewZone) => {
+		addZone: (map: App.Group['route'], targetIndex: number | undefined = undefined, newZone: App.NewGroup) => {
 
 			if (!map) return;
 
 			update(mt => {
-				let setItem: App.Zone = {
-					id: newMtId('zone'),
-					type: 'zone',
+				let setItem: App.Group = {
+					id: newMtId('group'),
+					type: 'group',
 					name: newZone.name,
 					route: '',
 					open: true,
 					children: []
 				}
 
-				let toList: App.Zone['children'];
+				let toList: App.Group['children'];
 				try {
 					toList = getZoneList(map);
 				} catch (error: any) {
@@ -83,19 +83,19 @@ function initMainTree() {
 			})
 		},
 
-		addActivity: (map: App.Zone['route'], targetIndex: number | undefined = undefined, newAct: App.NewActivity) => {
+		addActivity: (map: App.Group['route'], targetIndex: number | undefined = undefined, newAct: App.NewElement) => {
 
 			if (!map) return;
 
 			update(mt => {
-				let setItem: App.Activity = {
-					id: newMtId('act'),
-					type: 'act',
+				let setItem: App.Element = {
+					id: newMtId('element'),
+					type: 'element',
 					route: '',
 					name: newAct.name
 				}
 
-				let toList: App.Zone['children'];
+				let toList: App.Group['children'];
 				try {
 					toList = getZoneList(map);
 				} catch (error: any) {
@@ -119,13 +119,13 @@ function initMainTree() {
 
 		// editItem: (map: App.TargetSingleMap) => update(n => n + 1),
 
-		deleteItem: (map: App.Zone['route'], targetIndex: number) => {
+		deleteItem: (map: App.Group['route'], targetIndex: number) => {
 
 			if (!map) return;
 
 			update(mt => {
 
-				let fromList: App.Zone['children'];
+				let fromList: App.Group['children'];
 				try {
 					fromList = getZoneList(map);
 				} catch (error: any) {
@@ -154,8 +154,8 @@ function initMainTree() {
 
 			update(mt => {
 
-				let fromList: App.Zone['children'];
-				let toList: App.Zone['children'];
+				let fromList: App.Group['children'];
+				let toList: App.Group['children'];
 
 				try {
 					fromList = getZoneList(map.from_list);
@@ -179,8 +179,8 @@ function initMainTree() {
 				// Prevet duplicated id's in destiny list
 				if ((fromList !== toList) && duplicatedId(toList, movingItem.id)) {
 					console.error('Item id already in list? Creating a new one!');
-					if (movingItem.type == 'act') movingItem.id = newMtId('act');
-					if (movingItem.type == 'zone') movingItem.id = newMtId('zone');
+					if (movingItem.type == 'element') movingItem.id = newMtId('element');
+					if (movingItem.type == 'group') movingItem.id = newMtId('group');
 				}
 
 				// Remove item from 'from' list
@@ -200,8 +200,8 @@ function initMainTree() {
 
 			update(mt => {
 
-				let fromList: App.Zone['children'];
-				let toList: App.Zone['children'];
+				let fromList: App.Group['children'];
+				let toList: App.Group['children'];
 
 				try {
 					fromList = getZoneList(map.from_list);
@@ -222,8 +222,8 @@ function initMainTree() {
 					console.info('Target list smaller than target index. Appending to end.');
 				}
 
-				if (copyItem.type == 'act') copyItem.id = newMtId('act');
-				if (copyItem.type == 'zone') deepRecurse(copyItem, { remakeRoutes: false, remakeIds: true });
+				if (copyItem.type == 'element') copyItem.id = newMtId('element');
+				if (copyItem.type == 'group') deepRecurse(copyItem, { remakeRoutes: false, remakeIds: true });
 
 				// Prevet duplicated id's in list
 				if (duplicatedId(toList, copyItem.id)) {
@@ -235,7 +235,7 @@ function initMainTree() {
 				toList.splice(map.to_index, 0, copyItem);
 
 				if (fromList === toList) {
-					mt.id = newMtId('zone');
+					mt.id = newMtId('group');
 				}
 
 				updateRoutesAndSyncIds(mt);
@@ -248,7 +248,7 @@ function initMainTree() {
 			return mt;
 		}),
 
-		toggleOpenZone: (map: App.Zone['route']) => {
+		toggleOpenZone: (map: App.Group['route']) => {
 
 			if (!map) return;
 
@@ -271,17 +271,17 @@ export const mainTree = initMainTree();
 
 /* HELPERS */
 
-function updateRoutesAndSyncIds(mainTree: App.Zone) {
+function updateRoutesAndSyncIds(mainTree: App.Group) {
 	mtIds.set([]);
 	deepRecurse(mainTree);
 }
 
-function newMtId(itemType: App.Zone['type'] | App.Activity['type']): string {
+function newMtId(itemType: App.Group['type'] | App.Element['type']): string {
 
 	let tmpId: string = '';
 
-	if (itemType == 'zone') tmpId = makeId('z.', 5);
-	if (itemType == 'act') tmpId = makeId('a.', 5);
+	if (itemType == 'group') tmpId = makeId('z.', 5);
+	if (itemType == 'element') tmpId = makeId('a.', 5);
 
 	if (tmpId == '') throw new Error(`Invalid type '${itemType}'`);
 
@@ -302,7 +302,7 @@ function makeId(prefix = '', length = 5): string {
 	return result;
 }
 
-function getZone(zoneRoute: App.Zone['route']) {
+function getZone(zoneRoute: App.Group['route']) {
 	const route: string[] = zoneRoute.split('/');
 
 	let currentZone = get(mainTreeStore);
@@ -321,7 +321,7 @@ function getZone(zoneRoute: App.Zone['route']) {
 	return currentZone;
 }
 
-function getZoneList(zoneRoute: App.Zone['route']) {
+function getZoneList(zoneRoute: App.Group['route']) {
 	const route: string[] = zoneRoute.split('/');
 
 	let currentZone = get(mainTreeStore).children;
@@ -345,7 +345,7 @@ interface deepRecurseOptionsNoRoutes {
 
 interface deepRecurseOptionsRoutes {
 	remakeRoutes: true;
-	initRoute: App.Zone['route'];
+	initRoute: App.Group['route'];
 	remakeIds: boolean;
 }
 
@@ -355,11 +355,11 @@ const deepRecurseDefaultOptions: deepRecurseOptionsRoutes = {
 	remakeIds: false
 }
 
-function deepRecurse(root: App.Zone | App.Activity, options: deepRecurseOptionsNoRoutes | deepRecurseOptionsRoutes = deepRecurseDefaultOptions) {
+function deepRecurse(root: App.Group | App.Element, options: deepRecurseOptionsNoRoutes | deepRecurseOptionsRoutes = deepRecurseDefaultOptions) {
 
-	if (root.type == 'zone') {
+	if (root.type == 'group') {
 		if (options.remakeIds) {
-			root.id = newMtId('zone');
+			root.id = newMtId('group');
 		}
 
 		// Push id to store
@@ -373,23 +373,23 @@ function deepRecurse(root: App.Zone | App.Activity, options: deepRecurseOptionsN
 			for (let ix = 0; ix < root.children.length; ix++) {
 				const newOptions = structuredClone(options);
 				newOptions.initRoute = `${options.initRoute}/${ix}`;
-				deepRecurse(<App.Zone>root.children[ix], newOptions);
+				deepRecurse(<App.Group>root.children[ix], newOptions);
 			}
 		} else {
 			// Recurse as is
 			for (let ix = 0; ix < root.children.length; ix++) {
-				deepRecurse(<App.Zone>root.children[ix], options);
+				deepRecurse(<App.Group>root.children[ix], options);
 			}
 		}
 	}
 
-	if (root.type == 'act') {
+	if (root.type == 'element') {
 		if (options.remakeRoutes) {
 			root.route = options.initRoute;
 		}
 
 		if (options.remakeIds) {
-			root.id = newMtId('act');
+			root.id = newMtId('element');
 		}
 
 		// Push id to store
@@ -397,7 +397,7 @@ function deepRecurse(root: App.Zone | App.Activity, options: deepRecurseOptionsN
 	}
 }
 
-function duplicatedId(list: App.Zone['children'], id: string) {
+function duplicatedId(list: App.Group['children'], id: string) {
 	for (let i = 0; i < list.length; i++) {
 		if (list[i].id == id) return true;
 	}

@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { selectedId } from '$lib/stores/appState';
 
-	export let id: App.Activity['id'];
-	export let name: App.Activity['name'];
+	export let id: App.Element['id'];
+	export let name: App.Element['name'];
 	export let ctrlDown: boolean;
 
 	function toggleSelect() {

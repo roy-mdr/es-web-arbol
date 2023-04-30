@@ -3,7 +3,7 @@
 
 	let inputName: HTMLElement;
 
-	let newAct: App.NewActivityClass = {
+	let newAct: App.NewElementClass = {
 		name: ''
 	};
 

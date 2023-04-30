@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store';
 
-export const selectedId = writable(<App.Zone['id'] | App.Activity['id']>"");
+export const selectedId = writable(<App.Group['id'] | App.Element['id']>"");
 export const ctrlKeyIsDown = writable(false);
 export const draggingType = writable("");
 export const draggingData = writable("");
@@ -14,7 +14,7 @@ function initDragNewAct() {
 	return {
 		subscribe,
 
-		setActData: (actData: App.ActivityClass) => set(actData),
+		setActData: (actData: App.ElementClass) => set(actData),
 
 		clear: () => set(undefined)
 	}

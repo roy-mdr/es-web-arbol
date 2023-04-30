@@ -1,10 +1,10 @@
 import { get, writable } from 'svelte/store';
 
-export const actIds = writable(<App.ActivityClass['id'][]>[]);
+export const actIds = writable(<App.ElementClass['id'][]>[]);
 
 
 
-const actsLibStore = writable(<App.ActivityClass[]>[]);
+const actsLibStore = writable(<App.ElementClass[]>[]);
 
 function initActsLib() {
 
@@ -13,7 +13,7 @@ function initActsLib() {
 	return {
 		subscribe,
 
-		loadLibrary: (lib: App.ActivityClass[]) => {
+		loadLibrary: (lib: App.ElementClass[]) => {
 			/* EVALUAR INPUT DE CLIENTE */
 			/* ======================== */
 			set(lib);
@@ -23,12 +23,12 @@ function initActsLib() {
 			})
 		},
 
-		addActivity: (newAct: App.NewActivityClass) => {
+		addActivity: (newAct: App.NewElementClass) => {
 
 			if (!newAct?.name) return;
 
 			update(actL => {
-				let setItem: App.ActivityClass = {
+				let setItem: App.ElementClass = {
 					id: newActId(),
 					name: newAct.name
 				}
@@ -42,7 +42,7 @@ function initActsLib() {
 
 		// editItem: (map: App.TargetSingleMap) => update(n => n + 1),
 
-		deleteActivity: (id: App.ActivityClass['id']) => {
+		deleteActivity: (id: App.ElementClass['id']) => {
 			update(actL => {
 
 				//... SELECT ACTIVITY BY ID
@@ -68,7 +68,7 @@ export const activityLib = initActsLib();
 
 /* HELPERS */
 
-function updateRoutesAndSyncIds(mainTree: App.Zone) {
+function updateRoutesAndSyncIds(mainTree: App.Group) {
 	actIds.set([]);
 	// deepRecurse(mainTree);
 }
@@ -96,7 +96,7 @@ function makeId(prefix = '', length = 5): string {
 	return result;
 }
 
-function duplicatedId(list: App.Zone['children'], id: string) {
+function duplicatedId(list: App.Group['children'], id: string) {
 	for (let i = 0; i < list.length; i++) {
 		if (list[i].id == id) return true;
 	}

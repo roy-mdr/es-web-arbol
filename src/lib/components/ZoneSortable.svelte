@@ -19,8 +19,8 @@
 		}
 	});
 
-	export let content: App.Zone['children'];
-	export let route: App.Zone['route'];
+	export let content: App.Group['children'];
+	export let route: App.Group['route'];
 
 	let zoneSortEl: HTMLElement;
 	let zoneSortable: Sortable | undefined;
@@ -92,7 +92,7 @@
 
 					if (!$dragNewActivity) return;
 
-					const newActData = <App.ActivityClass>$dragNewActivity;
+					const newActData = <App.ElementClass>$dragNewActivity;
 					const to_list = e.to.getAttribute('map') || '0';
 					const to_index = e.newIndex || 0;
 
@@ -172,7 +172,7 @@
 
 <div class="container" class:empty={content.length < 1} bind:this={zoneSortEl} map={route}>
 	{#each content as child (child.id)}
-		{#if child.type == 'zone'}
+		{#if child.type == 'group'}
 			<Zone
 				id={child.id}
 				name={child.name}
@@ -180,7 +180,7 @@
 				route={child.route}
 				isOpen={child.open}
 			/>
-		{:else if child.type == 'act'}
+		{:else if child.type == 'element'}
 			<Activity id={child.id} name={child.name} ctrlDown={$ctrlKeyIsDown} />
 		{/if}
 	{/each}
