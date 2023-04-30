@@ -5,6 +5,8 @@
 	import { mainTree } from '$lib/stores/mainTree';
 	import { ctrlKeyIsDown, selectedId } from '$lib/stores/appState';
 
+	import { writeTextFile } from '$lib/util/fileMgmt';
+
 	let mtZone: HTMLElement;
 
 	function handleKeydown(ev: KeyboardEvent) {
@@ -20,6 +22,10 @@
 			selectedId.set('');
 		}
 	}
+
+	function saveTree() {
+		writeTextFile(JSON.stringify($mainTree), $mainTree.name, '.systree');
+	}
 </script>
 
 <svelte:window on:keydown={handleKeydown} on:keyup={handleKeydown} />
@@ -30,6 +36,7 @@
 
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<div class="mt-zone" bind:this={mtZone} on:click={handleMtZoneClick}>
+		<button type="button" on:click={saveTree}>Save Tree</button>
 		{#key $mainTree.id}
 			<Zone
 				id={$mainTree.id}
