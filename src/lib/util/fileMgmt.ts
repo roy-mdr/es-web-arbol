@@ -1,3 +1,9 @@
+export function readTextFile(file: Blob, callback: any) {
+	const reader = new FileReader();
+	reader.onload = () => { callback(reader.result) }
+	reader.readAsText(file);
+}
+
 export function writeTextFile(content: string, filename: string, extension = ".txt") {
 
 	let textFileAsBlob = new Blob([content], { type: 'text/plain' });
