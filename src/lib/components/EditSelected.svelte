@@ -69,7 +69,7 @@
 
 	function submitChanges() {
 		for (const key in itemData) {
-			// @ts-ignore --- tu q vasa ber d la bida mijo
+			// @ts-ignore --- don't quite know how to type this correctly
 			itemData[key] = itemClone[key];
 		}
 		mainTree.rebuild();

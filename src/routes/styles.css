@@ -24,7 +24,6 @@ textarea {
 .panel {
 	background-color: var(--carpet);
 	border: 1px solid var(--light);
-	/* margin: var(--space-unit); */
 	padding: var(--space-half);
 	box-shadow: var(--shadow-default);
 	transition: background-color var(--speed-normal);
@@ -48,17 +47,16 @@ textarea {
 
 .container {
 	background-color: var(--background);
-	/* border: 1px solid var(--carpet); */
 	min-height: 2em;
 	border-radius: var(--radius-unit);
 	transition: all var(--speed-normal);
 	padding: 1px;
 }
 
-.container.empty {
-	/* min-height: 2em; */
-	/* border-color: var(--background); */
-}
+/* .container.empty {
+	min-height: 2em;
+	border-color: var(--background);
+} */
 
 .container>* {
 	margin: -1px;
@@ -105,11 +103,6 @@ textarea {
 } */
 
 :root {
-	/* colors */
-	/* --background: white; */
-	/* --carpet: #f1f3f4; */
-	/* --main-text: #222; */
-
 	/* shadows */
 	--shadow-default: 0px 1px 1px 0 rgb(0 0 0 / 10%);
 	--shadow-hover: 0px 5px 5px 0 rgb(0 0 0 / 10%);
@@ -129,8 +122,6 @@ textarea {
 	--light-text: #666;
 	--main-text: #333;
 
-	/* --accent: #c81414; */
-	/* --accent: #cf3b3b; */
 	--accent: paleturquoise;
 
 	--cancel: lightcoral;

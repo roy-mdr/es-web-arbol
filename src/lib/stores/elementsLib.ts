@@ -14,8 +14,8 @@ function initElmtsLib() {
 		subscribe,
 
 		loadLibrary: (lib: App.ElementClass[]) => {
-			/* EVALUAR INPUT DE CLIENTE */
-			/* ======================== */
+			/* EVALUATE CLIENT INPUT */
+			/* ===================== */
 			set(lib);
 			update(elmtL => {
 				// updateRoutesAndSyncIds(elmtL);

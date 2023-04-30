@@ -44,8 +44,6 @@
 		}
 	}
 
-	// $: setupSortable(groupSortEl);
-
 	function setupSortable(sortableEl: HTMLElement) {
 		if (!sortableEl) return;
 
@@ -54,7 +52,7 @@
 				name: 'group',
 				put: ['group', 'panel-els', 'panel-group']
 			},
-			// @ts-ignore
+			// @ts-ignore --- because using my own fork
 			revertDOM: true,
 			animation: speedMs,
 			handle: '.handle',
@@ -67,7 +65,7 @@
 				// drag from one list and drop into another
 
 				// If origin list is "group"
-				// @ts-ignore
+				// @ts-ignore --- because using my own fork
 				if (e.fromSortable.options.group.name == 'group') {
 					// console.log('moving:', e.item);
 
@@ -86,7 +84,7 @@
 				}
 
 				// If origin list is "panel-els"
-				// @ts-ignore
+				// @ts-ignore --- because using my own fork
 				if (e.fromSortable.options.group.name == 'panel-els') {
 					// console.log('adding:', e.item);
 
@@ -100,7 +98,7 @@
 				}
 
 				// If origin list is "panel-group"
-				// @ts-ignore
+				// @ts-ignore --- because using my own fork
 				if (e.fromSortable.options.group.name == 'panel-group') {
 					const to_list = e.to.getAttribute('map') || '0';
 					const to_index = e.newIndex || 0;
@@ -134,15 +132,15 @@
 					return;
 					*/
 
-					// @ts-ignore
+					// @ts-ignore --- because using my own fork
 					const movingItem = content[e.oldIndex];
 
 					// Remove item from 'from' list
-					// @ts-ignore
+					// @ts-ignore --- because using my own fork
 					content.splice(e.oldIndex, 1);
 
 					// Copy item to 'to' list
-					// @ts-ignore
+					// @ts-ignore --- because using my own fork
 					content.splice(e.newIndex, 0, movingItem);
 
 					// Update all the tree to keep data in sync with DOM
@@ -151,18 +149,11 @@
 			},
 
 			onStart: (e) => {
-				// ~ dragstart:
-				// draggingEl.update( (el) => e.item ); // trigger
-				// ~ own dataTransfer.setData():
 				draggingType.update((t) => 'group-item');
 				draggingData.update((d) => `${e.from.getAttribute('map')}|${e.oldIndex}`);
-				// draggingParentEl.update((p) => inboxEl);
 			},
 
 			onEnd: (e) => {
-				// ~ dragend:
-				// draggingEl.update( (el) => undefined ); // kinda unnecesary (it is handled by the polyfill drop event)
-				// ~ own dataTransfer.setData():
 				draggingType.update((t) => '');
 				draggingData.update((d) => '');
 			}

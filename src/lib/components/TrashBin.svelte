@@ -21,7 +21,7 @@
 				put: ['group']
 			},
 			sort: false,
-			// @ts-ignore
+			// @ts-ignore --- because using my own fork
 			revertDOM: true,
 			animation: speedMs,
 			handle: '.handle',
@@ -30,46 +30,30 @@
 			delay: 200,
 			delayOnTouchOnly: true,
 
-			// @ts-ignore
+			// @ts-ignore --- because using my own fork
 			onDragIn: (e) => {
 				if ($draggingType == 'group-item' && !isHover) {
-					console.log('in');
+					// console.log('in');
 					isHover = true;
 				}
 			},
 
-			// @ts-ignore
+			// @ts-ignore --- because using my own fork
 			onDragOut: (e) => {
-				console.log('out');
+				// console.log('out');
 				isHover = false;
 			},
 
-			// @ts-ignore
+			// @ts-ignore --- because using my own fork
 			onDrop: (e) => {
-				console.log('Dropped!', $draggingData);
+				// console.log('Dropped!', $draggingData);
 				isHover = false;
-
-				/*
-				if (e.explicitOriginalTarget === sortEl) {
-					// if (e.fromSortable.options.group.name == 'group') {
-					// console.log('deleting:', e.item);
-
-					let from_list = e.from.getAttribute('map') || '0';
-					let from_index = e.oldIndex || 0;
-
-					if ($ctrlKeyIsDown) return;
-
-					mainTree.deleteItem(from_list, from_index);
-					// }
-				}
-				*/
 			},
 
 			onAdd: (e) => {
 				// drag from one list and drop into another
 
 				// If origin list is "group"
-				// @ts-ignore
 				if ($draggingType == 'group-item' && isHover) {
 					// console.log('moving:', e.item);
 

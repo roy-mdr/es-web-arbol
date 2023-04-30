@@ -38,8 +38,8 @@ function initMainTree() {
 		},
 
 		loadMainTree: (mainTree: App.Group) => {
-			/* EVALUAR INPUT DE CLIENTE */
-			/* ======================== */
+			/* EVALUATE CLIENT INPUT */
+			/* ===================== */
 			set(mainTree);
 			update(mt => {
 				updateRoutesAndSyncIds(mt);
@@ -116,8 +116,6 @@ function initMainTree() {
 				return mt;
 			})
 		},
-
-		// editItem: (map: App.TargetSingleMap) => update(n => n + 1),
 
 		deleteItem: (map: App.Group['route'], targetIndex: number) => {
 
@@ -311,7 +309,7 @@ function getGroup(groupRoute: App.Group['route']) {
 	route.shift(); // Ignore first item (home route)
 
 	for (let ix = 0; ix < route.length; ix++) {
-		// @ts-ignore // I guess I need conditional types... currentGroupList is a Group bc the function that called getList read the value from a Group
+		// @ts-ignore --- to fix
 		currentGroup = currentGroupList[parseInt(route[ix])];
 		currentGroupList = currentGroup?.children || undefined;
 	}
@@ -329,7 +327,7 @@ function getGroupList(groupRoute: App.Group['route']) {
 	route.shift(); // Ignore first item (home route)
 
 	for (let ix = 0; ix < route.length; ix++) {
-		// @ts-ignore // I guess I need conditional types... currentGroup is a Group bc the function that called getList read the value from a Group
+		// @ts-ignore --- to fix
 		currentGroup = currentGroup[parseInt(route[ix])]?.children || undefined;
 	}
 

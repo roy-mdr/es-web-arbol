@@ -17,7 +17,7 @@
 				pull: 'clone'
 			},
 			sort: false,
-			// @ts-ignore
+			// @ts-ignore --- because using my own fork
 			revertDOM: true,
 			animation: speedMs,
 			handle: '.handle',
