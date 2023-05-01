@@ -1,4 +1,5 @@
 import { get, writable } from 'svelte/store';
+import { appLocalStorage } from '$lib/util/storageMgmt';
 
 export const mtIds = writable(['z.0']);
 
@@ -20,7 +21,12 @@ const mainTreeStore = writable(defaultMainZone);
 
 function initMainTree() {
 
-	const { subscribe, set, update } = mainTreeStore
+	const localData = appLocalStorage.get('mainTree');
+	if (localData) {
+		mainTreeStore.set(JSON.parse(localData));
+	}
+
+	const { subscribe, set, update } = mainTreeStore;
 
 	return {
 		subscribe,
@@ -50,7 +56,9 @@ function initMainTree() {
 			update(mt => {
 				updateRoutesAndSyncIds(mt);
 				return mt;
-			})
+			});
+
+			saveLocalData();
 		},
 
 		addZone: (map: App.Zone['route'], targetIndex: number | undefined = undefined, newZone: App.NewZone) => {
@@ -90,7 +98,9 @@ function initMainTree() {
 
 				updateRoutesAndSyncIds(mt);
 				return mt;
-			})
+			});
+
+			saveLocalData();
 		},
 
 		addActivity: (map: App.Zone['route'], targetIndex: number | undefined = undefined, newAct: App.NewActivity) => {
@@ -125,7 +135,9 @@ function initMainTree() {
 
 				updateRoutesAndSyncIds(mt);
 				return mt;
-			})
+			});
+
+			saveLocalData();
 		},
 
 		// editItem: (map: App.TargetSingleMap) => update(n => n + 1),
@@ -156,7 +168,9 @@ function initMainTree() {
 
 				updateRoutesAndSyncIds(mt);
 				return mt;
-			})
+			});
+
+			saveLocalData();
 		},
 
 		moveItem: (map: App.MoveSingleMap) => {
@@ -202,7 +216,9 @@ function initMainTree() {
 
 				updateRoutesAndSyncIds(mt);
 				return mt;
-			})
+			});
+
+			saveLocalData();
 		},
 
 		copyItem: (map: App.MoveSingleMap) => {
@@ -251,13 +267,22 @@ function initMainTree() {
 
 				updateRoutesAndSyncIds(mt);
 				return mt;
-			})
+			});
+
+			saveLocalData();
 		},
 
-		rebuild: () => update(mt => {
-			updateRoutesAndSyncIds(mt);
-			return mt;
-		}),
+		rebuild: (hard = false) => {
+			update(mt => {
+				if (hard) {
+					mt.id = newMtId('zone');
+				}
+				updateRoutesAndSyncIds(mt);
+				return mt;
+			});
+
+			saveLocalData();
+		},
 
 		toggleOpenZone: (map: App.Zone['route']) => {
 
@@ -272,6 +297,8 @@ function initMainTree() {
 				zone.open = !zone.open;
 				return mt;
 			});
+
+			saveLocalData();
 		}
 	}
 }
@@ -286,6 +313,10 @@ function updateRoutesAndSyncIds(mainTree: App.Zone) {
 	mtIds.set([]);
 	recalcSum(mainTree);
 	deepRecurse(mainTree);
+}
+
+function saveLocalData() {
+	appLocalStorage.set('mainTree', JSON.stringify(get(mainTreeStore)));
 }
 
 function newMtId(itemType: App.Zone['type'] | App.Activity['type']): string {

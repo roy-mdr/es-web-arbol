@@ -1,4 +1,5 @@
 import { get, writable } from 'svelte/store';
+import { appLocalStorage } from '$lib/util/storageMgmt';
 
 export const actIds = writable(<App.ActivityClass['id'][]>[]);
 
@@ -7,6 +8,11 @@ export const actIds = writable(<App.ActivityClass['id'][]>[]);
 const actsLibStore = writable(<App.ActivityClass[]>[]);
 
 function initActsLib() {
+
+	const localData = appLocalStorage.get('actLib');
+	if (localData) {
+		actsLibStore.set(JSON.parse(localData));
+	}
 
 	const { subscribe, set, update } = actsLibStore
 
@@ -20,7 +26,9 @@ function initActsLib() {
 			update(actL => {
 				// updateRoutesAndSyncIds(actL);
 				return actL;
-			})
+			});
+
+			saveLocalData();
 		},
 
 		addActivity: (newAct: App.NewActivityClass) => {
@@ -39,7 +47,9 @@ function initActsLib() {
 
 				// updateRoutesAndSyncIds(actL);
 				return actL;
-			})
+			});
+
+			saveLocalData();
 		},
 
 		// editItem: (map: App.TargetSingleMap) => update(n => n + 1),
@@ -54,13 +64,19 @@ function initActsLib() {
 
 				// updateRoutesAndSyncIds(actL);
 				return actL;
-			})
+			});
+
+			saveLocalData();
 		},
 
-		rebuild: () => update(actL => {
-			// updateRoutesAndSyncIds(actL);
-			return actL;
-		})
+		rebuild: () => {
+			update(actL => {
+				// updateRoutesAndSyncIds(actL);
+				return actL;
+			});
+
+			saveLocalData();
+		}
 	}
 }
 
@@ -73,6 +89,10 @@ export const activityLib = initActsLib();
 function updateRoutesAndSyncIds(mainTree: App.Zone) {
 	actIds.set([]);
 	// deepRecurse(mainTree);
+}
+
+function saveLocalData() {
+	appLocalStorage.set('actLib', JSON.stringify(get(actsLibStore)));
 }
 
 function newActId(): string {
