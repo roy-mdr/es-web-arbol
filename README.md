@@ -1,4 +1,4 @@
-# Svelte Drang & Drop Demo Project
+# Svelte Sortable Drang & Drop Demo Project
 
 This is a reference / demo project in SvelteKit for drag and drop / sortable-lists applications.
 This project uses the native SortableJs that can be used for vanilla JavaScript applications.
