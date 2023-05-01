@@ -15,8 +15,8 @@ Hopefuly in the near future the PRs get merged so we could all enjoy this functi
 
 ## Install
 
-1. `git clone ...`
-2. `cd ...`
+1. `git clone https://github.com/roy-mdr/Svelte-Sortable-Drag-and-Drop.git`
+2. `cd Svelte-Sortable-Drag-and-Drop`
 3. `npm i`
 4. `npm run dev`
 
