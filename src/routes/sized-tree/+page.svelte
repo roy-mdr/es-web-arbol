@@ -3,20 +3,31 @@
 	import { get } from 'svelte/store';
 	import { assets } from '$app/paths';
 	import { writeTextFile } from '$lib/util/fileMgmt';
-	// import MakerJs from '../../../static/browser.maker';
 
 	import { mainTree } from '$lib/stores/mainTree';
 
-	// import { createRequire } from 'node:module';
-	// const require = createRequire(import.meta.url);
-
 	onMount(() => {
 		initD3();
+		import('makerjs').then((mjs) => {
+			makerjs = mjs;
+		});
 	});
+
+	const mtData = get(mainTree);
 
 	const radiusScaleFactor = 2;
 
-	let mtData = get(mainTree);
+	const margin = { top: 20, right: 90, bottom: 30, left: 90 };
+	const duration = 750;
+
+	let width;
+	let height;
+	let i = 0;
+	let root;
+	let treemap;
+	let svg;
+
+	let makerjs;
 
 	function saveSVG() {
 		let svg = document.getElementsByTagName('svg')[0];
@@ -24,16 +35,12 @@
 		writeTextFile(svg.outerHTML, 'sysTree', '.svg');
 	}
 
-	// console.log(MakerJs);
-
-	// var makerjs = require('makerjs');
-	/*
-
 	function saveDXF() {
 		var model = {};
 		var svg = document.getElementsByTagName('svg')[0];
 
 		var svgEls = svg.querySelectorAll('circle.node, path.link');
+
 		for (var i = 0; i < svgEls.length; i++) {
 			let el;
 
@@ -65,18 +72,8 @@
 			makerjs.model.addPath(model, el);
 		}
 
-		writeTextFile(makerjs.exporter.toDXF(model), 'sysTree.dxf');
+		writeTextFile(makerjs.exporter.toDXF(model), 'sysTree', '.dxf');
 	}
-*/
-
-	const margin = { top: 20, right: 90, bottom: 30, left: 90 };
-	let width;
-	let height;
-	let i = 0;
-	const duration = 750;
-	let root;
-	let treemap;
-	let svg;
 
 	function initD3() {
 		// Set the dimensions and margins of the diagram
@@ -274,9 +271,9 @@
 		// Creates a curved (diagonal) path from parent to the child nodes
 		function diagonal(s, d) {
 			const path = `M ${s.y} ${s.x}
-            C ${(s.y + d.y) / 2} ${s.x},
-              ${(s.y + d.y) / 2} ${d.x},
-              ${d.y} ${d.x}`;
+ C ${(s.y + d.y) / 2} ${s.x},
+ ${(s.y + d.y) / 2} ${d.x},
+ ${d.y} ${d.x}`;
 
 			return path;
 		}
@@ -297,11 +294,10 @@
 
 <svelte:head>
 	<script defer src="{assets}/d3.v4.min.js" on:load={initD3}></script>
-	<script defer src="{assets}/browser.maker.js"></script>
 </svelte:head>
 
 <button type="button" on:click={saveSVG}>SAVE SVG</button>
-<!-- <button type="button" on:click={saveDXF}>SAVE DXF</button> -->
+<button type="button" on:click={saveDXF}>SAVE DXF</button>
 <div id="dxf" />
 <div id="svgOut" />
 
