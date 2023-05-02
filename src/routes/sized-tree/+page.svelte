@@ -107,7 +107,7 @@
 		root.y0 = 0;
 
 		// Collapse after the second level
-		root.children.forEach(collapse);
+		root?.children?.forEach(collapse);
 		/* root.children.forEach((d) => {
 			if (d.children) {
 				d._children = d.children;
@@ -179,7 +179,7 @@
 			.text(function (d) {
 				return `${
 					d.data.name
-				} (${Math.round(d.data.sumfactor ? d.data.sumfactor : d.data.area)}m2)`;
+				} (${Math.round(d.data.sumfactor ? d.data.sumfactor : d.data.area) || 0}m2)`;
 			});
 
 		// UPDATE
