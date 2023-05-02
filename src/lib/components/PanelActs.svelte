@@ -61,7 +61,7 @@
 		<div class="title">Activities</div>
 	</div>
 
-	<input type="file" bind:this={fileSelect} on:change={loadActLib} />
+	<input type="file" accept=".actlib" bind:this={fileSelect} on:change={loadActLib} />
 	<button type="button" on:click={saveActLib}>Save Activities</button>
 
 	<AddActiv />
