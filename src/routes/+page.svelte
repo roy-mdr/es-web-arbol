@@ -47,6 +47,8 @@
 	<div class="mt-zone" bind:this={mtZone} on:click={handleMtZoneClick}>
 		<input type="file" accept=".systree" bind:this={fileSelect} on:change={loadTree} />
 		<button type="button" on:click={saveTree}>Save Tree</button>
+		<a href="/sunburst" target="_blank">View Flare Graph</a>
+		<a href="/sized-tree" target="_blank">View Sized-Tree Graph</a>
 		{#key $mainTree.id}
 			<Zone
 				id={$mainTree.id}
