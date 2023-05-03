@@ -2,7 +2,7 @@
 	import { slide } from 'svelte/transition';
 
 	import { mainTree } from '$lib/stores/mainTree';
-	import { selectedId } from '$lib/stores/appState';
+	import { selectedId, prepareDelete } from '$lib/stores/appState';
 	import { speedMs } from '$lib/stores/appConstants';
 
 	let inputName: HTMLElement;
@@ -18,6 +18,10 @@
 	}
 
 	function focusInput(trigger: any) {
+		if (!$selectedId) {
+			prepareDelete.set('');
+			return;
+		}
 		inputName?.focus();
 	}
 
@@ -36,8 +40,16 @@
 	}
 
 	function deleteItem() {
-		const { parentRoute, thisIndex } = getIndex();
-		mainTree.deleteItem(parentRoute || '', thisIndex || 0);
+		if ($prepareDelete == $selectedId) {
+			// Delete item
+			console.log('delete', $selectedId);
+			const { parentRoute, thisIndex } = getIndex();
+			mainTree.deleteItem(parentRoute || '', thisIndex || 0);
+			prepareDelete.set('');
+		} else {
+			console.log('prepare', $selectedId);
+			prepareDelete.set($selectedId);
+		}
 	}
 
 	function getIndex() {
@@ -104,9 +116,17 @@
 				<button type="button" on:click={duplicateItem}>Duplicate</button>
 				<button type="button" on:click={() => selectedId.set('')}>Cancel</button>
 				{#if itemClone.route && itemClone.route !== '0'}
-					<button type="button" on:click={deleteItem}>Delete</button>
+					<button type="button" on:click={deleteItem} class:sure={($selectedId = $prepareDelete)}
+						>Delete</button
+					>
 				{/if}
 			</div>
 		</form>
 	</div>
 {/if}
+
+<style>
+	.sure {
+		background-color: var(--cancel);
+	}
+</style>

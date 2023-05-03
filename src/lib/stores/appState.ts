@@ -4,6 +4,7 @@ export const selectedId = writable(<App.Zone['id'] | App.Activity['id']>"");
 export const ctrlKeyIsDown = writable(false);
 export const draggingType = writable("");
 export const draggingData = writable("");
+export const prepareDelete = writable(<App.Zone['id'] | App.Activity['id']>"");
 
 
 

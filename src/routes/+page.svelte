@@ -3,7 +3,7 @@
 	import SidePanel from '$lib/components/SidePanel.svelte';
 
 	import { mainTree } from '$lib/stores/mainTree';
-	import { ctrlKeyIsDown, selectedId } from '$lib/stores/appState';
+	import { ctrlKeyIsDown, selectedId, prepareDelete } from '$lib/stores/appState';
 
 	import { readTextFile, writeTextFile } from '$lib/util/fileMgmt';
 
@@ -15,6 +15,24 @@
 
 		if (ev.key === 'Escape') {
 			selectedId.set('');
+		}
+
+		if (ev.key == 'Delete' && ev.type == 'keydown') {
+			const itemClone = structuredClone(mainTree.selectById($selectedId));
+
+			let thisRoute = itemClone?.route.split('/') || [];
+			let thisIndex = parseInt(<string>thisRoute?.pop()) || 0;
+			let parentRoute = thisRoute.join('/');
+
+			if ($prepareDelete == $selectedId) {
+				// Delete item
+				console.log('delete', $selectedId);
+				mainTree.deleteItem(parentRoute || '', thisIndex || 0);
+				prepareDelete.set('');
+			} else {
+				console.log('prepare', $selectedId);
+				prepareDelete.set($selectedId);
+			}
 		}
 	}
 
