@@ -107,21 +107,29 @@
 				</label>
 			{/if}
 
-			<div>
-				<button type="submit">
-					<Check size={iconSize} />
-				</button>
-				<button type="button" on:click={duplicateItem}>
-					<Copy size={iconSize} />
-				</button>
-				<button type="button" on:click={() => selectedId.set('')}>
-					<X size={iconSize} />
-				</button>
-				{#if itemClone.route && itemClone.route !== '0'}
-					<button type="button" on:click={deleteItem} class:ru-sure={confirmDelete}>
-						<Trash2 size={iconSize} />
+			<div class="btn-group">
+				<div>
+					<button type="submit">
+						<Check size={iconSize} />
 					</button>
+				</div>
+				<div>
+					<button type="button" on:click={duplicateItem}>
+						<Copy size={iconSize} />
+					</button>
+				</div>
+				{#if itemClone.route && itemClone.route !== '0'}
+					<div>
+						<button type="button" on:click={deleteItem} class:ru-sure={confirmDelete}>
+							<Trash2 size={iconSize} />
+						</button>
+					</div>
 				{/if}
+				<div>
+					<button type="button" on:click={() => selectedId.set('')}>
+						<X size={iconSize} />
+					</button>
+				</div>
 			</div>
 		</form>
 	</div>
@@ -129,6 +137,6 @@
 
 <style>
 	.ru-sure {
-		background-color: var(--cancel);
+		background-color: var(--cancel) !important;
 	}
 </style>

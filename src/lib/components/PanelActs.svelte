@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import Sortable from 'sortablejs';
-	import { Upload, Save } from 'lucide-svelte';
+	import { Upload, Save, Plus } from 'lucide-svelte';
 	import AddActiv from '$lib/components/AddActiv.svelte';
 	import ActivityClass from '$lib/components/ActivityClass.svelte';
 	import FileButton from '$lib/components/FileButton.svelte';
@@ -63,12 +63,21 @@
 		<div class="title">Activities</div>
 	</div>
 
-	<FileButton name="upload" accept=".actlib" bind:files={loadFile} on:change={loadActLib}>
-		<Upload size={iconSize} />
-	</FileButton>
-	<button type="button" on:click={saveActLib}>
-		<Save size={iconSize} />
-	</button>
+	<div class="btn-group" style="width: 100%;">
+		<FileButton name="upload" accept=".actlib" bind:files={loadFile} on:change={loadActLib}>
+			<Upload size={iconSize} />
+		</FileButton>
+		<div>
+			<button type="button" on:click={saveActLib}>
+				<Save size={iconSize} />
+			</button>
+		</div>
+		<div>
+			<button type="button">
+				<Plus size={iconSize} />
+			</button>
+		</div>
+	</div>
 
 	<AddActiv />
 

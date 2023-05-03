@@ -105,6 +105,44 @@ textarea {
 /* .sortable-drag {
 } */
 
+.btn-group {
+	display: flex;
+	padding: 1px;
+}
+
+.btn-group>* {
+	flex-grow: 1;
+	margin: -1px;
+}
+
+.btn-group>* button {
+	width: 100%;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	color: var(--main-text);
+	background-color: var(--carpet);
+	border: 1px solid var(--light);
+	padding: var(--space-half) var(--space-unit);
+	transition: background-color var(--speed-normal);
+}
+
+.btn-group>* button:hover {
+	background-color: var(--hint);
+}
+
+.btn-group>*:first-child button {
+	border-top-left-radius: var(--radius-unit);
+	border-bottom-left-radius: var(--radius-unit);
+}
+
+.btn-group>*:last-child button {
+	border-top-right-radius: var(--radius-unit);
+	border-bottom-right-radius: var(--radius-unit);
+}
+
 :root {
 	/* colors */
 	/* --background: white; */
