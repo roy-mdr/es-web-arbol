@@ -3,6 +3,7 @@
 	import Sortable from 'sortablejs';
 	import AddActiv from '$lib/components/AddActiv.svelte';
 	import ActivityClass from '$lib/components/ActivityClass.svelte';
+	import FileButton from '$lib/components/FileButton.svelte';
 
 	import { dragNewActivity } from '$lib/stores/appState';
 	import { activityLib } from '$lib/stores/activityLib';
@@ -15,7 +16,7 @@
 	});
 
 	let sortEl: HTMLElement;
-	let fileSelect: HTMLInputElement;
+	let loadFile: FileList;
 
 	function setupSortable() {
 		Sortable.create(sortEl, {
@@ -44,9 +45,9 @@
 	}
 
 	function loadActLib() {
-		if (!fileSelect || !fileSelect.files) return;
+		if (!loadFile) return;
 
-		readTextFile(fileSelect.files[0], (mtJSON: string) => {
+		readTextFile(loadFile[0], (mtJSON: string) => {
 			activityLib.loadLibrary(JSON.parse(mtJSON));
 		});
 	}
@@ -61,7 +62,9 @@
 		<div class="title">Activities</div>
 	</div>
 
-	<input type="file" accept=".actlib" bind:this={fileSelect} on:change={loadActLib} />
+	<FileButton name="upload" accept=".actlib" bind:files={loadFile} on:change={loadActLib}
+		>Load Activities</FileButton
+	>
 	<button type="button" on:click={saveActLib}>Save Activities</button>
 
 	<AddActiv />

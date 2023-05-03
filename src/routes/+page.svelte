@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Zone from '$lib/components/Zone.svelte';
 	import SidePanel from '$lib/components/SidePanel.svelte';
+	import FileButton from '$lib/components/FileButton.svelte';
 
 	import { mainTree } from '$lib/stores/mainTree';
 	import { ctrlKeyIsDown, selectedId } from '$lib/stores/appState';
@@ -8,7 +9,7 @@
 	import { readTextFile, writeTextFile } from '$lib/util/fileMgmt';
 
 	let mtZone: HTMLElement;
-	let fileSelect: HTMLInputElement;
+	let loadFile: FileList;
 
 	function handleKeydown(ev: KeyboardEvent) {
 		ctrlKeyIsDown.set(ev.ctrlKey);
@@ -25,9 +26,9 @@
 	}
 
 	function loadTree() {
-		if (!fileSelect || !fileSelect.files) return;
+		if (!loadFile) return;
 
-		readTextFile(fileSelect.files[0], (mtJSON: string) => {
+		readTextFile(loadFile[0], (mtJSON: string) => {
 			mainTree.loadMainTree(JSON.parse(mtJSON));
 		});
 	}
@@ -45,7 +46,9 @@
 
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<div class="mt-zone" bind:this={mtZone} on:click={handleMtZoneClick}>
-		<input type="file" accept=".systree" bind:this={fileSelect} on:change={loadTree} />
+		<FileButton name="upload" accept=".systree" bind:files={loadFile} on:change={loadTree}
+			>Load Tree</FileButton
+		>
 		<button type="button" on:click={saveTree}>Save Tree</button>
 		<a href="/sunburst" target="_blank">View Flare Graph</a>
 		<a href="/sized-tree" target="_blank">View Sized-Tree Graph</a>
