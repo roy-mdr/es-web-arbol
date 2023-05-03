@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { slide } from 'svelte/transition';
 	import Sortable from 'sortablejs';
 	import AddActiv from '$lib/components/AddActiv.svelte';
+	import ActivityClass from '$lib/components/ActivityClass.svelte';
 
 	import { dragNewActivity } from '$lib/stores/appState';
 	import { activityLib } from '$lib/stores/activityLib';
@@ -68,14 +68,13 @@
 
 	<div class="container custom-overflow" class:empty={$activityLib.length < 1} bind:this={sortEl}>
 		{#each $activityLib as act (act.id)}
-			<div class="handle draggable" transition:slide|local={{ duration: speedMs }}>
-				<div class="act-name">
-					{act.name}
-				</div>
-				<div class="act-details">
-					{act.area}m2
-				</div>
-			</div>
+			<ActivityClass
+				name={act.name}
+				area={act.area}
+				on:remove={() => {
+					activityLib.deleteActivity(act.id);
+				}}
+			/>
 		{/each}
 	</div>
 </div>
@@ -93,11 +92,5 @@
 		overflow-x: hidden;
 		/* height: 100%; */
 		flex-grow: 1;
-	}
-
-	.act-details {
-		font-size: small;
-		font-style: italic;
-		color: var(--mid);
 	}
 </style>
