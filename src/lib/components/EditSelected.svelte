@@ -10,8 +10,10 @@
 	let itemClone: App.Zone | App.Activity | undefined;
 
 	let setColor = false;
+	let confirmDelete = false;
 
 	function getSelected(trigger: any, id: App.Zone['id'] | App.Activity['id']) {
+		confirmDelete = false;
 		itemData = mainTree.selectById(id);
 		itemClone = structuredClone(itemData);
 		setColor = itemClone?.type == 'zone' ? (itemClone?.color ? true : false) : false;
@@ -36,8 +38,12 @@
 	}
 
 	function deleteItem() {
-		const { parentRoute, thisIndex } = getIndex();
-		mainTree.deleteItem(parentRoute || '', thisIndex || 0);
+		if (confirmDelete) {
+			const { parentRoute, thisIndex } = getIndex();
+			mainTree.deleteItem(parentRoute || '', thisIndex || 0);
+		} else {
+			confirmDelete = true;
+		}
 	}
 
 	function getIndex() {
@@ -104,9 +110,15 @@
 				<button type="button" on:click={duplicateItem}>Duplicate</button>
 				<button type="button" on:click={() => selectedId.set('')}>Cancel</button>
 				{#if itemClone.route && itemClone.route !== '0'}
-					<button type="button" on:click={deleteItem}>Delete</button>
+					<button type="button" on:click={deleteItem} class:ru-sure={confirmDelete}>Delete</button>
 				{/if}
 			</div>
 		</form>
 	</div>
 {/if}
+
+<style>
+	.ru-sure {
+		background-color: var(--cancel);
+	}
+</style>
