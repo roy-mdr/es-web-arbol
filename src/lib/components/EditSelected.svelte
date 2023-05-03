@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { slide } from 'svelte/transition';
+	import { Check, X, Trash2, Copy } from 'lucide-svelte';
 
+	import { iconSize } from '$lib/stores/appConstants';
 	import { mainTree } from '$lib/stores/mainTree';
 	import { selectedId } from '$lib/stores/appState';
 	import { speedMs } from '$lib/stores/appConstants';
@@ -106,11 +108,19 @@
 			{/if}
 
 			<div>
-				<button type="submit">Save</button>
-				<button type="button" on:click={duplicateItem}>Duplicate</button>
-				<button type="button" on:click={() => selectedId.set('')}>Cancel</button>
+				<button type="submit">
+					<Check size={iconSize} />
+				</button>
+				<button type="button" on:click={duplicateItem}>
+					<Copy size={iconSize} />
+				</button>
+				<button type="button" on:click={() => selectedId.set('')}>
+					<X size={iconSize} />
+				</button>
 				{#if itemClone.route && itemClone.route !== '0'}
-					<button type="button" on:click={deleteItem} class:ru-sure={confirmDelete}>Delete</button>
+					<button type="button" on:click={deleteItem} class:ru-sure={confirmDelete}>
+						<Trash2 size={iconSize} />
+					</button>
 				{/if}
 			</div>
 		</form>

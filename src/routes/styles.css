@@ -17,6 +17,7 @@ input,
 button,
 select,
 textarea {
+	color: var(--main-text);
 	font-family: inherit;
 	font-size: inherit;
 }

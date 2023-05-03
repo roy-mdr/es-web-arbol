@@ -1,10 +1,11 @@
 <script lang="ts">
 	import Sortable from 'sortablejs';
 	import { onMount } from 'svelte';
+	import { Trash2 } from 'lucide-svelte';
 
+	import { speedMs, iconSize } from '$lib/stores/appConstants';
 	import { mainTree } from '$lib/stores/mainTree';
 	import { ctrlKeyIsDown, draggingType, draggingData } from '$lib/stores/appState';
-	import { speedMs } from '$lib/stores/appConstants';
 
 	onMount(() => {
 		setupSortable();
@@ -88,7 +89,9 @@
 
 <div class="panel radius">
 	<div class="container" bind:this={sortEl}>
-		<div class="icon" class:is-hover={isHover}>Trash Bin</div>
+		<div class="icon" class:is-hover={isHover}>
+			<Trash2 size={iconSize} />
+		</div>
 	</div>
 </div>
 

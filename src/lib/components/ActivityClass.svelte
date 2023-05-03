@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { slide } from 'svelte/transition';
 	import { createEventDispatcher } from 'svelte';
+	import { Trash2 } from 'lucide-svelte';
 
-	import { speedMs } from '$lib/stores/appConstants';
+	import { speedMs, iconSize } from '$lib/stores/appConstants';
 
 	const dispatch = createEventDispatcher();
 
@@ -30,7 +31,9 @@
 <div class="draggable" transition:slide|local={{ duration: speedMs }}>
 	{#if editActClass}
 		<div class="edit-act">
-			<button type="button" class:ru-sure={confirmDelete} on:click={deleteActClass}>-</button>
+			<button type="button" class:ru-sure={confirmDelete} on:click={deleteActClass}>
+				<Trash2 size={iconSize} />
+			</button>
 		</div>
 	{/if}
 	<!-- svelte-ignore a11y-click-events-have-key-events -->

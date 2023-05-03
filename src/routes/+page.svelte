@@ -1,8 +1,10 @@
 <script lang="ts">
+	import { Upload, Save } from 'lucide-svelte';
 	import Zone from '$lib/components/Zone.svelte';
 	import SidePanel from '$lib/components/SidePanel.svelte';
 	import FileButton from '$lib/components/FileButton.svelte';
 
+	import { iconSize } from '$lib/stores/appConstants';
 	import { mainTree } from '$lib/stores/mainTree';
 	import { ctrlKeyIsDown, selectedId } from '$lib/stores/appState';
 
@@ -46,10 +48,12 @@
 
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<div class="mt-zone" bind:this={mtZone} on:click={handleMtZoneClick}>
-		<FileButton name="upload" accept=".systree" bind:files={loadFile} on:change={loadTree}
-			>Load Tree</FileButton
-		>
-		<button type="button" on:click={saveTree}>Save Tree</button>
+		<FileButton name="upload" accept=".systree" bind:files={loadFile} on:change={loadTree}>
+			<Upload size={iconSize} />
+		</FileButton>
+		<button type="button" on:click={saveTree}>
+			<Save size={iconSize} />
+		</button>
 		<a href="/sunburst" target="_blank">View Flare Graph</a>
 		<a href="/sized-tree" target="_blank">View Sized-Tree Graph</a>
 		{#key $mainTree.id}

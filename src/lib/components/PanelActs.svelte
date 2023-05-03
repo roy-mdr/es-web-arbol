@@ -1,13 +1,14 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import Sortable from 'sortablejs';
+	import { Upload, Save } from 'lucide-svelte';
 	import AddActiv from '$lib/components/AddActiv.svelte';
 	import ActivityClass from '$lib/components/ActivityClass.svelte';
 	import FileButton from '$lib/components/FileButton.svelte';
 
 	import { dragNewActivity } from '$lib/stores/appState';
 	import { activityLib } from '$lib/stores/activityLib';
-	import { speedMs } from '$lib/stores/appConstants';
+	import { speedMs, iconSize } from '$lib/stores/appConstants';
 
 	import { readTextFile, writeTextFile } from '$lib/util/fileMgmt';
 
@@ -62,10 +63,12 @@
 		<div class="title">Activities</div>
 	</div>
 
-	<FileButton name="upload" accept=".actlib" bind:files={loadFile} on:change={loadActLib}
-		>Load Activities</FileButton
-	>
-	<button type="button" on:click={saveActLib}>Save Activities</button>
+	<FileButton name="upload" accept=".actlib" bind:files={loadFile} on:change={loadActLib}>
+		<Upload size={iconSize} />
+	</FileButton>
+	<button type="button" on:click={saveActLib}>
+		<Save size={iconSize} />
+	</button>
 
 	<AddActiv />
 
