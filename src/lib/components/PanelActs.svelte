@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { slide } from 'svelte/transition';
 	import Sortable from 'sortablejs';
-	import { Upload, Save, Plus } from 'lucide-svelte';
+	import { Upload, Save, Plus, ChevronUp } from 'lucide-svelte';
 	import AddActiv from '$lib/components/AddActiv.svelte';
 	import ActivityClass from '$lib/components/ActivityClass.svelte';
 	import FileButton from '$lib/components/FileButton.svelte';
@@ -18,6 +19,8 @@
 
 	let sortEl: HTMLElement;
 	let loadFile: FileList;
+
+	let openAdd = false;
 
 	function setupSortable() {
 		Sortable.create(sortEl, {
@@ -79,13 +82,26 @@
 			</button>
 		</div>
 		<div style="flex-grow: 1;">
-			<button type="button">
-				<Plus size={iconSize} />
+			<button
+				type="button"
+				on:click={() => {
+					openAdd = !openAdd;
+				}}
+			>
+				{#if openAdd}
+					<ChevronUp size={iconSize} />
+				{:else}
+					<Plus size={iconSize} />
+				{/if}
 			</button>
 		</div>
 	</div>
 
-	<AddActiv />
+	{#if openAdd}
+		<div transition:slide|local={{ duration: speedMs }}>
+			<AddActiv />
+		</div>
+	{/if}
 
 	<div class="container custom-overflow" class:empty={$activityLib.length < 1} bind:this={sortEl}>
 		{#each $activityLib as act (act.id)}
