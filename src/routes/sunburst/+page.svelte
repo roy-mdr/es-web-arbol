@@ -82,8 +82,8 @@
 
 <!-- The "on:load={initializeSunburst}" kinda does nothing" -->
 <svelte:head>
-	<script defer src="{assets}/d3.min.js"></script>
-	<script defer src="{assets}/sunburst-chart.js" on:load={initializeSunburst}></script>
+	<script defer src="{assets}/scripts/d3.min.js"></script>
+	<script defer src="{assets}/scripts/sunburst-chart.js" on:load={initializeSunburst}></script>
 </svelte:head>
 
 <label style="position: absolute;">
