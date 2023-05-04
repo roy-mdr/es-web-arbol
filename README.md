@@ -10,9 +10,9 @@
 - [x] Add click-ouside script
 	- [x] Add to ConfirmButton
 	- [x] Add to Edit ActivityClass
-- [ ] Style delete button for ActivityClass (slide left to right)
-- [ ] Style input text
+- [x] Style delete button for ActivityClass (slide left to right)
 - [ ] Add filter for activity lib
+- [ ] Style input text
 - [ ] Add comments for activity classes?
 - [ ] Add new activity lib method & button?
 - [ ] ADD WELCOME PAGE! Start new, load, continue project...
