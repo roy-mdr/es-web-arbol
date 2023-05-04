@@ -18,6 +18,7 @@
 - [ ] Add "class" property to App.Activity
 - [ ] Be able to modify one activity and modify all others with same class
 - [ ] Be able to modify one activity class and if exist in Tree, modify them
+- [ ] Add collapse/expand all button?
 
 ### v 1.1
 - [ ] Add multidrag (from different lists) support
