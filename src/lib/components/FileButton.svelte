@@ -18,6 +18,7 @@
 	<!-- NOTE: Don't use `hidden` as it prevents `required` from operating -->
 	<div class="hide">
 		<input
+			tabindex="-1"
 			type="file"
 			bind:this={elemFileInput}
 			bind:files
