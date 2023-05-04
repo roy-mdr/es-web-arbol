@@ -1,7 +1,9 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import Sortable from 'sortablejs';
+	import { BoxSelect } from 'lucide-svelte';
 
+	import { iconSize } from '$lib/stores/appConstants';
 	import { speedMs } from '$lib/stores/appConstants';
 
 	onMount(() => {
@@ -34,6 +36,20 @@
 		<div class="title">Zones</div>
 	</div>
 	<div class="container" bind:this={sortEl}>
-		<div class="handle draggable">New Zone</div>
+		<div class="handle draggable flex-center">
+			<BoxSelect size={iconSize} />
+			<span> New Zone </span>
+		</div>
 	</div>
 </div>
+
+<style>
+	.flex-center {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	.flex-center span {
+		margin-left: var(--space-half);
+	}
+</style>

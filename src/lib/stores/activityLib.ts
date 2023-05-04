@@ -45,7 +45,7 @@ function initActsLib() {
 
 				actL.unshift(setItem);
 
-				// updateRoutesAndSyncIds(actL);
+				updateRoutesAndSyncIds(actL);
 				return actL;
 			});
 
@@ -56,13 +56,20 @@ function initActsLib() {
 
 		deleteActivity: (id: App.ActivityClass['id']) => {
 			update(actL => {
+				let itemIndex: number | undefined;
 
-				//... SELECT ACTIVITY BY ID
+				actL.forEach((el, ix) => {
+					if (el.id == id) {
+						itemIndex = ix;
+					}
+				})
 
 				// Remove item from 'from' list
-				// actL.splice(targetIndex, 1);
+				if (itemIndex !== undefined) {
+					actL.splice(itemIndex, 1);
+				}
 
-				// updateRoutesAndSyncIds(actL);
+				updateRoutesAndSyncIds(actL);
 				return actL;
 			});
 
@@ -86,9 +93,22 @@ export const activityLib = initActsLib();
 
 /* HELPERS */
 
-function updateRoutesAndSyncIds(mainTree: App.Zone) {
+function updateRoutesAndSyncIds(actLib: App.ActivityClass[]) {
 	actIds.set([]);
-	// deepRecurse(mainTree);
+	deepRecurse();
+}
+
+function deepRecurse() {
+
+	const existingIds: App.ActivityClass['id'][] = [];
+
+	get(actsLibStore).forEach((el, ix, arr) => {
+		// Push id to store
+		existingIds.push(el.id);
+	});
+
+	actIds.set(existingIds);
+
 }
 
 function saveLocalData() {

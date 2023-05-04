@@ -1,38 +1,27 @@
-# create-svelte
+# SysTree Creator
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+## To-Do
 
-## Creating a project
+### v 0
+- [ ] Add secure-button component
+- [ ] Style input text
+- [ ] Add filter for activity lib
+- [ ] Add click-ouside script
+- [ ] Add comments for activity classes?
+- [ ] Add new activity lib method & button?
+- [ ] ADD WELCOME PAGE! Start new, load, continue project...
 
-If you're seeing this, you've probably already done this step. Congrats!
+### v 1.0
+- [ ] Add "class" property to App.Activity
+- [ ] Be able to modify one activity and modify all others with same class
+- [ ] Be able to modify one activity class and if exist in Tree, modify them
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+### v 1.1
+- [ ] Add multidrag (from different lists) support
+- [ ] Add multiselect edit
+- [ ] Better UX for item edit
+- [ ] Set Zone name at drop? Modal?
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+### v 1.2
+- [ ] Activity class image?
+- [ ] Activity class create/edit on modal

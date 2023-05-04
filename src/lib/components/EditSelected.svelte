@@ -1,57 +1,24 @@
 <script lang="ts">
 	import { slide } from 'svelte/transition';
+	import { Check, X, Trash2, Copy } from 'lucide-svelte';
 
+	import { iconSize } from '$lib/stores/appConstants';
 	import { mainTree } from '$lib/stores/mainTree';
 	import { selectedId } from '$lib/stores/appState';
 	import { speedMs } from '$lib/stores/appConstants';
 
-	let parentRoute: App.Zone['route'] | undefined;
-	let thisIndex: number | undefined;
 	let inputName: HTMLElement;
 	let itemData: App.Zone | App.Activity | undefined;
 	let itemClone: App.Zone | App.Activity | undefined;
 
 	let setColor = false;
+	let confirmDelete = false;
 
-	function getSelected(rootItem: App.Zone | App.Activity, id: App.Zone['id'] | App.Activity['id']) {
-		parentRoute = undefined;
-		thisIndex = undefined;
-		itemData = selectById(rootItem, id);
+	function getSelected(trigger: any, id: App.Zone['id'] | App.Activity['id']) {
+		confirmDelete = false;
+		itemData = mainTree.selectById(id);
 		itemClone = structuredClone(itemData);
 		setColor = itemClone?.type == 'zone' ? (itemClone?.color ? true : false) : false;
-	}
-
-	function selectById(
-		rootItem: App.Zone | App.Activity,
-		id: App.Zone['id'] | App.Activity['id']
-	): App.Zone | App.Activity | undefined {
-		if (rootItem.id == id) {
-			let thisRoute = rootItem.route.split('/') || '';
-			thisIndex = parseInt(<string>thisRoute?.pop()) || 0;
-			parentRoute = thisRoute.join('/');
-
-			return rootItem;
-		} else {
-			if (rootItem.type == 'zone') {
-				// Use a for loop instead of forEach to avoid nested functions
-				// Otherwise "return" will not work properly
-				for (let i = 0; i < rootItem.children.length; i++) {
-					// Search in the current child
-					let innerSearch = selectById(rootItem.children[i], id);
-
-					if (innerSearch) {
-						let thisRoute = innerSearch.route.split('/') || '';
-						thisIndex = parseInt(<string>thisRoute?.pop()) || 0;
-						parentRoute = thisRoute.join('/');
-
-						return innerSearch;
-					}
-				}
-			}
-
-			// The node has not been found and we have no more options
-			return;
-		}
 	}
 
 	function focusInput(trigger: any) {
@@ -62,6 +29,8 @@
 	$: focusInput($selectedId);
 
 	function duplicateItem() {
+		const { parentRoute, thisIndex } = getIndex();
+
 		mainTree.copyItem({
 			from_list: parentRoute || '',
 			from_index: thisIndex || 0,
@@ -70,13 +39,33 @@
 		});
 	}
 
+	function deleteItem() {
+		if (confirmDelete) {
+			const { parentRoute, thisIndex } = getIndex();
+			mainTree.deleteItem(parentRoute || '', thisIndex || 0);
+		} else {
+			confirmDelete = true;
+		}
+	}
+
+	function getIndex() {
+		let thisRoute = itemClone?.route.split('/') || [];
+		let thisIndex = parseInt(<string>thisRoute?.pop()) || 0;
+		let parentRoute = thisRoute.join('/');
+		return {
+			thisRoute: thisRoute,
+			thisIndex: thisIndex,
+			parentRoute: parentRoute
+		};
+	}
+
 	function submitChanges() {
 		for (const key in itemClone) {
 			// @ts-ignore --- tu q vasa ber d la bida mijo
 			itemData[key] = itemClone[key];
 		}
 		if (!setColor && itemData?.type == 'zone') {
-			delete itemData?.color;
+			delete itemData.color;
 		}
 		mainTree.rebuild();
 		selectedId.set('');
@@ -111,24 +100,43 @@
 				{/if}
 			{/if}
 
-			{#if itemClone?.type == 'act'}
+			{#if itemClone.type == 'act'}
 				<label>
 					Area:
 					<input type="text" bind:value={itemClone.area} />
 				</label>
 			{/if}
 
-			<div>
-				<button type="submit">Save</button>
-				<button type="button" on:click={duplicateItem}>Duplicate</button>
-				<button type="button" on:click={() => selectedId.set('')}>Cancel</button>
-				{#if parentRoute}
-					<button
-						type="button"
-						on:click={() => mainTree.deleteItem(parentRoute || '', thisIndex || 0)}>Delete</button
-					>
+			<div class="btn-group" style="width: 100%;">
+				<div style="flex-grow: 1;">
+					<button type="submit">
+						<Check size={iconSize} />
+					</button>
+				</div>
+				<div style="flex-grow: 1;">
+					<button type="button" on:click={duplicateItem}>
+						<Copy size={iconSize} />
+					</button>
+				</div>
+				{#if itemClone.route && itemClone.route !== '0'}
+					<div style="flex-grow: 1;">
+						<button type="button" on:click={deleteItem} class:ru-sure={confirmDelete}>
+							<Trash2 size={iconSize} />
+						</button>
+					</div>
 				{/if}
+				<div style="flex-grow: 1;">
+					<button type="button" on:click={() => selectedId.set('')}>
+						<X size={iconSize} />
+					</button>
+				</div>
 			</div>
 		</form>
 	</div>
 {/if}
+
+<style>
+	.ru-sure {
+		background-color: var(--cancel) !important;
+	}
+</style>

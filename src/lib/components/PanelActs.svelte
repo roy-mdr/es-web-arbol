@@ -2,11 +2,14 @@
 	import { onMount } from 'svelte';
 	import { slide } from 'svelte/transition';
 	import Sortable from 'sortablejs';
+	import { Upload, Save, Plus, ChevronUp } from 'lucide-svelte';
 	import AddActiv from '$lib/components/AddActiv.svelte';
+	import ActivityClass from '$lib/components/ActivityClass.svelte';
+	import FileButton from '$lib/components/FileButton.svelte';
 
 	import { dragNewActivity } from '$lib/stores/appState';
 	import { activityLib } from '$lib/stores/activityLib';
-	import { speedMs } from '$lib/stores/appConstants';
+	import { speedMs, iconSize } from '$lib/stores/appConstants';
 
 	import { readTextFile, writeTextFile } from '$lib/util/fileMgmt';
 
@@ -15,7 +18,9 @@
 	});
 
 	let sortEl: HTMLElement;
-	let fileSelect: HTMLInputElement;
+	let loadFile: FileList;
+
+	let openAdd = false;
 
 	function setupSortable() {
 		Sortable.create(sortEl, {
@@ -44,9 +49,9 @@
 	}
 
 	function loadActLib() {
-		if (!fileSelect || !fileSelect.files) return;
+		if (!loadFile) return;
 
-		readTextFile(fileSelect.files[0], (mtJSON: string) => {
+		readTextFile(loadFile[0], (mtJSON: string) => {
 			activityLib.loadLibrary(JSON.parse(mtJSON));
 		});
 	}
@@ -61,21 +66,52 @@
 		<div class="title">Activities</div>
 	</div>
 
-	<input type="file" accept=".actlib" bind:this={fileSelect} on:change={loadActLib} />
-	<button type="button" on:click={saveActLib}>Save Activities</button>
+	<div class="btn-group" style="width: 100%;">
+		<FileButton
+			style="flex-grow: 1;"
+			name="upload"
+			accept=".actlib"
+			bind:files={loadFile}
+			on:change={loadActLib}
+		>
+			<Upload size={iconSize} />
+		</FileButton>
+		<div style="flex-grow: 1;">
+			<button type="button" on:click={saveActLib}>
+				<Save size={iconSize} />
+			</button>
+		</div>
+		<div style="flex-grow: 1;">
+			<button
+				type="button"
+				on:click={() => {
+					openAdd = !openAdd;
+				}}
+			>
+				{#if openAdd}
+					<ChevronUp size={iconSize} />
+				{:else}
+					<Plus size={iconSize} />
+				{/if}
+			</button>
+		</div>
+	</div>
 
-	<AddActiv />
+	{#if openAdd}
+		<div transition:slide|local={{ duration: speedMs }}>
+			<AddActiv />
+		</div>
+	{/if}
 
 	<div class="container custom-overflow" class:empty={$activityLib.length < 1} bind:this={sortEl}>
 		{#each $activityLib as act (act.id)}
-			<div class="handle draggable" transition:slide|local={{ duration: speedMs }}>
-				<div class="act-name">
-					{act.name}
-				</div>
-				<div class="act-details">
-					{act.area}m2
-				</div>
-			</div>
+			<ActivityClass
+				name={act.name}
+				area={act.area}
+				on:remove={() => {
+					activityLib.deleteActivity(act.id);
+				}}
+			/>
 		{/each}
 	</div>
 </div>
@@ -93,11 +129,5 @@
 		overflow-x: hidden;
 		/* height: 100%; */
 		flex-grow: 1;
-	}
-
-	.act-details {
-		font-size: small;
-		font-style: italic;
-		color: var(--mid);
 	}
 </style>

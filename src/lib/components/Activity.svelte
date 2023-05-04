@@ -40,6 +40,6 @@
 	.act-details {
 		font-size: small;
 		font-style: italic;
-		color: var(--mid);
+		color: var(--main-text-50pct);
 	}
 </style>

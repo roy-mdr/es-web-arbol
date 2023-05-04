@@ -299,6 +299,10 @@ function initMainTree() {
 			});
 
 			saveLocalData();
+		},
+
+		selectById: (id: App.Zone['id'] | App.Activity['id']) => {
+			return selectById(get(mainTreeStore), id);
 		}
 	}
 }
@@ -343,6 +347,31 @@ function makeId(prefix = '', length = 5): string {
 		result += characters.charAt(Math.floor(Math.random() * charactersLength));
 	}
 	return result;
+}
+
+function selectById(
+	rootItem: App.Zone | App.Activity,
+	id: App.Zone['id'] | App.Activity['id']
+): App.Zone | App.Activity | undefined {
+	if (rootItem.id == id) {
+		return rootItem;
+	} else {
+		if (rootItem.type == 'zone') {
+			// Use a for loop instead of forEach to avoid nested functions
+			// Otherwise "return" will not work properly
+			for (let i = 0; i < rootItem.children.length; i++) {
+				// Search in the current child
+				let innerSearch = selectById(rootItem.children[i], id);
+
+				if (innerSearch) {
+					return innerSearch;
+				}
+			}
+		}
+
+		// The node has not been found and we have no more options
+		return;
+	}
 }
 
 function getZone(zoneRoute: App.Zone['route']) {

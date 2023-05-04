@@ -1,14 +1,16 @@
 <script lang="ts">
 	import Zone from '$lib/components/Zone.svelte';
 	import SidePanel from '$lib/components/SidePanel.svelte';
+	import MainActions from '$lib/components/MainTreeActions.svelte';
 
 	import { mainTree } from '$lib/stores/mainTree';
 	import { ctrlKeyIsDown, selectedId } from '$lib/stores/appState';
 
 	import { readTextFile, writeTextFile } from '$lib/util/fileMgmt';
+	import type { DispatchOptions } from 'svelte/internal';
 
 	let mtZone: HTMLElement;
-	let fileSelect: HTMLInputElement;
+	let loadFile: FileList;
 
 	function handleKeydown(ev: KeyboardEvent) {
 		ctrlKeyIsDown.set(ev.ctrlKey);
@@ -24,10 +26,10 @@
 		}
 	}
 
-	function loadTree() {
-		if (!fileSelect || !fileSelect.files) return;
+	function loadTree(ev: CustomEvent) {
+		if (!ev.detail) return;
 
-		readTextFile(fileSelect.files[0], (mtJSON: string) => {
+		readTextFile(ev.detail[0], (mtJSON: string) => {
 			mainTree.loadMainTree(JSON.parse(mtJSON));
 		});
 	}
@@ -45,10 +47,13 @@
 
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<div class="mt-zone" bind:this={mtZone} on:click={handleMtZoneClick}>
-		<input type="file" accept=".systree" bind:this={fileSelect} on:change={loadTree} />
-		<button type="button" on:click={saveTree}>Save Tree</button>
-		<a href="/sunburst" target="_blank">View Flare Graph</a>
-		<a href="/sized-tree" target="_blank">View Sized-Tree Graph</a>
+		<MainActions
+			on:new={() => {
+				mainTree.newMainTree('Main');
+			}}
+			on:load={loadTree}
+			on:save={saveTree}
+		/>
 		{#key $mainTree.id}
 			<Zone
 				id={$mainTree.id}
