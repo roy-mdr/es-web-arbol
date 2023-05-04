@@ -1,9 +1,10 @@
 <script lang="ts">
 	export let files: FileList;
 	export let name: string;
-	let elemFileInput: HTMLElement;
+	let elemFileInput: HTMLInputElement;
 
 	function onButtonClick() {
+		elemFileInput.value = '';
 		elemFileInput.click();
 	}
 
@@ -23,6 +24,9 @@
 			{name}
 			{...prunedRestProps()}
 			on:change
+			on:click={() => {
+				elemFileInput.value = '';
+			}}
 		/>
 	</div>
 	<!-- Button -->
