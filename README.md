@@ -2,6 +2,9 @@
 
 ## To-Do
 
+### Bugs
+- [ ] File Button won't trigger event onchange, because it didnt change XD (AKA only works once)
+
 ### v 0
 - [ ] Add secure-button component
 - [ ] Style input text

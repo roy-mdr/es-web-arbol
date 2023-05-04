@@ -44,10 +44,10 @@
 		</div>
 	</div>
 	<div class="graph-links">
-		<a href="/sunburst" target="_blank">
+		<a href="./sunburst" target="_blank">
 			<Boxes size={iconSize} /> Sunflare
 		</a>
-		<a href="/sized-tree" target="_blank">
+		<a href="./sized-tree" target="_blank">
 			<Boxes size={iconSize} /> Sized-Tree
 		</a>
 	</div>
