@@ -10,6 +10,7 @@
 
 	const dispatch = createEventDispatcher();
 
+	export let id: App.ActivityClass['id'];
 	export let name: App.ActivityClass['name'];
 	export let area: App.ActivityClass['area'];
 
@@ -25,6 +26,7 @@
 </script>
 
 <div
+	{id}
 	class="act-class"
 	transition:slide|local={{ duration: speedMs }}
 	use:clickOutside

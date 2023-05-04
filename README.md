@@ -11,10 +11,10 @@
 	- [x] Add to ConfirmButton
 	- [x] Add to Edit ActivityClass
 - [x] Style delete button for ActivityClass (slide left to right)
-- [ ] Add filter for activity lib
-- [ ] Style input text
+- [x] Add filter for activity lib
+- [ ] Style text inputs
 - [ ] Add comments for activity classes?
-- [ ] Add new activity lib method & button?
+- [ ] Add new-activity lib method & button?
 - [ ] ADD WELCOME PAGE! Start new, load, continue project...
 
 ### v 1.0

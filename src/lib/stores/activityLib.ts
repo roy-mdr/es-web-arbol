@@ -1,4 +1,4 @@
-import { get, writable } from 'svelte/store';
+import { get, writable, derived } from 'svelte/store';
 import { appLocalStorage } from '$lib/util/storageMgmt';
 
 export const actIds = writable(<App.ActivityClass['id'][]>[]);
@@ -29,6 +29,15 @@ function initActsLib() {
 			});
 
 			saveLocalData();
+		},
+
+		selectById: (id: App.ActivityClass['id']) => {
+			const store = get(actsLibStore);
+			for (let i = 0; i < store.length; i++) {
+				if (store[i].id == id) {
+					return store[i];
+				}
+			}
 		},
 
 		addActivity: (newAct: App.NewActivityClass) => {
@@ -88,6 +97,14 @@ function initActsLib() {
 }
 
 export const activityLib = initActsLib();
+
+
+
+export const activityLibFilterTerm = writable('');
+export const activityLibFiltered = derived(
+	[activityLibFilterTerm, actsLibStore],
+	([$activityLibFilterTerm, $actsLibStore]) => $actsLibStore.filter(item => item.name.includes($activityLibFilterTerm))
+);
 
 
 
