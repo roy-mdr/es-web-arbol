@@ -2,11 +2,17 @@
 
 ## To-Do
 
+### Bugs
+- [x] File Button won't trigger event onchange, because it didnt change XD (AKA only works once)
+
 ### v 0
-- [ ] Add secure-button component
+- [x] Add confirm-button component
+- [ ] Add click-ouside script
+	- [ ] Add to ConfirmButton
+	- [ ] Add to Edit ActivityClass
+- [ ] Style delete button for ActivityClass (slide left to right)
 - [ ] Style input text
 - [ ] Add filter for activity lib
-- [ ] Add click-ouside script
 - [ ] Add comments for activity classes?
 - [ ] Add new activity lib method & button?
 - [ ] ADD WELCOME PAGE! Start new, load, continue project...
@@ -15,6 +21,7 @@
 - [ ] Add "class" property to App.Activity
 - [ ] Be able to modify one activity and modify all others with same class
 - [ ] Be able to modify one activity class and if exist in Tree, modify them
+- [ ] Add collapse/expand all button?
 
 ### v 1.1
 - [ ] Add multidrag (from different lists) support
