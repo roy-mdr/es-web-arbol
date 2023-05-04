@@ -6,10 +6,13 @@
 - [x] File Button won't trigger event onchange, because it didnt change XD (AKA only works once)
 
 ### v 0
-- [ ] Add secure-button component
+- [x] Add confirm-button component
+- [ ] Add click-ouside script
+	- [ ] Add to ConfirmButton
+	- [ ] Add to Edit ActivityClass
+- [ ] Style delete button for ActivityClass (slide left to right)
 - [ ] Style input text
 - [ ] Add filter for activity lib
-- [ ] Add click-ouside script
 - [ ] Add comments for activity classes?
 - [ ] Add new activity lib method & button?
 - [ ] ADD WELCOME PAGE! Start new, load, continue project...

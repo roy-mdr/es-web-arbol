@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { slide } from 'svelte/transition';
 	import { Check, X, Trash2, Copy } from 'lucide-svelte';
+	import ConfirmButton from '$lib/components/ConfirmButton.svelte';
 
 	import { iconSize } from '$lib/stores/appConstants';
 	import { mainTree } from '$lib/stores/mainTree';
@@ -12,10 +13,8 @@
 	let itemClone: App.Zone | App.Activity | undefined;
 
 	let setColor = false;
-	let confirmDelete = false;
 
 	function getSelected(trigger: any, id: App.Zone['id'] | App.Activity['id']) {
-		confirmDelete = false;
 		itemData = mainTree.selectById(id);
 		itemClone = structuredClone(itemData);
 		setColor = itemClone?.type == 'zone' ? (itemClone?.color ? true : false) : false;
@@ -40,12 +39,8 @@
 	}
 
 	function deleteItem() {
-		if (confirmDelete) {
-			const { parentRoute, thisIndex } = getIndex();
-			mainTree.deleteItem(parentRoute || '', thisIndex || 0);
-		} else {
-			confirmDelete = true;
-		}
+		const { parentRoute, thisIndex } = getIndex();
+		mainTree.deleteItem(parentRoute || '', thisIndex || 0);
 	}
 
 	function getIndex() {
@@ -120,9 +115,9 @@
 				</div>
 				{#if itemClone.route && itemClone.route !== '0'}
 					<div style="flex-grow: 1;">
-						<button type="button" on:click={deleteItem} class:ru-sure={confirmDelete}>
+						<ConfirmButton on:confirm={deleteItem}>
 							<Trash2 size={iconSize} />
-						</button>
+						</ConfirmButton>
 					</div>
 				{/if}
 				<div style="flex-grow: 1;">
@@ -134,9 +129,3 @@
 		</form>
 	</div>
 {/if}
-
-<style>
-	.ru-sure {
-		background-color: var(--cancel) !important;
-	}
-</style>

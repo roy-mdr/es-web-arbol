@@ -2,6 +2,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import { Upload, Save, FilePlus2, Boxes } from 'lucide-svelte';
 	import FileButton from '$lib/components/FileButton.svelte';
+	import ConfirmButton from '$lib/components/ConfirmButton.svelte';
 
 	import { iconSize } from '$lib/stores/appConstants';
 
@@ -12,16 +13,13 @@
 
 <div class="actions">
 	<div class="btn-group">
-		<div>
-			<button
-				type="button"
-				on:click={() => {
-					dispatch('new');
-				}}
-			>
-				<FilePlus2 size={iconSize} />
-			</button>
-		</div>
+		<ConfirmButton
+			on:confirm={() => {
+				dispatch('new');
+			}}
+		>
+			<FilePlus2 size={iconSize} />
+		</ConfirmButton>
 		<FileButton
 			name="upload"
 			accept=".systree"

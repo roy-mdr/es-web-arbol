@@ -2,6 +2,7 @@
 	import { slide } from 'svelte/transition';
 	import { createEventDispatcher } from 'svelte';
 	import { Trash2 } from 'lucide-svelte';
+	import ConfirmButton from '$lib/components/ConfirmButton.svelte';
 
 	import { speedMs, iconSize } from '$lib/stores/appConstants';
 
@@ -11,19 +12,13 @@
 	export let area: App.ActivityClass['area'];
 
 	let editActClass = false;
-	let confirmDelete = false;
 
 	function toggleEdit() {
-		confirmDelete = false;
 		editActClass = !editActClass;
 	}
 
 	function deleteActClass() {
-		if (confirmDelete) {
-			dispatch('remove');
-		} else {
-			confirmDelete = true;
-		}
+		dispatch('remove');
 	}
 </script>
 
@@ -31,9 +26,9 @@
 <div class="draggable" transition:slide|local={{ duration: speedMs }}>
 	{#if editActClass}
 		<div class="edit-act">
-			<button type="button" class:ru-sure={confirmDelete} on:click={deleteActClass}>
+			<ConfirmButton on:confirm={deleteActClass}>
 				<Trash2 size={iconSize} />
-			</button>
+			</ConfirmButton>
 		</div>
 	{/if}
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -52,9 +47,5 @@
 		font-size: small;
 		font-style: italic;
 		color: var(--mid);
-	}
-
-	.ru-sure {
-		background-color: var(--cancel);
 	}
 </style>
