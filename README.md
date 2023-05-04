@@ -7,9 +7,9 @@
 
 ### v 0
 - [x] Add confirm-button component
-- [ ] Add click-ouside script
-	- [ ] Add to ConfirmButton
-	- [ ] Add to Edit ActivityClass
+- [x] Add click-ouside script
+	- [x] Add to ConfirmButton
+	- [x] Add to Edit ActivityClass
 - [ ] Style delete button for ActivityClass (slide left to right)
 - [ ] Style input text
 - [ ] Add filter for activity lib

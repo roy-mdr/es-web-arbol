@@ -6,6 +6,8 @@
 
 	import { speedMs, iconSize } from '$lib/stores/appConstants';
 
+	import clickOutside from '$lib/util/clickOutside';
+
 	const dispatch = createEventDispatcher();
 
 	export let name: App.ActivityClass['name'];
@@ -23,7 +25,12 @@
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div class="draggable" transition:slide|local={{ duration: speedMs }}>
+<div
+	class="draggable"
+	transition:slide|local={{ duration: speedMs }}
+	use:clickOutside
+	on:click_outside={() => (editActClass = false)}
+>
 	{#if editActClass}
 		<div class="edit-act">
 			<ConfirmButton on:confirm={deleteActClass}>

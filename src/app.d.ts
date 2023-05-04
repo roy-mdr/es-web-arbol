@@ -63,6 +63,12 @@ declare global {
 			'map'?: string;
 		}
 	}
+
+	declare namespace svelte.JSX {
+		interface HTMLAttributes<T> {
+			onclick_outside: () => void
+		}
+	}
 }
 
 export { };
