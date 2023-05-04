@@ -107,25 +107,25 @@
 				</label>
 			{/if}
 
-			<div class="btn-group">
-				<div>
+			<div class="btn-group" style="width: 100%;">
+				<div style="flex-grow: 1;">
 					<button type="submit">
 						<Check size={iconSize} />
 					</button>
 				</div>
-				<div>
+				<div style="flex-grow: 1;">
 					<button type="button" on:click={duplicateItem}>
 						<Copy size={iconSize} />
 					</button>
 				</div>
 				{#if itemClone.route && itemClone.route !== '0'}
-					<div>
+					<div style="flex-grow: 1;">
 						<button type="button" on:click={deleteItem} class:ru-sure={confirmDelete}>
 							<Trash2 size={iconSize} />
 						</button>
 					</div>
 				{/if}
-				<div>
+				<div style="flex-grow: 1;">
 					<button type="button" on:click={() => selectedId.set('')}>
 						<X size={iconSize} />
 					</button>

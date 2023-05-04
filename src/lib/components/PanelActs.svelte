@@ -64,15 +64,21 @@
 	</div>
 
 	<div class="btn-group" style="width: 100%;">
-		<FileButton name="upload" accept=".actlib" bind:files={loadFile} on:change={loadActLib}>
+		<FileButton
+			style="flex-grow: 1;"
+			name="upload"
+			accept=".actlib"
+			bind:files={loadFile}
+			on:change={loadActLib}
+		>
 			<Upload size={iconSize} />
 		</FileButton>
-		<div>
+		<div style="flex-grow: 1;">
 			<button type="button" on:click={saveActLib}>
 				<Save size={iconSize} />
 			</button>
 		</div>
-		<div>
+		<div style="flex-grow: 1;">
 			<button type="button">
 				<Plus size={iconSize} />
 			</button>

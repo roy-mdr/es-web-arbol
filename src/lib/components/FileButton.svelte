@@ -13,7 +13,7 @@
 	}
 </script>
 
-<div class="file-button">
+<div class="file-button" style={$$restProps.style}>
 	<!-- NOTE: Don't use `hidden` as it prevents `required` from operating -->
 	<div class="hide">
 		<input
@@ -30,6 +30,7 @@
 		type="button"
 		class="file-button-btn"
 		disabled={$$restProps.disabled}
+		style={$$restProps.style}
 		on:click={onButtonClick}
 		on:keydown
 		on:keyup

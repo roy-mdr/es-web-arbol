@@ -90,7 +90,7 @@
 <div class="panel radius">
 	<div class="container" bind:this={sortEl}>
 		<div class="icon" class:is-hover={isHover}>
-			<Trash2 size={iconSize} />
+			<Trash2 size={iconSize} color="var(--main-text-50pct)" />
 		</div>
 	</div>
 </div>
@@ -103,10 +103,13 @@
 	.icon {
 		background-color: var(--carpet);
 		padding: var(--space-unit);
-		color: var(--main-text);
+		color: var(--main-text-50pct);
 		border: 1px solid var(--light);
 		border-radius: var(--radius-unit);
 		transition: background-color var(--speed-normal);
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 
 	.is-hover {

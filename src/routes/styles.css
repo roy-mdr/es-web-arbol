@@ -108,10 +108,10 @@ textarea {
 .btn-group {
 	display: flex;
 	padding: 1px;
+	width: max-content;
 }
 
 .btn-group>* {
-	flex-grow: 1;
 	margin: -1px;
 }
 
@@ -167,6 +167,7 @@ textarea {
 
 	--light-text: #666;
 	--main-text: #333;
+	--main-text-50pct: rgba(51, 51, 51, 0.5);
 
 	/* --accent: #c81414; */
 	/* --accent: #cf3b3b; */

@@ -1,14 +1,13 @@
 <script lang="ts">
-	import { Upload, Save, FilePlus2 } from 'lucide-svelte';
 	import Zone from '$lib/components/Zone.svelte';
 	import SidePanel from '$lib/components/SidePanel.svelte';
-	import FileButton from '$lib/components/FileButton.svelte';
+	import MainActions from '$lib/components/MainTreeActions.svelte';
 
-	import { iconSize } from '$lib/stores/appConstants';
 	import { mainTree } from '$lib/stores/mainTree';
 	import { ctrlKeyIsDown, selectedId } from '$lib/stores/appState';
 
 	import { readTextFile, writeTextFile } from '$lib/util/fileMgmt';
+	import type { DispatchOptions } from 'svelte/internal';
 
 	let mtZone: HTMLElement;
 	let loadFile: FileList;
@@ -27,10 +26,10 @@
 		}
 	}
 
-	function loadTree() {
-		if (!loadFile) return;
+	function loadTree(ev: CustomEvent) {
+		if (!ev.detail) return;
 
-		readTextFile(loadFile[0], (mtJSON: string) => {
+		readTextFile(ev.detail[0], (mtJSON: string) => {
 			mainTree.loadMainTree(JSON.parse(mtJSON));
 		});
 	}
@@ -48,28 +47,13 @@
 
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<div class="mt-zone" bind:this={mtZone} on:click={handleMtZoneClick}>
-		<div class="btn-group" style="width: 12em">
-			<div>
-				<button
-					type="button"
-					on:click={() => {
-						mainTree.newMainTree('Main');
-					}}
-				>
-					<FilePlus2 size={iconSize} />
-				</button>
-			</div>
-			<FileButton name="upload" accept=".systree" bind:files={loadFile} on:change={loadTree}>
-				<Upload size={iconSize} />
-			</FileButton>
-			<div>
-				<button type="button" on:click={saveTree}>
-					<Save size={iconSize} />
-				</button>
-			</div>
-		</div>
-		<a href="/sunburst" target="_blank">View Flare Graph</a>
-		<a href="/sized-tree" target="_blank">View Sized-Tree Graph</a>
+		<MainActions
+			on:new={() => {
+				mainTree.newMainTree('Main');
+			}}
+			on:load={loadTree}
+			on:save={saveTree}
+		/>
 		{#key $mainTree.id}
 			<Zone
 				id={$mainTree.id}
