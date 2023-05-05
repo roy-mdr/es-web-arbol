@@ -6,9 +6,10 @@
 	import AddActiv from '$lib/components/AddActiv.svelte';
 	import ActivityClass from '$lib/components/ActivityClass.svelte';
 	import FileButton from '$lib/components/FileButton.svelte';
+	import FilterActiv from '$lib/components/FilterActiv.svelte';
 
 	import { dragNewActivity } from '$lib/stores/appState';
-	import { activityLib, activityLibFiltered, activityLibFilterTerm } from '$lib/stores/activityLib';
+	import { activityLib, activityLibFiltered } from '$lib/stores/activityLib';
 	import { speedMs, iconSize } from '$lib/stores/appConstants';
 
 	import { readTextFile, writeTextFile } from '$lib/util/fileMgmt';
@@ -21,10 +22,7 @@
 	let loadFile: FileList;
 
 	let openAdd = false;
-	let filTerm = '';
 	let transitioning = false;
-
-	$: activityLibFilterTerm.set(filTerm);
 
 	function setupSortable() {
 		Sortable.create(sortEl, {
@@ -109,8 +107,7 @@
 		</div>
 	{/if}
 
-	<!-- <label for="searchInput">Search</label> -->
-	<input bind:value={filTerm} type="text" id="searchInput" placeholder="Filter..." />
+	<FilterActiv />
 
 	<div class="container custom-overflow" class:empty={$activityLib.length < 1} bind:this={sortEl}>
 		{#each $activityLibFiltered as act (act.id)}

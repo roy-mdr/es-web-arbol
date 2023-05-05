@@ -12,6 +12,9 @@
 	- [x] Add to Edit ActivityClass
 - [x] Style delete button for ActivityClass (slide left to right)
 - [x] Add filter for activity lib
+- [ ] Filter case unsensitive
+- [ ] Only allow a-z chars on create ActivityClass
+- [ ] Refactor ActivityPannel actions to a component
 - [ ] Style text inputs
 - [ ] Add comments for activity classes?
 - [ ] Add new-activity lib method & button?
@@ -32,3 +35,6 @@
 ### v 1.2
 - [ ] Activity class image?
 - [ ] Activity class create/edit on modal
+
+### ...
+- [ ] Improve accesibility...
