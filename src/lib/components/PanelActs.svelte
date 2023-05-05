@@ -1,27 +1,20 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { slide } from 'svelte/transition';
 	import Sortable from 'sortablejs';
-	import { Upload, Save, Plus, ChevronUp } from 'lucide-svelte';
-	import AddActiv from '$lib/components/AddActiv.svelte';
+	import ActivityLibActions from '$lib/components/ActivityLibActions.svelte';
 	import ActivityClass from '$lib/components/ActivityClass.svelte';
-	import FileButton from '$lib/components/FileButton.svelte';
 	import FilterActiv from '$lib/components/FilterActiv.svelte';
 
 	import { dragNewActivity } from '$lib/stores/appState';
 	import { activityLib, activityLibFiltered } from '$lib/stores/activityLib';
-	import { speedMs, iconSize } from '$lib/stores/appConstants';
-
-	import { readTextFile, writeTextFile } from '$lib/util/fileMgmt';
+	import { speedMs } from '$lib/stores/appConstants';
 
 	onMount(() => {
 		setupSortable();
 	});
 
 	let sortEl: HTMLElement;
-	let loadFile: FileList;
 
-	let openAdd = false;
 	let transitioning = false;
 
 	function setupSortable() {
@@ -51,18 +44,6 @@
 			}
 		});
 	}
-
-	function loadActLib() {
-		if (!loadFile) return;
-
-		readTextFile(loadFile[0], (mtJSON: string) => {
-			activityLib.loadLibrary(JSON.parse(mtJSON));
-		});
-	}
-
-	function saveActLib() {
-		writeTextFile(JSON.stringify($activityLib), 'My Activity Library', '.actlib');
-	}
 </script>
 
 <div class="panel radius flex-column" style="flex-grow: 1;">
@@ -70,42 +51,7 @@
 		<div class="title">Activities</div>
 	</div>
 
-	<div class="btn-group" style="width: 100%;">
-		<FileButton
-			style="flex-grow: 1;"
-			name="upload"
-			accept=".actlib"
-			bind:files={loadFile}
-			on:change={loadActLib}
-		>
-			<Upload size={iconSize} />
-		</FileButton>
-		<div style="flex-grow: 1;">
-			<button type="button" on:click={saveActLib}>
-				<Save size={iconSize} />
-			</button>
-		</div>
-		<div style="flex-grow: 1;">
-			<button
-				type="button"
-				on:click={() => {
-					openAdd = !openAdd;
-				}}
-			>
-				{#if openAdd}
-					<ChevronUp size={iconSize} />
-				{:else}
-					<Plus size={iconSize} />
-				{/if}
-			</button>
-		</div>
-	</div>
-
-	{#if openAdd}
-		<div transition:slide|local={{ duration: speedMs }}>
-			<AddActiv />
-		</div>
-	{/if}
+	<ActivityLibActions />
 
 	<FilterActiv />
 

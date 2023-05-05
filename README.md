@@ -14,7 +14,7 @@
 - [x] Add filter for activity lib
 - [x] Filter case unsensitive
 - [x] Normalize text on create ActivityClass.
-- [ ] Refactor ActivityPannel actions to a component
+- [x] Refactor ActivityPannel actions to a component
 - [ ] Style text inputs
 - [ ] Add new-activity lib method & button?
 - [ ] ADD WELCOME PAGE! Start new, load, continue project...
