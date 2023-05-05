@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 
+	import clickOutside from '$lib/util/clickOutside';
+
 	const dispatch = createEventDispatcher();
 
 	export let time = 2000;
@@ -10,8 +12,7 @@
 
 	function onButtonClick() {
 		if (confirmAction) {
-			clearTimeout(abortTimeout);
-			confirmAction = false;
+			reset();
 			dispatch('confirm');
 		} else {
 			confirmAction = true;
@@ -26,9 +27,14 @@
 		delete $$restProps.class;
 		return $$restProps;
 	}
+
+	function reset() {
+		clearTimeout(abortTimeout);
+		confirmAction = false;
+	}
 </script>
 
-<div class="confirm-button" style={$$restProps.style}>
+<div class="confirm-button" style={$$restProps.style} use:clickOutside on:click_outside={reset}>
 	<button
 		type="button"
 		class:confirm={confirmAction}

@@ -6,9 +6,10 @@
 	import AddActiv from '$lib/components/AddActiv.svelte';
 	import ActivityClass from '$lib/components/ActivityClass.svelte';
 	import FileButton from '$lib/components/FileButton.svelte';
+	import FilterActiv from '$lib/components/FilterActiv.svelte';
 
 	import { dragNewActivity } from '$lib/stores/appState';
-	import { activityLib } from '$lib/stores/activityLib';
+	import { activityLib, activityLibFiltered } from '$lib/stores/activityLib';
 	import { speedMs, iconSize } from '$lib/stores/appConstants';
 
 	import { readTextFile, writeTextFile } from '$lib/util/fileMgmt';
@@ -21,6 +22,7 @@
 	let loadFile: FileList;
 
 	let openAdd = false;
+	let transitioning = false;
 
 	function setupSortable() {
 		Sortable.create(sortEl, {
@@ -39,7 +41,9 @@
 			delayOnTouchOnly: true,
 
 			onStart: (e) => {
-				dragNewActivity.setActData($activityLib[<number>e.oldIndex]);
+				const selectAct = activityLib.selectById(e.item.id);
+				if (!selectAct) return;
+				dragNewActivity.setActData(selectAct);
 			},
 
 			onEnd: (e) => {
@@ -103,14 +107,20 @@
 		</div>
 	{/if}
 
+	<FilterActiv />
+
 	<div class="container custom-overflow" class:empty={$activityLib.length < 1} bind:this={sortEl}>
-		{#each $activityLib as act (act.id)}
+		{#each $activityLibFiltered as act (act.id)}
 			<ActivityClass
+				id={act.id}
 				name={act.name}
 				area={act.area}
+				disabled={transitioning}
 				on:remove={() => {
 					activityLib.deleteActivity(act.id);
 				}}
+				on:start-transition={() => (transitioning = true)}
+				on:end-transition={() => (transitioning = false)}
 			/>
 		{/each}
 	</div>

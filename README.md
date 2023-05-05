@@ -7,14 +7,17 @@
 
 ### v 0
 - [x] Add confirm-button component
-- [ ] Add click-ouside script
-	- [ ] Add to ConfirmButton
-	- [ ] Add to Edit ActivityClass
-- [ ] Style delete button for ActivityClass (slide left to right)
-- [ ] Style input text
-- [ ] Add filter for activity lib
+- [x] Add click-ouside script
+	- [x] Add to ConfirmButton
+	- [x] Add to Edit ActivityClass
+- [x] Style delete button for ActivityClass (slide left to right)
+- [x] Add filter for activity lib
+- [ ] Filter case unsensitive
+- [ ] Only allow a-z chars on create ActivityClass
+- [ ] Refactor ActivityPannel actions to a component
+- [ ] Style text inputs
 - [ ] Add comments for activity classes?
-- [ ] Add new activity lib method & button?
+- [ ] Add new-activity lib method & button?
 - [ ] ADD WELCOME PAGE! Start new, load, continue project...
 
 ### v 1.0
@@ -32,3 +35,6 @@
 ### v 1.2
 - [ ] Activity class image?
 - [ ] Activity class create/edit on modal
+
+### ...
+- [ ] Improve accesibility...

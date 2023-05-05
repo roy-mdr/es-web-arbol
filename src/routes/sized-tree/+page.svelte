@@ -293,7 +293,7 @@
 </script>
 
 <svelte:head>
-	<script defer src="{assets}/d3.v4.min.js" on:load={initD3}></script>
+	<script defer src="{assets}/scripts/d3.v4.min.js" on:load={initD3}></script>
 </svelte:head>
 
 <button type="button" on:click={saveSVG}>SAVE SVG</button>
