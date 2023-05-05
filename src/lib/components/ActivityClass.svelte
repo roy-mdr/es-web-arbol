@@ -13,6 +13,7 @@
 	export let id: App.ActivityClass['id'];
 	export let name: App.ActivityClass['name'];
 	export let area: App.ActivityClass['area'];
+	export let disabled: boolean;
 
 	let editActClass = false;
 
@@ -23,18 +24,37 @@
 	function deleteActClass() {
 		dispatch('remove');
 	}
+
+	function startTransition() {
+		dispatch('start-transition');
+	}
+
+	function endTransition() {
+		dispatch('end-transition');
+	}
 </script>
 
 <div
 	{id}
 	class="act-class"
 	transition:slide|local={{ duration: speedMs }}
+	on:introstart={startTransition}
+	on:outrostart={startTransition}
+	on:introend={endTransition}
+	on:outroend={endTransition}
 	use:clickOutside
 	on:click_outside={() => (editActClass = false)}
 >
 	<div class="edit-act-cont">
 		{#if editActClass}
-			<div class="edit-act" transition:slide|local={{ axis: 'x', duration: speedMs }}>
+			<div
+				class="edit-act"
+				transition:slide|local={{ axis: 'x', duration: speedMs }}
+				on:introstart={startTransition}
+				on:outrostart={startTransition}
+				on:introend={endTransition}
+				on:outroend={endTransition}
+			>
 				<ConfirmButton on:confirm={deleteActClass}>
 					<Trash2 size={iconSize} color="var(--main-text-50pct)" />
 				</ConfirmButton>
@@ -44,7 +64,7 @@
 
 	<div class="draggable">
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
-		<div class="handle" on:click={toggleEdit}>
+		<div class:handle={!disabled} on:click={toggleEdit}>
 			<div class="act-name">
 				{name}
 			</div>

@@ -22,6 +22,7 @@
 
 	let openAdd = false;
 	let filTerm = '';
+	let transitioning = false;
 
 	$: activityLibFilterTerm.set(filTerm);
 
@@ -117,9 +118,12 @@
 				id={act.id}
 				name={act.name}
 				area={act.area}
+				disabled={transitioning}
 				on:remove={() => {
 					activityLib.deleteActivity(act.id);
 				}}
+				on:start-transition={() => (transitioning = true)}
+				on:end-transition={() => (transitioning = false)}
 			/>
 		{/each}
 	</div>
