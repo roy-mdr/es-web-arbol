@@ -101,6 +101,7 @@
 	}
 
 	.edit-act :global(button) {
+		background-color: var(--background);
 		padding: var(--space-half);
 		border: none;
 		display: flex;

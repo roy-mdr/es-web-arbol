@@ -1,5 +1,6 @@
 import { get, writable, derived } from 'svelte/store';
 import { appLocalStorage } from '$lib/util/storageMgmt';
+import { normalizeTxtSingleLine, eliminarDiacriticosEs, evalFloat } from '$lib/util/normalizeTxt';
 
 export const actIds = writable(<App.ActivityClass['id'][]>[]);
 
@@ -45,11 +46,19 @@ function initActsLib() {
 			if (!newAct?.name) return;
 			if (newAct?.area === undefined) return;
 
+			const cleanName = normalizeTxtSingleLine(newAct.name)
+			if (!cleanName) return;
+			const cleanAreaStr = evalFloat(`${newAct.area}`)
+			if (!cleanAreaStr) return;
+
+			const floatArea = parseFloat(cleanAreaStr);
+
 			update(actL => {
 				let setItem: App.ActivityClass = {
 					id: newActId(),
-					name: newAct.name,
-					area: newAct.area > 0 ? Math.round((+newAct.area + Number.EPSILON) * 100) / 100 : 0
+					name: cleanName,
+					area: floatArea > 0 ? Math.round((+floatArea + Number.EPSILON) * 100) / 100 : 0,
+					keywords: eliminarDiacriticosEs(cleanName.toLowerCase())
 				}
 
 				actL.unshift(setItem);
@@ -103,7 +112,13 @@ export const activityLib = initActsLib();
 export const activityLibFilterTerm = writable('');
 export const activityLibFiltered = derived(
 	[activityLibFilterTerm, actsLibStore],
-	([$activityLibFilterTerm, $actsLibStore]) => $actsLibStore.filter(item => item.name.includes($activityLibFilterTerm))
+	([$activityLibFilterTerm, $actsLibStore]) => {
+		return $actsLibStore.filter((item) => {
+			return item.keywords.includes(
+				eliminarDiacriticosEs(normalizeTxtSingleLine($activityLibFilterTerm.toLowerCase()))
+			);
+		});
+	}
 );
 
 

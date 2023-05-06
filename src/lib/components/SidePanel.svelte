@@ -17,6 +17,7 @@
 		height: 100%;
 		display: grid;
 		grid-template-rows: auto auto 1fr auto;
+		min-width: 250px;
 	}
 
 	.side-panel :global(> *) {

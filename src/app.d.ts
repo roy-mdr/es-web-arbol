@@ -11,6 +11,7 @@ declare global {
 			id: string;
 			name: string;
 			area: number;
+			keywords: string;
 		}
 
 		interface NewActivityClass {
