@@ -15,8 +15,8 @@
 - [x] Filter case unsensitive
 - [x] Normalize text on create ActivityClass.
 - [x] Refactor ActivityPannel actions to a component
+- [x] Clean input data at create & edit
 - [ ] Style text inputs
-- [ ] Add new-activity lib method & button?
 - [ ] ADD WELCOME PAGE! Start new, load, continue project...
 
 ### v 1.0
@@ -31,6 +31,7 @@
 - [ ] Add multidrag (from different lists) support
 - [ ] Add multiselect edit
 - [ ] Better UX for item edit
+- [ ] Custom sidebar XD please?
 
 ### v 1.2
 - [ ] Activity class image?
@@ -40,3 +41,4 @@
 
 ### ...
 - [ ] Improve accesibility...
+- [ ] Change Zone text color if background is too dark

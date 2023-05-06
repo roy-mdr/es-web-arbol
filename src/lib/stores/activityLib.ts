@@ -1,6 +1,6 @@
 import { get, writable, derived } from 'svelte/store';
 import { appLocalStorage } from '$lib/util/storageMgmt';
-import { normalizeTxtSingleLine, eliminarDiacriticosEs } from '$lib/util/normalizeTxt';
+import { normalizeTxtSingleLine, eliminarDiacriticosEs, evalFloat } from '$lib/util/normalizeTxt';
 
 export const actIds = writable(<App.ActivityClass['id'][]>[]);
 
@@ -48,12 +48,16 @@ function initActsLib() {
 
 			const cleanName = normalizeTxtSingleLine(newAct.name)
 			if (!cleanName) return;
+			const cleanAreaStr = evalFloat(`${newAct.area}`)
+			if (!cleanAreaStr) return;
+
+			const floatArea = parseFloat(cleanAreaStr);
 
 			update(actL => {
 				let setItem: App.ActivityClass = {
 					id: newActId(),
 					name: cleanName,
-					area: newAct.area > 0 ? Math.round((+newAct.area + Number.EPSILON) * 100) / 100 : 0,
+					area: floatArea > 0 ? Math.round((+floatArea + Number.EPSILON) * 100) / 100 : 0,
 					keywords: eliminarDiacriticosEs(cleanName.toLowerCase())
 				}
 

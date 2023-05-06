@@ -7,15 +7,21 @@
 	import { speedMs, iconSize } from '$lib/stores/appConstants';
 
 	import { readTextFile, writeTextFile } from '$lib/util/fileMgmt';
+	import { evalFloat } from '$lib/util/normalizeTxt';
 
-	let inputName: HTMLElement;
 	let loadFile: FileList;
+	let inputName: HTMLInputElement;
+	let inputArea: HTMLInputElement;
 
 	let openAdd = false;
 
-	let newAct: App.NewActivityClass = {
+	interface NewActivityClassInput extends Omit<App.NewActivityClass, 'area'> {
+		area: string | undefined;
+	}
+
+	let newAct: NewActivityClassInput = {
 		name: '',
-		area: 0
+		area: undefined
 	};
 
 	function focusInput(trigger: any) {
@@ -24,11 +30,24 @@
 	$: focusInput(inputName);
 
 	function addActAndReset() {
-		activityLib.addActivity(newAct);
+		const areaFloat = evalFloat(newAct.area || '');
+
+		if (!areaFloat) {
+			inputArea.value = '';
+			inputArea.focus();
+			return;
+		}
+
+		activityLib.addActivity({
+			name: newAct.name,
+			area: parseFloat(areaFloat)
+		});
+
 		newAct = {
 			name: '',
-			area: 0
+			area: undefined
 		};
+
 		inputName.focus();
 	}
 
@@ -89,10 +108,18 @@
 					type="text"
 					name="name"
 					autocomplete="off"
+					placeholder="Name..."
 					bind:value={newAct.name}
 					bind:this={inputName}
 				/>
-				<input type="text" name="area" autocomplete="off" bind:value={newAct.area} />
+				<input
+					type="text"
+					name="area"
+					autocomplete="off"
+					placeholder="Area..."
+					bind:value={newAct.area}
+					bind:this={inputArea}
+				/>
 				<button type="submit">
 					<Plus size={iconSize} />
 				</button>

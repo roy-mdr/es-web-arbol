@@ -26,3 +26,15 @@ export function normalizeTxtMultiLine(text: string) {
 		.normalize('NFD')
 		.normalize();
 }
+
+export function evalInt(string: string) {
+	const testStr = string.replace(/\D/g, '');
+	if (!testStr) return;
+	return string.replace(/[^\d-]/g, '');
+}
+
+export function evalFloat(string: string) {
+	const testStr = string.replace(/\D/g, '');
+	if (!testStr) return;
+	return string.replace(/[^\d\.-]/g, '');
+}

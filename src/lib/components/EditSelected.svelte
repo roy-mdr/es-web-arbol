@@ -8,6 +8,8 @@
 	import { selectedId } from '$lib/stores/appState';
 	import { speedMs } from '$lib/stores/appConstants';
 
+	import { normalizeTxtSingleLine, eliminarDiacriticosEs, evalFloat } from '$lib/util/normalizeTxt';
+
 	let inputName: HTMLElement;
 	let itemData: App.Zone | App.Activity | undefined;
 	let itemClone: App.Zone | App.Activity | undefined;
@@ -55,13 +57,66 @@
 	}
 
 	function submitChanges() {
-		for (const key in itemClone) {
-			// @ts-ignore --- tu q vasa ber d la bida mijo
-			itemData[key] = itemClone[key];
+		if (itemClone?.type == 'zone') {
+			evalZone(itemClone);
 		}
+
+		if (itemClone?.type == 'act') {
+			evalAct(itemClone);
+		}
+	}
+
+	function evalZone(zoneClone: App.Zone) {
+		const zName = normalizeTxtSingleLine(zoneClone.name);
+		const zFactStr = evalFloat(`${zoneClone.factor}`);
+
+		if (!zName || !zFactStr) return;
+
+		const clean: App.Zone = {
+			id: zoneClone.id,
+			type: 'zone',
+			name: zName,
+			route: zoneClone.route,
+			open: zoneClone.open,
+			factor: parseFloat(zFactStr || ''),
+			sum: zoneClone.sum,
+			sumfactor: zoneClone.sumfactor,
+			color: zoneClone.color,
+			children: zoneClone.children
+		};
+
+		for (const key in clean) {
+			// @ts-ignore --- tu q vasa ber d la bida mijo
+			itemData[key] = clean[key];
+		}
+
 		if (!setColor && itemData?.type == 'zone') {
 			delete itemData.color;
 		}
+
+		mainTree.rebuild();
+		selectedId.set('');
+	}
+
+	function evalAct(actClone: App.Activity) {
+		const aName = normalizeTxtSingleLine(actClone.name);
+		const aArea = evalFloat(`${actClone.area}`);
+
+		if (!aName || !aArea) return;
+
+		const clean: App.Activity = {
+			id: actClone.id,
+			type: 'act',
+			route: actClone.route,
+			name: aName,
+			area: parseFloat(aArea || '')
+		};
+
+		for (const key in clean) {
+			// @ts-ignore --- tu q vasa ber d la bida mijo
+			itemData[key] = clean[key];
+		}
+
 		mainTree.rebuild();
 		selectedId.set('');
 	}
@@ -79,40 +134,33 @@
 			</label>
 
 			{#if itemClone.type == 'zone'}
-				<label>
-					Factor:
-					<input type="text" bind:value={itemClone.factor} />
-				</label>
-				<label>
-					Color:
-					<input type="checkbox" bind:checked={setColor} />
-				</label>
-				{#if setColor}
+				<div>
 					<label>
-						Set Color:
-						<input type="color" bind:value={itemClone.color} />
+						Factor:
+						<input type="text" bind:value={itemClone.factor} />
 					</label>
-				{/if}
+				</div>
+				<div>
+					<label>
+						Color:
+						<input type="checkbox" bind:checked={setColor} />
+					</label>
+					{#if setColor}
+						<input type="color" bind:value={itemClone.color} />
+					{/if}
+				</div>
 			{/if}
 
 			{#if itemClone.type == 'act'}
-				<label>
-					Area:
-					<input type="text" bind:value={itemClone.area} />
-				</label>
+				<div>
+					<label>
+						Area:
+						<input type="text" bind:value={itemClone.area} />
+					</label>
+				</div>
 			{/if}
 
 			<div class="btn-group" style="width: 100%;">
-				<div style="flex-grow: 1;">
-					<button type="submit">
-						<Check size={iconSize} />
-					</button>
-				</div>
-				<div style="flex-grow: 1;">
-					<button type="button" on:click={duplicateItem}>
-						<Copy size={iconSize} />
-					</button>
-				</div>
 				{#if itemClone.route && itemClone.route !== '0'}
 					<div style="flex-grow: 1;">
 						<ConfirmButton on:confirm={deleteItem}>
@@ -121,8 +169,18 @@
 					</div>
 				{/if}
 				<div style="flex-grow: 1;">
+					<button type="button" on:click={duplicateItem}>
+						<Copy size={iconSize} />
+					</button>
+				</div>
+				<div style="flex-grow: 1;">
 					<button type="button" on:click={() => selectedId.set('')}>
 						<X size={iconSize} />
+					</button>
+				</div>
+				<div style="flex-grow: 1;">
+					<button type="submit">
+						<Check size={iconSize} />
 					</button>
 				</div>
 			</div>
