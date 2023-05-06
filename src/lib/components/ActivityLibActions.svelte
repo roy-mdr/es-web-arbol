@@ -2,6 +2,7 @@
 	import { slide } from 'svelte/transition';
 	import { Upload, Save, Plus, ChevronUp } from 'lucide-svelte';
 	import FileButton from '$lib/components/FileButton.svelte';
+	import FormStyle from '$lib/components/FormStyle.svelte';
 
 	import { activityLib } from '$lib/stores/activityLib';
 	import { speedMs, iconSize } from '$lib/stores/appConstants';
@@ -98,32 +99,39 @@
 
 	<div style="margin: -1px;">
 		{#if openAdd}
-			<form
-				autocomplete="off"
-				class="draggable"
-				on:submit|preventDefault={addActAndReset}
-				transition:slide|local={{ duration: speedMs }}
-			>
-				<input
-					type="text"
-					name="name"
+			<div transition:slide|local={{ duration: speedMs }}>
+				<FormStyle
 					autocomplete="off"
-					placeholder="Name..."
-					bind:value={newAct.name}
-					bind:this={inputName}
-				/>
-				<input
-					type="text"
-					name="area"
-					autocomplete="off"
-					placeholder="Area..."
-					bind:value={newAct.area}
-					bind:this={inputArea}
-				/>
-				<button type="submit">
-					<Plus size={iconSize} />
-				</button>
-			</form>
+					style="border-top-left-radius: 0; border-top-right-radius: 0;"
+					on:submit={addActAndReset}
+				>
+					<div class="row">
+						<input
+							type="text"
+							name="name"
+							autocomplete="off"
+							placeholder="Name..."
+							class="unit"
+							bind:value={newAct.name}
+							bind:this={inputName}
+						/>
+					</div>
+					<div class="row">
+						<input
+							type="text"
+							name="area"
+							autocomplete="off"
+							placeholder="Area..."
+							class="unit"
+							bind:value={newAct.area}
+							bind:this={inputArea}
+						/>
+						<button type="submit" class="unit">
+							<Plus size={iconSize} />
+						</button>
+					</div>
+				</FormStyle>
+			</div>
 		{/if}
 	</div>
 </div>
@@ -135,10 +143,5 @@
 
 	.btn-group.is-open :global(> *:last-child button) {
 		border-bottom-right-radius: 0;
-	}
-
-	form {
-		border-bottom-left-radius: var(--radius-unit);
-		border-bottom-right-radius: var(--radius-unit);
 	}
 </style>

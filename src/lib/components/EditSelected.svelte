@@ -2,6 +2,7 @@
 	import { slide } from 'svelte/transition';
 	import { Check, X, Trash2, Copy } from 'lucide-svelte';
 	import ConfirmButton from '$lib/components/ConfirmButton.svelte';
+	import FormStyle from '$lib/components/FormStyle.svelte';
 
 	import { iconSize } from '$lib/stores/appConstants';
 	import { mainTree } from '$lib/stores/mainTree';
@@ -122,68 +123,84 @@
 	}
 </script>
 
-{#if itemClone}
-	<div class="panel radius" transition:slide|local={{ duration: speedMs }} on:introend={focusInput}>
-		<div class="header">
-			<div class="title">Edit: {itemClone.id}</div>
-		</div>
-		<form on:submit|preventDefault={submitChanges}>
-			<label>
-				Name:
-				<input type="text" bind:value={itemClone.name} bind:this={inputName} />
-			</label>
+<div>
+	{#if itemClone}
+		<div
+			class="panel radius"
+			transition:slide|local={{ duration: speedMs }}
+			on:introend={focusInput}
+		>
+			<div class="header">
+				<div class="title">Edit: {itemClone.id}</div>
+			</div>
+			<FormStyle on:submit={submitChanges}>
+				<label class="flex-col">
+					<span>Name:</span>
+					<input type="text" class="unit" bind:value={itemClone.name} bind:this={inputName} />
+				</label>
 
-			{#if itemClone.type == 'zone'}
-				<div>
-					<label>
-						Factor:
-						<input type="text" bind:value={itemClone.factor} />
+				{#if itemClone.type == 'zone'}
+					<label class="flex-col">
+						<span>Factor:</span>
+						<input type="text" class="unit" bind:value={itemClone.factor} />
 					</label>
-				</div>
-				<div>
-					<label>
-						Color:
+					<label class="row">
 						<input type="checkbox" bind:checked={setColor} />
+						<span>Color</span>
 					</label>
 					{#if setColor}
-						<input type="color" bind:value={itemClone.color} />
+						<div class="row">
+							<input type="color" class="unit" bind:value={itemClone.color} />
+						</div>
 					{/if}
-				</div>
-			{/if}
-
-			{#if itemClone.type == 'act'}
-				<div>
-					<label>
-						Area:
-						<input type="text" bind:value={itemClone.area} />
-					</label>
-				</div>
-			{/if}
-
-			<div class="btn-group" style="width: 100%;">
-				{#if itemClone.route && itemClone.route !== '0'}
-					<div style="flex-grow: 1;">
-						<ConfirmButton on:confirm={deleteItem}>
-							<Trash2 size={iconSize} />
-						</ConfirmButton>
-					</div>
 				{/if}
-				<div style="flex-grow: 1;">
-					<button type="button" on:click={duplicateItem}>
-						<Copy size={iconSize} />
-					</button>
+
+				{#if itemClone.type == 'act'}
+					<label class="flex-col">
+						<span>Area:</span>
+						<input type="text" class="unit" bind:value={itemClone.area} />
+					</label>
+				{/if}
+
+				<div class="btn-group" style="width: 100%;">
+					{#if itemClone.route && itemClone.route !== '0'}
+						<div style="flex-grow: 1;">
+							<ConfirmButton on:confirm={deleteItem}>
+								<Trash2 size={iconSize} />
+							</ConfirmButton>
+						</div>
+						<div style="flex-grow: 1;">
+							<button type="button" on:click={duplicateItem}>
+								<Copy size={iconSize} />
+							</button>
+						</div>
+					{/if}
+					<div style="flex-grow: 1;">
+						<button type="button" on:click={() => selectedId.set('')}>
+							<X size={iconSize} />
+						</button>
+					</div>
+					<div style="flex-grow: 1;">
+						<button type="submit" class="unit">
+							<Check size={iconSize} />
+						</button>
+					</div>
 				</div>
-				<div style="flex-grow: 1;">
-					<button type="button" on:click={() => selectedId.set('')}>
-						<X size={iconSize} />
-					</button>
-				</div>
-				<div style="flex-grow: 1;">
-					<button type="submit">
-						<Check size={iconSize} />
-					</button>
-				</div>
-			</div>
-		</form>
-	</div>
-{/if}
+			</FormStyle>
+		</div>
+	{/if}
+</div>
+
+<style>
+	.flex-col {
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+		flex-wrap: wrap;
+		flex-grow: 1;
+	}
+	.flex-col input {
+		/* width: auto; */
+		width: 160px;
+	}
+</style>

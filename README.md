@@ -16,7 +16,7 @@
 - [x] Normalize text on create ActivityClass.
 - [x] Refactor ActivityPannel actions to a component
 - [x] Clean input data at create & edit
-- [ ] Style text inputs
+- [x] Style text inputs
 - [ ] ADD WELCOME PAGE! Start new, load, continue project...
 
 ### v 1.0
