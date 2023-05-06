@@ -57,6 +57,15 @@
 		};
 	}
 
+	function submitColor(ev: Event) {
+		if (itemData?.type != 'zone') return;
+
+		const picker = ev.target as HTMLInputElement;
+
+		itemData.color = picker.value;
+		mainTree.rebuild();
+	}
+
 	function submitChanges() {
 		if (itemClone?.type == 'zone') {
 			evalZone(itemClone);
@@ -150,7 +159,12 @@
 					</label>
 					{#if setColor}
 						<div class="row">
-							<input type="color" class="unit" bind:value={itemClone.color} />
+							<input
+								type="color"
+								class="unit"
+								bind:value={itemClone.color}
+								on:change={submitColor}
+							/>
 						</div>
 					{/if}
 				{/if}
