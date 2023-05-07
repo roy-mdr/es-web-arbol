@@ -17,6 +17,7 @@
 - [x] Refactor ActivityPannel actions to a component
 - [x] Clean input data at create & edit
 - [x] Style text inputs
+- [x] Change Zone Factor input for slider
 - [ ] ADD WELCOME PAGE! Start new, load, continue project...
 
 ### v 1.0
@@ -26,6 +27,7 @@
 - [ ] Add comments/description for activity classes?
 - [ ] Add collapse/expand all button?
 - [ ] Go to ActivityClass from Activity (right click, view activity origin?)
+- [ ] Zones con notas: para escribir objetivos del espacio, referencias, recordatorios... Conceptualización del espacio / cómo se debería conceptualizar...
 
 ### v 1.1
 - [ ] Add multidrag (from different lists) support

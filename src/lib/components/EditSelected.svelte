@@ -150,8 +150,19 @@
 
 				{#if itemClone.type == 'zone'}
 					<label class="flex-col">
-						<span>Factor:</span>
-						<input type="text" class="unit" bind:value={itemClone.factor} />
+						<span
+							>Factor: <small style="color: var(--mid);">
+								+{parseInt(`${itemClone.factor * 100}`)}%</small
+							></span
+						>
+						<input
+							type="range"
+							class="unit"
+							min="0"
+							max="1"
+							step="0.01"
+							bind:value={itemClone.factor}
+						/>
 					</label>
 					<label class="row">
 						<input type="checkbox" bind:checked={setColor} />
@@ -213,7 +224,7 @@
 		flex-wrap: wrap;
 		flex-grow: 1;
 	}
-	.flex-col input {
+	.flex-col input[type='text'] {
 		/* width: auto; */
 		width: 160px;
 	}
