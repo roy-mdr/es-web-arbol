@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import { Upload, Save, FilePlus2, Boxes } from 'lucide-svelte';
+	import { Upload, Save, FilePlus2, Boxes, Home } from 'lucide-svelte';
 	import FileButton from '$lib/components/FileButton.svelte';
 	import ConfirmButton from '$lib/components/ConfirmButton.svelte';
 
@@ -41,13 +41,37 @@
 			</button>
 		</div>
 	</div>
-	<div class="graph-links">
-		<a href="./sunburst" target="_blank">
-			<Boxes size={iconSize} /> Sunflare
-		</a>
-		<a href="./sized-tree" target="_blank">
-			<Boxes size={iconSize} /> Sized-Tree
-		</a>
+	<div class="btn-group">
+		<div>
+			<button
+				type="button"
+				on:click={() => {
+					dispatch('change-view', 'editor');
+				}}
+			>
+				<Home size={iconSize} /> Editor
+			</button>
+		</div>
+		<div>
+			<button
+				type="button"
+				on:click={() => {
+					dispatch('change-view', 'sunburst');
+				}}
+			>
+				<Boxes size={iconSize} /> Sunflare
+			</button>
+		</div>
+		<div>
+			<button
+				type="button"
+				on:click={() => {
+					dispatch('change-view', 'sized-tree');
+				}}
+			>
+				<Boxes size={iconSize} /> Sized-Tree
+			</button>
+		</div>
 	</div>
 </div>
 
@@ -57,10 +81,6 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-	}
-
-	.graph-links a {
-		color: var(--light-text);
-		margin-left: var(--space-unit);
+		margin-bottom: var(--space-half);
 	}
 </style>

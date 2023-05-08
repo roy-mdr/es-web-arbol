@@ -35,6 +35,11 @@
 		width: 100%;
 	}
 
+	form :global(input.unit[type='range']),
+	form :global(input.unit[type='color']) {
+		padding: 0;
+	}
+
 	form :global(button.unit) {
 		cursor: pointer;
 		display: flex;
