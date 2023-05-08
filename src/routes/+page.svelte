@@ -16,6 +16,7 @@
 	let mtZone: HTMLElement;
 
 	let view = 'editor';
+	let showSidePanel = true;
 
 	function handleKeydown(ev: KeyboardEvent) {
 		ctrlKeyIsDown.set(ev.ctrlKey);
@@ -56,7 +57,12 @@
 	<!-- <a href="/store">Check Store State</a> -->
 	{#if view == 'editor'}
 		<div>
-			<div style="height: 100%;" transition:slide|local={{ axis: 'x', duration: speedMs }}>
+			<div
+				style="height: 100%;"
+				transition:slide|local={{ axis: 'x', duration: speedMs }}
+				on:introend={() => (showSidePanel = true)}
+				on:outroend={() => (showSidePanel = false)}
+			>
 				<SidePanel />
 			</div>
 		</div>
@@ -88,9 +94,9 @@
 						color={$mainTree.color}
 					/>
 				{/key}
-			{:else if view == 'sunburst'}
+			{:else if view == 'sunburst' && !showSidePanel}
 				<GraphSunburst />
-			{:else if view == 'sized-tree'}
+			{:else if view == 'sized-tree' && !showSidePanel}
 				<GraphSizedTree />
 			{/if}
 		</div>
