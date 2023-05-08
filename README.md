@@ -18,6 +18,7 @@
 - [x] Clean input data at create & edit
 - [x] Style text inputs
 - [x] Change Zone Factor input for slider
+- [ ] Fix SVG styles at download
 - [ ] ADD WELCOME PAGE! Start new, load, continue project...
 
 ### v 1.0
