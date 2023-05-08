@@ -31,9 +31,35 @@
 	let makerjs;
 
 	function saveSVG() {
-		let svg = document.getElementById('svgOut').getElementsByTagName('svg')[0];
-		// svg.insertBefore(document.getElementsByTagName('style')[0], svg.children[0]);
-		writeTextFile(svg.outerHTML, 'sysTree-sized_tree', '.svg');
+		let domSVG = document.getElementById('svgOut').getElementsByTagName('svg')[0];
+
+		const styleGraph = document.createElement('style');
+		styleGraph.innerHTML = `
+.node circle {
+	fill: #fff;
+	stroke: steelblue;
+	stroke-width: 3px;
+}
+
+.node text {
+	font: 12px sans-serif;
+}
+
+.link-path {
+	fill: none;
+	stroke: #ccc;
+	stroke-width: 2px;
+}`;
+
+		const vSVG = domSVG.cloneNode(true);
+		vSVG.insertBefore(styleGraph, vSVG.children[0]);
+
+		vSVG.querySelectorAll('.link').forEach((el) => {
+			el.classList.remove('link');
+			el.classList.add('link-path');
+		});
+
+		writeTextFile(vSVG.outerHTML, 'sysTree-sized_tree', '.svg');
 	}
 
 	function saveDXF() {

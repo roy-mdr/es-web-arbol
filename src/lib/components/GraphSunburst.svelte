@@ -85,8 +85,41 @@
 	$: initRendering(sunChart, chartContainer);
 
 	function saveSVG() {
-		let svg = chartContainer.getElementsByTagName('svg')[0];
-		writeTextFile(svg.outerHTML, 'sysTree-sunburst', '.svg');
+		const domSVG = chartContainer.getElementsByTagName('svg')[0];
+
+		const styleGraph = document.createElement('style');
+		styleGraph.innerHTML = `
+text {
+  font-family: sans-serif;
+  font-size: 12px;
+  dominant-baseline: middle;
+  text-anchor: middle;
+  pointer-events: none;
+  fill: #FFF;
+}
+
+text .text-contour {
+  display: none;
+  fill: none;
+  stroke: white;
+  stroke-width: 5;
+  stroke-linejoin: 'round';
+}
+
+.main-arc {
+  stroke: white;
+  stroke-width: 1px;
+  transition: opacity .4s;
+}
+
+.hidden-arc {
+  fill: none;
+}`;
+
+		const vSVG = domSVG.cloneNode(true);
+		vSVG.insertBefore(styleGraph, vSVG.children[0]);
+
+		writeTextFile(vSVG.outerHTML, 'sysTree-sunburst', '.svg');
 	}
 </script>
 
